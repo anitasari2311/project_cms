@@ -1,0 +1,47 @@
+<html>
+    <head>
+        <title>Login</title>
+	    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    </head>
+
+
+    <body>
+       <div>
+            <center>
+                <div style="padding-top: 30px;padding-bottom: 20px; font-family: 'Arial';font-size: 20px;"> 
+                     <h1>REPORTING SYSTEM</h1>
+                </div>
+              <!--  <form action="/showmenu"> -->
+
+                    <div class="container" >   
+                        <div class ="row" >
+                            <div>
+                                <label for="uname"><b>Username</b></label>
+                            </div>
+                                <div class="" style="float: center; width: 250px">  
+                                        <form action ="" method="POST">    
+                                        <input type="text" placeholder="Input Username" name="uname" value="{{request.form.uname}}">
+                                    
+                                </div>
+                        </div>
+
+
+                        <div class ="row">
+                            <div>
+                                <label for="psw"><b>Password</b></label>
+                            </div>
+                            <div class="" style="float: center; width: 250px">
+                                <form action="" method="post"><input type="password" placeholder="Input Password" name="psw" value="{{request.form.uname}}">
+                                        </form>
+                            </div>
+                        </div>
+                        <div class="row" style="padding-top: 15px" >
+                            <button type="submit"class="submit" >Login</button>
+                            <button type="button" class="submitRed">Cancel</button>
+                        </div>
+                    </div>
+               <!-- </form> -->
+            </center>
+       </div>
+    </body>
+</html>

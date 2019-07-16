@@ -1,0 +1,127 @@
+<html>
+        <head>
+        	<title>Available Task</title>
+        	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+        </head>
+    <body>
+
+        <div class="container2">
+                <h1>AVAILABLE TASK</h1>
+
+            <div>
+                <input type="text2" placeholder="Search Report ..">
+            </div>
+                            <br><br>
+
+        <center>
+
+
+                <table id="list">
+                  <tr>
+                    <th>Request Code</th>
+                    <th>Title</th>
+                    <th>Request Name</th>
+                    <th>Department</th>
+                    <th>Request Date</th>
+                    <th>Deadline</th>
+                    <th>Status</th>
+                    <th>PIC</th>
+                    <th>Priority</th>
+                    <th></th>
+                  </tr>
+                  <tr >
+                    <td>Req-002</td>
+                    <td>Laporan Sales ABC</td>
+                    <td>Andi</td>
+                    <td>Finance Management</td>
+                    <td>6 Mei 2019 </td>
+                    <td>10 Mei 2019</td>
+                    <td></td>
+                    <td></td>
+                    <td><a class ="pri1"> </a></td>
+                    <td> <button class="submit" value="Edit Kolom" onclick="window.location.href = 'detailTask.html';">Select</button></td>
+                  </tr>
+                  <tr>
+                    <td>Req-005</td>
+                    <td>Laporan Sales DEF</td>
+                    <td>Budi</td>
+                    <td>HR Management</td>
+                    <td>8 Mei 2019 </td>
+                    <td>12 Mei 2019 </td>
+                    <td>Accepted </td>
+                    <td>Andi</td>
+                    <td><a class ="pri3"> </a></td>
+                    <td> <button class="submit2" value="Edit Kolom" onclick="window.location.href = 'detailTask.html';" disabled>Select</button></td>
+                  </tr>
+                  <tr>
+                    <td>Req-006</td>
+                    <td>Laporan Sales GHI</td>
+                    <td>Nana</td>
+                    <td>Marketing Management</td>
+                    <td>10 Mei 2019 </td>
+                    <td>14 Mei 2019 </td>
+                    <td></td>
+                    <td></td>
+                    <td><a class ="pri3"> </a></td>
+                    <td> <button class="submit" value="Edit Kolom" onclick="window.location.href = 'detailTask.html';">Select</button></td>
+                  </tr>
+                </table> 
+
+
+                                <br><br><br>
+                <h2>__________________________________________________________________________</h2>
+                                <br><br><br>
+        </center>
+
+
+
+
+            <h1>LIST TASK</h1>
+
+            <table id="list">
+              <tr>
+                <th>Request Code</th>
+                <th>Title</th>
+                <th>Request Name</th>
+                <th>Department</th>
+                <th>Request Date</th>
+                <th>Deadline</th>
+                <th>Priority</th>
+                <th></th>
+                
+              </tr>
+              <tr >
+                <td>Req-001</td>
+                <td>Laporan Sales ABC
+                <td>Budi</td>
+                <td>Finance Management</td>
+                <td>6 Mei 2019 </td>
+                <td>10 Mei 2019</td>
+                <td><a class ="pri1"> </a></td>
+                <td> <button class="submit" value="Edit Kolom" onclick="window.location.href = 'task2.html';">Finish</button></td>
+              </tr>
+
+              <tr>
+                <td>Req-003</td>
+                <td>Laporan Sales DEF</td>
+                <td>Nana</td>
+                <td>HR Management</td>
+                <td>10 Mei 2019 </td>
+                <td>14 Mei 2019 </td>
+                <td><a class ="pri3"> </a></td>
+                <td> <button class="submit" value="Edit Kolom" onclick="window.location.href = 'task2.html';">Finish</button></td>
+              </tr>
+            </table> 
+
+
+
+
+ 
+
+
+  
+        </div>
+
+
+    </body>
+</html>

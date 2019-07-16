@@ -1,0 +1,131 @@
+<html>
+      <head>
+      	<title>Detail Task</title>
+      	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+      </head>
+  <body>
+      <center>
+        <h2>Detail Task</h2>
+      </center>
+    <div class="container">
+  
+      <div class="row">
+
+        <div class="col-25">
+          <label for="fname">Title</label>
+        </div>
+
+        <div class="col-75">
+          <input type="text" id="fname" name="namalaporan" placeholder="Laporan 1" disabled>
+        </div>
+
+      </div>
+
+
+      <div class="row">
+
+        <div class="col-25">
+          <label for="lname">Description</label>
+        </div>
+
+        <div class="col-75">
+          <textarea id="subject" name="keteranganlaporan" placeholder="Description" style="height:200px" disabled></textarea>
+        </div>
+        
+      </div>
+
+
+      <div class="row">
+
+        <div class="col-25">
+          <label for="lname">Organization</label>
+        </div>
+
+        <div class="col-75">
+          <input type="text" placeholder="PHAROS" disabled>
+        </div>
+
+      </div>
+
+
+      <div class="row">
+
+        <div class="col-25">
+          <label for="lname">Department</label>
+        </div>
+
+        <div class="col-75">
+          <input type="text" placeholder="Finance Management" disabled>
+        </div>
+
+      </div>
+
+    
+    <div class="row">
+
+        <div class="col-25">
+          <label for="lname">Display</label>
+        </div>
+
+        <div class="col-75">
+          <input type="text" placeholder="Procon, Outcode, Outname" disabled>
+        </div>
+
+      </div>
+
+
+
+      <div class="row">
+
+        <div class="col-25">
+          <label for="lname">Period</label>
+        </div>
+
+        <div class="col-75">
+          <input type="text" placeholder="B1" disabled>
+        </div>
+
+      </div>
+
+
+      <div class="row">
+
+          <div class="col-25">
+            <label for="lname">Deadline</label>
+          </div>
+
+          <div class="col-75">
+             <input type="text" placeholder="02 Juni 2019" disabled>
+          </div>
+
+      </div>
+
+    
+    <div class="row">
+
+          <div class="col-25">
+            <label for="lname">Schedule</label>
+          </div>
+
+          <div class="col-75">
+             <input type="text" placeholder="Routine B1-B3" disabled>
+          </div>
+
+      </div>
+
+
+
+                           <br><br><br><br><br>
+      <center>
+        <div class="row">
+          <button class="submit" value="Edit Kolom" onclick="window.location.href = 'task2.html';">Accept</button>
+                <br>
+          <button class="submitRed" value="Edit Kolom" onclick="window.location.href = 'task2.html';">Cancel</button>
+        </div>
+      </center>
+
+   </div>
+
+
+  </body>
+</html>

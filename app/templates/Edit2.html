@@ -1,0 +1,41 @@
+<html>
+<head>
+	<title>Edit</title>
+	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<center>
+<h1>EDIT REPORT</h1>
+
+ <div class="container3" style="background-color:#f1f1f1">
+
+<center>
+<div class="" style="display: block;">
+      <div class="" style="width: 200px; text-align: left">
+        <label for="tanggalselesai">Report Code</label>
+      </div>
+      <div class="" style="width: 200px">
+        <select id="country" name="kodeLaporan">
+          <option value="ADGM-A00">DGM-0001</option>
+          <option value="ADGM-A01">DGM-0002</option>
+          <option value="ADGM-A02">DGM-0003</option>
+        </select>
+      </div>
+</center>
+
+ <br><br>   
+
+ <center>
+ <form action='/revision'><button class="submit" value="edit" type="submit">Submit</button>
+ </form>
+  
+  <form action='/showmenu'> <button class="submitRed" value="cancel" type="submit">Cancel</button> </form>
+ </center>
+ </center>
+</div>
+ 
+
+ 
+</center>
+</body>
+</html>
