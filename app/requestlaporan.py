@@ -42,6 +42,42 @@ class RequestLaporan:
         self.reqSch_ktgriNama = ''
         self.reqSch_lastUpdate = ''
         self.reqSch_aktifYN = ''
+        
+
+#BUAT PROSES LOGIN
+    def prosesLogin(self, username, password):
+        try: 
+            connection = mysql.connector.connect(
+            host='localhost',
+            database='cms_request',
+            user='root',
+            password='qwerty')
+            if connection.is_connected():
+                db_Info= connection.get_server_info()
+            print("Connected to MySQL database...",db_Info)
+
+            cursor = connection.cursor()
+     
+            cursor.execute(''.join(['select user_password, user_flag from m_user where user_name = "'+username+'"']))
+            
+            record = cursor.fetchone()
+            clear = str(record).replace("('",'').replace("')",'').replace("', '",'#')
+
+            stat = clear.split('#')
+            if stat[0] == password:
+                return stat[1]
+            else:
+                return "incorrect"
+
+        except Error as e :
+            print("Error while connecting file MySQL", e)
+        finally:
+                #Closing DB Connection.
+                    if(connection.is_connected()):
+                        cursor.close()
+                        connection.close()
+                    print("MySQL connection is closed")
+        
 
 #BUAT GENERATE ID SECARA OTOMATIS
     def get_numberID(self):
@@ -174,9 +210,70 @@ class RequestLaporan:
                         cursor.close()
                         connection.close()
                     print("MySQL connection is closed")
-# 
-    #def requestEditLaporan(self, ):
+#======================================================================================================================
+#GET DATA REPORT_ID
+    def getReportID(self):
+        try: 
+            connection = mysql.connector.connect(
+            host='localhost',
+            database='cms_request',
+            user='root',
+            password='qwerty')
+            if connection.is_connected():
+                db_Info= connection.get_server_info()
+            print("Connected to MySQL database...",db_Info)
 
+            cursor = connection.cursor()
+     
+            cursor.execute('select report_id from m_report')
+            
+            record = cursor.fetchone()
+            clear = str(record).replace('(','').replace(',)','')
+            return int(clear)
+
+        except Error as e :
+            print("Error while connecting file MySQL", e)
+        finally:
+                #Closing DB Connection.
+                    if(connection.is_connected()):
+                        cursor.close()
+                        connection.close()
+                    print("MySQL connection is closed")
+ 
+#EDIT LAPORAN
+    def requestEditLaporan(self, report_id, addDisplay, deleteDisplay, perubahanFilter, deadline):
+        self.report_id = reportID
+        self.add_display = addDisplay
+        self.delete_display = deleteDisplay
+        self.perubahan_filter = perubahanFilter
+        self.deadline = deadline
+
+        try: 
+            connection = mysql.connector.connect(
+            host='localhost',
+            database='cms_request',
+            user='root',
+            password='qwerty')
+            if connection.is_connected():
+                db_Info= connection.get_server_info()
+            print("Connected to MySQL database...",db_Info)
+
+            cursor = connection.cursor()
+            cursor.execute('INSERT INTO t_reqSchedule VALUES (%s, %s, %s, %s) WHERE ',
+                           (addDisplay, deleteDisplay, perubahanFilter, deadline))
+            connection.commit()
+
+            record = cursor.fetchone()
+            print ("Your connected...",record)
+
+        except Error as e :
+            print("Error while connecting file MySQL", e)
+        finally:
+                #Closing DB Connection.
+                    if(connection.is_connected()):
+                        cursor.close()
+                        connection.close()
+                    print("MySQL connection is closed")
 
 
 
@@ -188,11 +285,12 @@ class RequestLaporan:
 
 #RequestLaporan().requestSchedule('SCH-004', 'DGM-0330', 'Q123', 'Senin', 'Januari', '4','Dr. Andre Lembong',
 #                       'Monic', 'Pharos', 'Sales Management', datetime.datetime.now(), 'Y')        
- #           
+#           
 #RequestLaporan().requestLaporanBaru('BM-01', 'UU-01', '2', 'BD-01', 'DGM-001', 'Laporan Sales', 'filter<5000', 'untuk mengetahui',
- #                               'outcode', 'B1', datetime.date(2019,7,12), 'laporan', None, None,
-   #                             'confirmed', 'Monic', 'jhgygvy', 'N')
+#                               'outcode', 'B1', datetime.date(2019,7,12), 'laporan', None, None,
+#                               'confirmed', 'Monic', 'jhgygvy', 'N')
 #
 
 #print(RequestLaporan().test())
 
+print(RequestLaporan().prosesLogin('Monica','1234'))

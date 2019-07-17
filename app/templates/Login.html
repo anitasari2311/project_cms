@@ -1,7 +1,7 @@
 <html>
     <head>
         <title>Login</title>
-	    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     </head>
 
 
@@ -14,33 +14,33 @@
               <!--  <form action="/showmenu"> -->
 
                     <div class="container" >   
-                        <div class ="row" >
+                        <form action="/menu" method="post">
                             <div>
                                 <label for="uname"><b>Username</b></label>
+                                    <div class="" style="float: center; width: 250px">
+                                        <input type="text" placeholder="Input Username" name="username" value="{{
+                                        request.form.username }}">
+                                    </div>
                             </div>
-                                <div class="" style="float: center; width: 250px">  
-                                        <form action ="" method="POST">    
-                                        <input type="text" placeholder="Input Username" name="uname" value="{{request.form.uname}}">
-                                    
-                                </div>
-                        </div>
 
-
-                        <div class ="row">
                             <div>
                                 <label for="psw"><b>Password</b></label>
+                                <div class="" style="float: center; width: 250px">
+                                    <input type="password" placeholder="Input Password" name="password" value="{{
+                                    request.form.password }}">
+                                </div>
                             </div>
-                            <div class="" style="float: center; width: 250px">
-                                <form action="" method="post"><input type="password" placeholder="Input Password" name="psw" value="{{request.form.uname}}">
-                                        </form>
+                            
+                            <div class="row" style="padding-top: 15px" >
+                                <button type="submit"class="submit">Login</button>
                             </div>
-                        </div>
-                        <div class="row" style="padding-top: 15px" >
-                            <button type="submit"class="submit" >Login</button>
-                            <button type="button" class="submitRed">Cancel</button>
-                        </div>
+                        </form>
+                        {% if error %}
+                        <p class="error"><strong>Error:</strong> {{ error }}</p>
+                         {% endif %}
                     </div>
                <!-- </form> -->
+
             </center>
        </div>
     </body>

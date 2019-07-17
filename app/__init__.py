@@ -3,24 +3,38 @@ from requestlaporan import RequestLaporan
 import pymysql
 import datetime
 
+
 app = Flask(__name__, static_folder='app/static')
 app.static_folder = 'static'
-
 @app.route('/')
-def menu():
-	return render_template('login.html')
+def start():
+    return redirect(url_for('login'))
 
-@app.route ('/login', methods=['GET','POST'])
+#BUAT VALIDASI LOGIN
+@app.route('/login')
 def login():
-	error = 'None'
-	if request.method == 'POST':
-		if request.form['username'] !='admin' or request.form['password'] !='admin123':
-			error='Invalid credentials. Please try again.'
-		else:
-			return redirect(url_for('menu'))
-	return render_template('login.html', error=error)
+    return render_template('login.html')
+
+@app.route ('/menu', methods=['GET','POST'])
+def menu():
+    newRequest = RequestLaporan()
+    error = None
+    if request.method == 'POST':
+        flag = newRequest.prosesLogin(request.form['username'], request.form['password'])
+        print(flag)
+        if flag is "incorrect":
+            error = 'Invalid Username/Password.'
+            return render_template('login.html',error = error)
+        elif flag == 'admin':
+            return render_template('menu.html')
+        elif flag == 'User':
+            return render_template('menu.html')
+        elif flag == 'Atasan':
+            return render_template('menu.html')
+   
 
 
+#BUAT CALL REQUEST
 @app.route('/formRequest', methods=['GET', 'POST'])
 def formRequest():
    # newRequest.requestLaporanBaru
@@ -45,7 +59,7 @@ def newReq():
 
 
             newRequest.requestLaporanBaru( 'P190402', 'A123', 'J345', 'Y927', 'K271', title, description,
-                              purpose, Display, Period, datetime.date(int(tanggalSelesai),int(bulanSelesai),int(tahunSelesai) ), "\bin",
+                             purpose, Display, Period, datetime.date(int(tanggalSelesai),int(bulanSelesai),int(tahunSelesai) ), "\bin",
                                 None, None)
             return render_template("menu.html")
 
