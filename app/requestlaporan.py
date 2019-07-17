@@ -1,6 +1,7 @@
 import datetime
 import pymysql
 import random
+import mysql.connector
 from mysql.connector import Error
 
   
@@ -14,6 +15,7 @@ class RequestLaporan:
         self.cur.execute("SELECT * from t_request")
         result = self.cur.fetchall()
         return result
+    
     def __init__(self):
         self.req_id = ''
         self.org_id = ''
@@ -77,8 +79,8 @@ class RequestLaporan:
     
 #BUAT REQUEST UNTUK LAPORAN BARU 
     def requestLaporanBaru(self, prog_id, user_id, org_id, ktgri_id, req_kodeLaporan, req_judul, req_deskripsi,
-                           req_tujuan, req_tampilan, req_periode, req_deadline, req_file, req_dateAccept,
-                           req_endDate, req_status, req_PIC, req_penerima, req_prioritas):
+                           req_tujuan, req_tampilan, req_periode, req_deadline, req_file, req_PIC, req_penerima,
+                           req_dateAccept = None, req_endDate=None, req_status='Waiting', req_prioritas='1'):
         self.req_id = self.generateRequestID()
         self.prog_id = prog_id
         self.user_id  = user_id
@@ -114,8 +116,8 @@ class RequestLaporan:
             cursor = connection.cursor()
             cursor.execute('INSERT INTO t_request VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)',
                            (self.req_id, prog_id, user_id, org_id, ktgri_id, req_kodeLaporan, req_judul, req_deskripsi,
-                           req_tujuan, req_tampilan, req_periode,req_deadline,req_file,self.req_date,
-                            req_dateAccept, req_endDate, req_status, req_PIC, req_penerima, req_prioritas))
+                           req_tujuan, req_tampilan, req_periode,req_deadline,req_file, self.req_date,
+                            req_dateAccept, req_endDate, self.req_status, req_PIC, req_penerima, req_prioritas))
             connection.commit()
 
             record = cursor.fetchone()
@@ -130,7 +132,7 @@ class RequestLaporan:
                         connection.close()
                     print("MySQL connection is closed")
 
-#BUAT INSERT INTO T_Req_SCH        
+#BUAT INSERT INTO T_Req_SCH
     def requestSchedule(self, sch_id, report_id, query_id, reqSch_hari, reqSch_bulan, reqSch_tanggal, reqSch_groupBy, reqSch_reportPIC, reqSch_orgNama,reqSch_ktgriNama,reqSch_lastUpdate, reqSch_aktifYN):
         self.sch_id = sch_id
         self.report_id = report_id
@@ -172,6 +174,16 @@ class RequestLaporan:
                         cursor.close()
                         connection.close()
                     print("MySQL connection is closed")
+# 
+    #def requestEditLaporan(self, ):
+
+
+
+
+
+
+
+
 
 
 #RequestLaporan().requestSchedule('SCH-004', 'DGM-0330', 'Q123', 'Senin', 'Januari', '4','Dr. Andre Lembong',
@@ -182,5 +194,5 @@ class RequestLaporan:
    #                             'confirmed', 'Monic', 'jhgygvy', 'N')
 #
 
-print(RequestLaporan().test())
+#print(RequestLaporan().test())
 
