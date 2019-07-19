@@ -15,7 +15,7 @@
     
                 <div class="row">
                   <form action='/formRequest'>
-                  <button class="submit" value="Request Laporan">Request Report</button> <br>
+                  <button class="submit" value="Request Laporan">New Request Report</button> <br>
 
                 </form>
                 <form action ='/editReport'>
@@ -48,20 +48,22 @@
                         <th></th>
                         <th></th>
                       </tr>
-
+                  {% for row in listReqUser %}
                       <tr>
-                        <td>Req-001</td>
-                        <td>Lap 1</td>
-                        <td>5 May 2019</td>
-                        <td>10 May 2019</td>
-                        <td>On Process</td>
-                        <td>Monic</td>
+                        <td> {{row[0]}} </td>              
+                        <td> {{row[1]}} </td>
+                        <td>{{row[2]}}</td>
+                        <td>{{row[3]}}</td>
+                        <td>{{row[4]}}</td>
+                        <td>{{row[5]}}</td>
                         <td><button class="submit2">Revision</button><br>
                             <button class="submit2">Confirm</button> </td>
-                        <td></td>
+                        <td><img src="download2.png"></td>
+                        {% endfor %}
+                        
                       </tr>
 
-                      <tr>
+                      <!-- <tr>
                         <td>Req-005</td>
                         <td>Lap 2</td>
                         <td>6 May 2019</td>
@@ -95,7 +97,7 @@
                         <td><form action='/revision'><button class="submitOr">Revision</button></form>
                             <button class="submit">Confirm</button> </td>
                         <td><img src="download2.png"></td>
-                      </tr>
+                      </tr> -->
 
                     </table> 
       </div>

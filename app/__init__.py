@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for, request
+from flask import Flask, render_template, redirect, url_for, request, json
 from requestlaporan import RequestLaporan
 import pymysql
 import datetime
@@ -15,6 +15,19 @@ def start():
 def login():
     return render_template('login.html')
 
+@app.route('/atasanprogrammer', methods=['GET','POST'])
+def atasan():
+     return render_template('taskSPV.html')
+
+@app.route('/programmer', methods=['GET','POST'])
+def programmer():
+     return render_template('task2.html')
+
+@app.route('/user', methods=['GET','POST'])
+def user():
+    listRequestLaporanUser = RequestLaporan()
+    return render_template('menu.html', listReqUser = listRequestLaporanUser.listRequestUser())
+
 @app.route ('/menu', methods=['GET','POST'])
 def menu():
     newRequest = RequestLaporan()
@@ -25,20 +38,19 @@ def menu():
         if flag is "incorrect":
             error = 'Invalid Username/Password.'
             return render_template('login.html',error = error)
-        elif flag == 'admin':
-            return render_template('menu.html')
+        elif flag == 'Admin':
+            return redirect(url_for('programmer'))
         elif flag == 'User':
-            return render_template('menu.html')
+            return redirect(url_for('user'))
         elif flag == 'Atasan':
-            return render_template('menu.html')
-   
+            return redirect(url_for('atasan'))
 
 
 #BUAT CALL REQUEST
 @app.route('/formRequest', methods=['GET', 'POST'])
 def formRequest():
-   # newRequest.requestLaporanBaru
-    return render_template("requestLaporan.html")
+    newRequest = RequestLaporan()
+    return render_template("requestLaporan.html", listOrg = newRequest.namaOrganisasi(), listDept = newRequest.namaDept())
 
 @app.route('/newReq', methods = ['POST'])
 def newReq():
@@ -58,10 +70,12 @@ def newReq():
             inputFile = request.form['inputFile']
 
 
-            newRequest.requestLaporanBaru( 'P190402', 'A123', 'J345', 'Y927', 'K271', title, description,
+            newRequest.requestLaporanBaru( 'P190402', 'A123', Organization, Department, 'K271', title, description,
                              purpose, Display, Period, datetime.date(int(tanggalSelesai),int(bulanSelesai),int(tahunSelesai) ), "\bin",
                                 None, None)
-            return render_template("menu.html")
+            return render_template("menu.html",listOrg = newRequest.namaOrganisasi(), listDept = newRequest.namaDept())
+
+
 
 
 if __name__ == "__main__":

@@ -4,7 +4,7 @@
            <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
   </head>
 
-      <body>
+      <body onload="">
           <center>
              <div style="padding-top: 30px;padding-bottom: 20px; font-family: 'Arial';font-size: 20px;"> 
                      <h1>REQUEST REPORT</h1>
@@ -47,13 +47,16 @@
 
                   <div class="row">
                     <div class="col-25">
+
                       <label for="Organization">Organization</label>
+                      
                     </div>
-                    <div class="col-75">
-                      <select id="country" name="Organization">
-                        <option value="a">PHAROS</option>
-                        <option value="b">CENTURY GROUP</option>
-                        <option value="c">APOTEK GENERIK</option>
+                    <div class="col-75" id="list_org">
+                      <select name='Organization'>
+                        {% for row in listOrg %}
+                        <option value="Org">{{row[0]+" - "+row[1]}}</option>
+                       <!--  <strong>{{text}}</strong> -->
+                         {% endfor %}
                       </select>
                     </div>
                   </div>
@@ -61,19 +64,19 @@
 
                   <div class="row">
                     <div class="col-25">
-                      <label for="Department">Department</label>
+                      <label for="Department">Category</label>
                     </div>
                     <div class="col-75">
                       <select id="country" name="Department">
-                        <option value="a">Finance Management</option>
-                        <option value="b">HR Management</option>
-                        <option value="c">Marketing Management</option>
+                          {% for row in listDept %}
+                        <option value="Dept">{{row[0]+" - "+ row[1]}}</option>
+                          {% endfor %}
                       </select>
                     </div>
                   </div>
 
 
-                  <div class="row">
+                   <div class="row">
                     <div class="col-25">
                         <label for="fname">Display</label>
                     </div>

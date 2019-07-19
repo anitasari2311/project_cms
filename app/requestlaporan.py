@@ -113,14 +113,128 @@ class RequestLaporan:
         requestID = 'REQ_'+str(now.strftime('%Y%m'))+str(self.get_numberID()).zfill(5)
         return requestID
     
-#BUAT REQUEST UNTUK LAPORAN BARU 
+#BUAT REQUEST UNTUK LAPORAN BARU
+    def getOrganisasi(self, organisasi):
+        try: 
+            connection = mysql.connector.connect(
+            host='localhost',
+            database='cms_request',
+            user='root',
+            password='qwerty')
+            if connection.is_connected():
+                db_Info= connection.get_server_info()
+            print("Connected to MySQL database...",db_Info)
+
+            cursor = connection.cursor()
+     
+            cursor.execute(''.join(['select org_id from m_organisasi where org_nama = "'+organisasi+'"']))
+            
+            record = cursor.fetchone()
+            clear = str(record).replace("('",'').replace("',)",'')
+            return clear
+
+        except Error as e :
+            print("Error while connecting file MySQL", e)
+        finally:
+                #Closing DB Connection.
+                    if(connection.is_connected()):
+                        cursor.close()
+                        connection.close()
+                    print("MySQL connection is closed")
+
+    def namaOrganisasi(self):
+        try: 
+            connection = mysql.connector.connect(
+            host='localhost',
+            database='cms_request',
+            user='root',
+            password='qwerty')
+            if connection.is_connected():
+                db_Info= connection.get_server_info()
+            print("Connected to MySQL database...",db_Info)
+
+            cursor = connection.cursor()
+     
+            cursor.execute('select org_id, org_nama from m_organisasi where org_aktifYN = "Y" order by org_id')
+            
+            listOrg = cursor.fetchall()
+
+            
+            return listOrg
+
+        except Error as e :
+                print("Error while connecting file MySQL", e)
+        finally:
+                #Closing DB Connection.
+                    if(connection.is_connected()):
+                        cursor.close()
+                        connection.close()
+                    print("MySQL connection is closed")
+    def namaDept(self):
+        try: 
+            connection = mysql.connector.connect(
+            host='localhost',
+            database='cms_request',
+            user='root',
+            password='qwerty')
+            if connection.is_connected():
+                db_Info= connection.get_server_info()
+            print("Connected to MySQL database...",db_Info)
+
+            cursor = connection.cursor()
+     
+            cursor.execute('select ktgri_id, ktgri_nama from m_kategori where ktgri_aktifYN = "Y" Order by ktgri_id')
+            
+            listDept = cursor.fetchall()
+   
+            return listDept
+            
+
+        except Error as e :
+                print("Error while connecting file MySQL", e)
+        finally:
+                #Closing DB Connection.
+                    if(connection.is_connected()):
+                        cursor.close()
+                        connection.close()
+                    print("MySQL connection is closed")
+                    
+    def listRequestUser(self):
+        try: 
+            connection = mysql.connector.connect(
+            host='localhost',
+            database='cms_request',
+            user='root',
+            password='qwerty')
+            if connection.is_connected():
+                db_Info= connection.get_server_info()
+            print("Connected to MySQL database...",db_Info)
+
+            cursor = connection.cursor()
+            cursor.execute  ('''SELECT req_id ,IFNULL(req_judul,""), IFNULL(req_date,""),
+                             IFNULL(req_deadline,""), IFNULL(req_status,""), IFNULL(req_PIC,"")
+                                from t_request''')
+            listReqUser = cursor.fetchall()
+            return listReqUser
+        
+        except Error as e :
+                print("Error while connecting file MySQL", e)
+        finally:
+                #Closing DB Connection.
+                    if(connection.is_connected()):
+                        cursor.close()
+                        connection.close()
+                    print("MySQL connection is closed")
+
+
+                    
     def requestLaporanBaru(self, prog_id, user_id, org_id, ktgri_id, req_kodeLaporan, req_judul, req_deskripsi,
                            req_tujuan, req_tampilan, req_periode, req_deadline, req_file, req_PIC, req_penerima,
                            req_dateAccept = None, req_endDate=None, req_status='Waiting', req_prioritas='1'):
         self.req_id = self.generateRequestID()
         self.prog_id = prog_id
         self.user_id  = user_id
-        self.org_id = org_id
+        self.org_id = self.namaOrganisasi()
         self.ktgri_id = ktgri_id
         self.req_kodeLaporan = req_kodeLaporan
         self.req_judul = req_judul
@@ -211,12 +325,12 @@ class RequestLaporan:
                         connection.close()
                     print("MySQL connection is closed")
 #======================================================================================================================
-#GET DATA REPORT_ID
+#BUAT GET DATA REPORT_ID
     def getReportID(self):
         try: 
             connection = mysql.connector.connect(
             host='localhost',
-            database='cms_request',
+            database='cms_template',
             user='root',
             password='qwerty')
             if connection.is_connected():
@@ -227,9 +341,9 @@ class RequestLaporan:
      
             cursor.execute('select report_id from m_report')
             
-            record = cursor.fetchone()
-            clear = str(record).replace('(','').replace(',)','')
-            return int(clear)
+            record = cursor.fetchall()
+            clear = str(record).replace('[(','').replace(',)]', '')
+            return (clear)
 
         except Error as e :
             print("Error while connecting file MySQL", e)
@@ -241,7 +355,7 @@ class RequestLaporan:
                     print("MySQL connection is closed")
  
 #EDIT LAPORAN
-    def requestEditLaporan(self, report_id, addDisplay, deleteDisplay, perubahanFilter, deadline):
+    def requestEditLap(self, report_id, addDisplay, deleteDisplay, perubahanFilter, deadline):
         self.report_id = reportID
         self.add_display = addDisplay
         self.delete_display = deleteDisplay
@@ -259,7 +373,7 @@ class RequestLaporan:
             print("Connected to MySQL database...",db_Info)
 
             cursor = connection.cursor()
-            cursor.execute('INSERT INTO t_reqSchedule VALUES (%s, %s, %s, %s) WHERE ',
+            cursor.execute('INSERT INTO t_request VALUES (%s, %s, %s, %s) WHERE ',
                            (addDisplay, deleteDisplay, perubahanFilter, deadline))
             connection.commit()
 
@@ -275,14 +389,9 @@ class RequestLaporan:
                         connection.close()
                     print("MySQL connection is closed")
 
-
-
-
-
-
-
-
-
+                    
+                          
+#=========================================BUAT PANGGIL=======================================
 #RequestLaporan().requestSchedule('SCH-004', 'DGM-0330', 'Q123', 'Senin', 'Januari', '4','Dr. Andre Lembong',
 #                       'Monic', 'Pharos', 'Sales Management', datetime.datetime.now(), 'Y')        
 #           
@@ -292,5 +401,5 @@ class RequestLaporan:
 #
 
 #print(RequestLaporan().test())
-
-print(RequestLaporan().prosesLogin('Monica','1234'))
+#print(RequestLaporan().prosesLogin('Monica','1234'))
+print (RequestLaporan().getReportID())
