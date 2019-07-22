@@ -54,7 +54,7 @@
                     <div class="col-75" id="list_org">
                       <select name='Organization'>
                         {% for row in listOrg %}
-                        <option value="Org">{{row[0]+" - "+row[1]}}</option>
+                        <option value="{{row[0]}}">{{row[0]+" - "+row[1]}}</option>
                        <!--  <strong>{{text}}</strong> -->
                          {% endfor %}
                       </select>
@@ -69,7 +69,7 @@
                     <div class="col-75">
                       <select id="country" name="Department">
                           {% for row in listDept %}
-                        <option value="Dept">{{row[0]+" - "+ row[1]}}</option>
+                        <option value="{{row[0]}}">{{row[0]+" - "+ row[1]}}</option>
                           {% endfor %}
                       </select>
                     </div>
@@ -151,7 +151,7 @@
                       <label for="fname"></label>
                     </div>
 
-                    <div class"col-25">               
+                    <div class="col-25">               
                      <input type="checkBox" name="routine" value="routine" id="myCheck"  onclick="myFunction()">Routine
                       <br>
                  
@@ -166,7 +166,7 @@
                   <label for="fname"></label>
                 </div>
 
-                <div class"col-25">               
+                <div class="col-25">               
                   <input type="checkBox" name="Day" id="myCheck2" onclick="myFunction2()">Day</input>
                   <input type="checkBox" name="Date" id="myCheck3" onclick="myFunction3()">Date</input>
                   <input type="checkBox" name="Month" id="myCheck4" onclick="myFunction4()">Month</input>
@@ -186,9 +186,9 @@
                   <div class ="col-15" >
 
                     <input type="checkbox" name="Senin">Senin<br>
-                    <input type="checkbox" name="Procod">Selasa<br>
-                    <input type="checkbox" name="Prodesc">Rabu<br>
-                    <input type="checkbox" name="Senin">Kamis<br>
+                    <input type="checkbox" name="Selasa">Selasa<br>
+                    <input type="checkbox" name="Rabu">Rabu<br>
+                    <input type="checkbox" name="Kamis">Kamis<br>
                     <input type="checkbox" name="Procod">Jumat<br>
                     <input type="checkbox" name="Prodesc">Sabtu<br>
                     <input type="checkbox" name="Prodesc">Minggu<br>  

@@ -18,7 +18,7 @@
                   <button class="submit" value="Request Laporan">New Request Report</button> <br>
 
                 </form>
-                <form action ='/editReport'>
+                <form action ='/editRequest'>
                   <button class="submit" value="Edit Laporan">Edit Report</button> <br>
                 </form>
                 </div>
@@ -48,6 +48,7 @@
                         <th></th>
                         <th></th>
                       </tr>
+                  {% if listReqUser %}
                   {% for row in listReqUser %}
                       <tr>
                         <td> {{row[0]}} </td>              
@@ -60,7 +61,7 @@
                             <button class="submit2">Confirm</button> </td>
                         <td><img src="download2.png"></td>
                         {% endfor %}
-                        
+                  {% endif %}
                       </tr>
 
                       <!-- <tr>

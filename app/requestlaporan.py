@@ -3,19 +3,12 @@ import pymysql
 import random
 import mysql.connector
 from mysql.connector import Error
+#from db import get_db_cms_request
 
-  
+
+
 class RequestLaporan:
-    def test(self):
-        self.con = pymysql.connect(host='localhost',
-            user='root',
-            password='qwerty',
-            database='cms_request')
-        self.cur = self.con.cursor()
-        self.cur.execute("SELECT * from t_request")
-        result = self.cur.fetchall()
-        return result
-    
+   
     def __init__(self):
         self.req_id = ''
         self.org_id = ''
@@ -44,8 +37,11 @@ class RequestLaporan:
         self.reqSch_aktifYN = ''
         
 
-#BUAT PROSES LOGIN
-    def prosesLogin(self, username, password):
+
+       
+#BUAT PROSES 
+    
+    def getUserID(self,username):
         try: 
             connection = mysql.connector.connect(
             host='localhost',
@@ -58,16 +54,11 @@ class RequestLaporan:
 
             cursor = connection.cursor()
      
-            cursor.execute(''.join(['select user_password, user_flag from m_user where user_name = "'+username+'"']))
+            cursor.execute(''.join(['select user_id from m_user where user_name = "'+username+'"']))
             
             record = cursor.fetchone()
-            clear = str(record).replace("('",'').replace("')",'').replace("', '",'#')
-
-            stat = clear.split('#')
-            if stat[0] == password:
-                return stat[1]
-            else:
-                return "incorrect"
+            clear = str(record).replace("('",'').replace("',)",'')
+            return clear
 
         except Error as e :
             print("Error while connecting file MySQL", e)
@@ -77,6 +68,52 @@ class RequestLaporan:
                         cursor.close()
                         connection.close()
                     print("MySQL connection is closed")
+
+    def prosesLogin(self, username, password):
+        
+            try: 
+                connection = mysql.connector.connect(
+                host='localhost',
+                database='cms_request',
+                user='root',
+                password='qwerty')
+                if connection.is_connected():
+                    db_Info= connection.get_server_info()
+                print("Connected to MySQL database...",db_Info)
+
+                cursor = connection.cursor()
+                # SESSION BELOM BISA
+                # cursor.execute ('SELECT * FROM m_user WHERE user_name =?', (username,)).fetchone()
+                # if cursor is None:
+                #     error = 'Incorrect'
+                # elif cursor is None:
+                #     error = 'Incorrect'
+
+                # if error is None:
+                #     session.clear()
+                #     session ['user_id'] = cursor['user_id']
+                #     return redirect(url_for('menu'))
+                # flash (error)
+
+                cursor.execute(''.join(['select user_password, user_flag from m_user where user_name = "'+username+'"']))
+                
+                record = cursor.fetchone()
+                clear = str(record).replace("('",'').replace("')",'').replace("', '",'#')
+
+                stat = clear.split('#')
+                if stat[0] == password:
+                    return stat[1]
+                else:
+                    return "incorrect"
+
+            except Error as e :
+                print("Error while connecting file MySQL", e)
+            finally:
+                    #Closing DB Connection.
+                        if(connection.is_connected()):
+                            cursor.close()
+                            connection.close()
+                        print("MySQL connection is closed")
         
 
 #BUAT GENERATE ID SECARA OTOMATIS
@@ -154,10 +191,15 @@ class RequestLaporan:
             print("Connected to MySQL database...",db_Info)
 
             cursor = connection.cursor()
-     
-            cursor.execute('select org_id, org_nama from m_organisasi where org_aktifYN = "Y" order by org_id')
-            
+        
+            listOrg = cursor.execute('select org_id, org_nama from m_organisasi where org_aktifYN = "Y" order by org_id')
             listOrg = cursor.fetchall()
+
+            #cursor = connection.cursor()
+    
+        #listOrg = cursor.execute('select org_id, org_nama from m_organisasi where org_aktifYN = "Y" order by org_id')
+            
+        #listOrg = cursor.fetchall()
 
             
             return listOrg
@@ -199,7 +241,7 @@ class RequestLaporan:
                         connection.close()
                     print("MySQL connection is closed")
                     
-    def listRequestUser(self):
+    def listRequestUser(self, username):
         try: 
             connection = mysql.connector.connect(
             host='localhost',
@@ -211,9 +253,7 @@ class RequestLaporan:
             print("Connected to MySQL database...",db_Info)
 
             cursor = connection.cursor()
-            cursor.execute  ('''SELECT req_id ,IFNULL(req_judul,""), IFNULL(req_date,""),
-                             IFNULL(req_deadline,""), IFNULL(req_status,""), IFNULL(req_PIC,"")
-                                from t_request''')
+            cursor.execute  (''.join(['SELECT req_id ,IFNULL(req_judul,""), IFNULL(req_date,""),IFNULL(req_deadline,""), IFNULL(req_status,""), IFNULL(req_PIC,"") from t_request WHERE user_id="'+RequestLaporan().getUserID(username)+'"']))
             listReqUser = cursor.fetchall()
             return listReqUser
         
@@ -341,9 +381,9 @@ class RequestLaporan:
      
             cursor.execute('select report_id from m_report')
             
-            record = cursor.fetchall()
-            clear = str(record).replace('[(','').replace(',)]', '')
-            return (clear)
+            listKodeReport = cursor.fetchall()
+            
+            return listKodeReport
 
         except Error as e :
             print("Error while connecting file MySQL", e)
@@ -352,15 +392,14 @@ class RequestLaporan:
                     if(connection.is_connected()):
                         cursor.close()
                         connection.close()
-                    print("MySQL connection is closed")
- 
-#EDIT LAPORAN
-    def requestEditLap(self, report_id, addDisplay, deleteDisplay, perubahanFilter, deadline):
-        self.report_id = reportID
-        self.add_display = addDisplay
-        self.delete_display = deleteDisplay
+                    print("MySQL connection is closed")                  
+        
+    def requestEditLap(self, req_tampilan, req_deskripsi, req_deadline):
+        self.req_id = self.generateRequestID()
+        self.new_display = req_deskripsi
         self.perubahan_filter = perubahanFilter
-        self.deadline = deadline
+        self.deadline = req_deadline
+        self.req_date  = datetime.datetime.now()
 
         try: 
             connection = mysql.connector.connect(
@@ -373,9 +412,12 @@ class RequestLaporan:
             print("Connected to MySQL database...",db_Info)
 
             cursor = connection.cursor()
-            cursor.execute('INSERT INTO t_request VALUES (%s, %s, %s, %s) WHERE ',
-                           (addDisplay, deleteDisplay, perubahanFilter, deadline))
-            connection.commit()
+        
+            cursor.execute('INSERT INTO t_request VALUES (%s, %s, %s, %s), %s)',
+                           (self.req_id, prog_id, user_id, org_id, ktgri_id, req_kodeLaporan, req_judul, req_deskripsi,
+                           req_tujuan, req_tampilan, req_periode,req_deadline,req_file, self.req_date,
+                            req_dateAccept, req_endDate, self.req_status, req_PIC, req_penerima, req_prioritas))
+           #connection.commit()
 
             record = cursor.fetchone()
             print ("Your connected...",record)
@@ -402,4 +444,4 @@ class RequestLaporan:
 
 #print(RequestLaporan().test())
 #print(RequestLaporan().prosesLogin('Monica','1234'))
-print (RequestLaporan().getReportID())
+#print (RequestLaporan().getUserID('yoona'))
