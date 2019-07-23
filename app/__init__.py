@@ -1,5 +1,6 @@
 from flask import Flask, render_template, redirect, url_for, request, json, session
 from requestlaporan import RequestLaporan
+from templatelaporan import TemplateLaporan
 import pymysql
 import datetime
 
@@ -42,7 +43,7 @@ def menu():
         flag = newRequest.prosesLogin(request.form['username'], request.form['password'])
         print(flag)
         if flag is "incorrect":
-            error = 'Invalid Username/Password.'
+            error = 'Invalid Username or Password!'
             return render_template('login.html',error = error)
         elif flag == 'Admin':
             return redirect(url_for('programmer'))
@@ -82,30 +83,39 @@ def newReq():
             return render_template("menu.html",listReqUser = newRequest.listRequestUser(session['username']))
 
 #EDIT REQUEST
-@app.route('/editRequest')
+@app.route('/editRequest',methods=['GET', 'POST'])
 def edit():
-    # if request.method == 'POST':
-    editLaporan = RequestLaporan()
-
-     #    kodeLaporan = request.form['kodeLaporan']
-
-    #     editLaporan.getReportID()
-    return render_template("Edit2.html", listKodeReport = editLaporan.getReportID())
+    if request.method == 'GET':
+        newRequest = TemplateLaporan()
+        return render_template("Edit2.html", listKodeReport = newRequest.getReportID())
     
     
-@app.route('/formEdit', methods=['GET', 'POST'])
+@app.route('/formEdit', methods=['POST','GET'])
 def formEdit():
-    editLaporan = RequestLaporan()
-    return render_template("EditKolom.html")
+        newRequest = TemplateLaporan()
+        session['kodeLaporan'] = request.form['kodeLaporan']
+        print("test",session['kodeLaporan'])
+        cur = newRequest.getCurrentDisplay(session['kodeLaporan'])
+        return render_template("EditKolom.html",listcurrentdisplay = cur)
 
 @app.route('/newEdit', methods = ['POST'])
 def newEdit():
     if request.method == 'POST':
-        editLaporan = RequestLaporan()
+        newRequest = RequestLaporan()
 
+        filterBaru = request.form['inputFilterBaru']
         newDisplay = request.form['inputNewDisplay']
-        filterBaru = request.form['inputFilter']
+        tanggalSelesai = request.form['tanggalSelesai']
+        bulanSelesai = request.form['bulanSelesai']
+        tahunSelesai = request.form['tahunSelesai']
+        #inputFile = request.form['inputFile']
+
+
+        newRequest.requestEditLap( None, session['user_ID'],session['kodeLaporan'], 'K271', filterBaru,
+                             newDisplay, datetime.date(int(tanggalSelesai),int(bulanSelesai),int(tahunSelesai) ), "\bin",
+                                None, None)
         
+        return render_template("menu.html",listReqUser = newRequest.listRequestUser(session['username']))
 
 if __name__ == "__main__":
     app.run(debug=True)

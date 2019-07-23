@@ -8,6 +8,7 @@
           <h1>EDIT REPORT</h1>
         </center>
     <div class="container2">
+      <form action='/newEdit' method="POST">
 
 
 
@@ -16,9 +17,9 @@
             <label for="fname">Current Display</label>
           </div>
           <div class="col-25">
-            <label for="fname">PT</label>
-            <label for="fname">Procod</label>
-            <label for="fname">Prodesc</label>
+            {% if listcurrentdisplay %}
+              <label>{{listcurrentdisplay}}</label>
+            {% endif %}
           </div>
        </div>
  
@@ -63,22 +64,13 @@
               </div> -->
 
             </div>
-                                    
-              <center>
-                <h2>________________________________________________________________________________</h2>
-              </center>
-                                    <br>
 
-           
-
-
-    
               <div class="row">
                 <div class="col-25">
                   <label for="lname">Desired Change</label>
                 </div>
                 <div class="col-75">
-                  <textarea id="subject" name="inputFilter" placeholder="Input change " style="height:200px"></textarea>
+                  <textarea id="subject" name="inputFilterBaru" placeholder="Input change " style="height:200px"></textarea>
                 </div>
               </div>
 
@@ -89,7 +81,7 @@
                             </div>
 
                             <div class="col-15">
-                              <select id="country" name="tanggalselesai">
+                              <select id="country" name="tanggalSelesai">
                                 <option value="01">01</option>
                                 <option value="02">02</option>
                                 <option value="03">03</option>
@@ -97,7 +89,7 @@
                             </div>
 
                             <div class="col-15">
-                              <select id="country" name="tanggalselesai">
+                              <select id="country" name="bulanSelesai">
                                 <option value="01">June</option>
                                 <option value="02">July</option>
                                 <option value="03">August</option>
@@ -105,7 +97,7 @@
                             </div>
 
                             <div class="col-15">
-                              <select id="country" name="tanggalselesai">
+                              <select id="country" name="tahunSelesai">
                                 <option value="01">2018</option>
                                 <option value="02">2019</option>
                                 <option value="03">2020</option>
@@ -122,9 +114,10 @@
                     </div>
                       <div>
                         <td valign="top">
-                          <input class ="attach" value ="Attach File">
+                          <input class ="attach" name="inputFile" value ="Attach File">
                         </td>
                       </div>
+
                         <td valign="top">
                           <label for ="attach_file">No file selected </label>
                         </td>
@@ -137,8 +130,8 @@
                       <label for="fname"></label>
                     </div>
 
-                    <div class"col-25">               
-                     <input type="checkBox" name="gender" id="myCheck"  onclick="myFunction()">Routine
+                    <div class="col-25">               
+                     <input type="checkBox" name="routine" id="myCheck"  onclick="myFunction()">Routine
                       <br>
                  
                     </div>
@@ -152,10 +145,10 @@
                   <label for="fname"></label>
                 </div>
 
-                <div class"col-25">               
-                  <input type="checkBox" name="gender" id="myCheck2" onclick="myFunction2()">Day</input>
-                  <input type="checkBox" name="gender" id="myCheck3" onclick="myFunction3()">Date</input>
-                  <input type="checkBox" name="gender" id="myCheck4" onclick="myFunction4()">Month</input>
+                <div class="col-25">               
+                  <input type="checkBox" name="Hari" id="myCheck2" onclick="myFunction2()">Day</input>
+                  <input type="checkBox" name="Tanggal" id="myCheck3" onclick="myFunction3()">Date</input>
+                  <input type="checkBox" name="Bulan" id="myCheck4" onclick="myFunction4()">Month</input>
                 </div>
               </div>
 
@@ -172,74 +165,74 @@
                   <div class ="col-15" >
 
                     <input type="checkbox" name="Senin">Senin<br>
-                    <input type="checkbox" name="Procod">Selasa<br>
-                    <input type="checkbox" name="Prodesc">Rabu<br>
-                    <input type="checkbox" name="Senin">Kamis<br>
-                    <input type="checkbox" name="Procod">Jumat<br>
-                    <input type="checkbox" name="Prodesc">Sabtu<br>
-                    <input type="checkbox" name="Prodesc">Minggu<br>  
+                    <input type="checkbox" name="Selasa">Selasa<br>
+                    <input type="checkbox" name="Rabu">Rabu<br>
+                    <input type="checkbox" name="Kamis">Kamis<br>
+                    <input type="checkbox" name="Jumat">Jumat<br>
+                    <input type="checkbox" name="Sabtu">Sabtu<br>
+                    <input type="checkbox" name="Minggu">Minggu<br>  
                                                               
                   </div>
                 </div>
                 <div id="Date" style="display: none">
                   <div class ="col-5" >
-                    <input type="checkbox" name="Senin">1<br>
-                    <input type="checkbox" name="Procod">2<br>
-                    <input type="checkbox" name="Prodesc">3<br>
-                    <input type="checkbox" name="Senin">4<br>
-                    <input type="checkbox" name="Procod">5<br>
-                    <input type="checkbox" name="Prodesc">6<br>
-                    <input type="checkbox" name="Prodesc">7<br>
-                    <input type="checkbox" name="Senin">8<br>
-                    <input type="checkbox" name="Procod">9<br>
+                    <input type="checkbox" name="1">1<br>
+                    <input type="checkbox" name="2">2<br>
+                    <input type="checkbox" name="3">3<br>
+                    <input type="checkbox" name="4">4<br>
+                    <input type="checkbox" name="5">5<br>
+                    <input type="checkbox" name="6">6<br>
+                    <input type="checkbox" name="7">7<br>
+                    <input type="checkbox" name="8">8<br>
+                    <input type="checkbox" name="9">9<br>
                    </div>
                   
                    <div class ="col-5" >
-                    <input type="checkbox" name="Prodesc">10<br>
-                    <input type="checkbox" name="Senin">11<br>
-                    <input type="checkbox" name="Procod">12<br>
-                    <input type="checkbox" name="Prodesc">13<br>
-                    <input type="checkbox" name="Prodesc">14<br> 
-                    <input type="checkbox" name="Senin">15<br>
-                    <input type="checkbox" name="Procod">16<br>
-                    <input type="checkbox" name="Prodesc">17<br>
-                    <input type="checkbox" name="Senin">18<br>
+                    <input type="checkbox" name="10">10<br>
+                    <input type="checkbox" name="11">11<br>
+                    <input type="checkbox" name="12">12<br>
+                    <input type="checkbox" name="13">13<br>
+                    <input type="checkbox" name="14">14<br> 
+                    <input type="checkbox" name="15">15<br>
+                    <input type="checkbox" name="16">16<br>
+                    <input type="checkbox" name="17">17<br>
+                    <input type="checkbox" name="18">18<br>
                   </div>
 
                   <div class ="col-5" >
-                    <input type="checkbox" name="Procod">19<br>
-                    <input type="checkbox" name="Prodesc">20<br>
-                    <input type="checkbox" name="Prodesc">21<br> 
-                    <input type="checkbox" name="Senin">22<br>
-                    <input type="checkbox" name="Procod">23<br>
-                    <input type="checkbox" name="Prodesc">24<br>
-                    <input type="checkbox" name="Senin">25<br>
-                    <input type="checkbox" name="Procod">26<br>
-                    <input type="checkbox" name="Prodesc">27<br>
+                    <input type="checkbox" name="19">19<br>
+                    <input type="checkbox" name="20">20<br>
+                    <input type="checkbox" name="21">21<br> 
+                    <input type="checkbox" name="22">22<br>
+                    <input type="checkbox" name="23">23<br>
+                    <input type="checkbox" name="24">24<br>
+                    <input type="checkbox" name="25">25<br>
+                    <input type="checkbox" name="26">26<br>
+                    <input type="checkbox" name="27">27<br>
                   </div>
                   <div class ="col-15" >
-                    <input type="checkbox" name="Prodesc">28<br>
-                    <input type="checkbox" name="Procod">29<br>
-                    <input type="checkbox" name="Prodesc">30<br>
-                    <input type="checkbox" name="Prodesc">31<br>
+                    <input type="checkbox" name="28">28<br>
+                    <input type="checkbox" name="29">29<br>
+                    <input type="checkbox" name="30">30<br>
+                    <input type="checkbox" name="31">31<br>
                   </div> 
                 </div>                      
                 <div id="Month" style="display: none">
                   <div class ="col-15" >
-                    <input type="checkbox" name="Prodesc">Januari<br>
-                    <input type="checkbox" name="Senin">Februari<br>
-                    <input type="checkbox" name="Procod">Maret<br>
-                    <input type="checkbox" name="Prodesc">April<br>
-                    <input type="checkbox" name="Prodesc">Mei<br> 
-                    <input type="checkbox" name="Senin">Juni<br>
+                    <input type="checkbox" name="Januari">Januari<br>
+                    <input type="checkbox" name="Februari">Februari<br>
+                    <input type="checkbox" name="Maret">Maret<br>
+                    <input type="checkbox" name="April">April<br>
+                    <input type="checkbox" name="Mei">Mei<br> 
+                    <input type="checkbox" name="Juni">Juni<br>
                   </div>
                    <div class ="col-15" >
-                    <input type="checkbox" name="Procod">Juli<br>
-                    <input type="checkbox" name="Prodesc">Agustus<br>
-                    <input type="checkbox" name="Senin">September<br>
-                     <input type="checkbox" name="Procod">Oktober<br>
-                    <input type="checkbox" name="Prodesc">November<br>
-                    <input type="checkbox" name="Senin">Desember<br>
+                    <input type="checkbox" name="Juli">Juli<br>
+                    <input type="checkbox" name="Agustus">Agustus<br>
+                    <input type="checkbox" name="September">September<br>
+                     <input type="checkbox" name="Oktober">Oktober<br>
+                    <input type="checkbox" name="November">November<br>
+                    <input type="checkbox" name="Desember">Desember<br>
                   </div>
                 </div>
                 
@@ -267,7 +260,7 @@
                               </div>
                             </div>
 
-                            <select id="country" name="tanggalselesai">
+                            <select id="country" name="emailPIC">
                               <option value="01">andi@pharos.co.id</option>
                               <option value="02">budi@pharos.co.id</option>
                               <option value="03">nana@pharos.co.id</option>
@@ -292,7 +285,7 @@
                               </div>
                             </div>
 
-                            <select id="country" name="tanggalselesai">
+                            <select id="country" name="emailPenerima">
                                 <option value="01">andi@pharos.co.id</option>
                                 <option value="02">budi@pharos.co.id</option>
                                 <option value="03">nana@pharos.co.id</option>
@@ -312,16 +305,12 @@
 
             <center>
               <div class="row">
-                <form action='/showmenu'>
-                  <button class="submit" value="Submit">Submit</button>
-                </form>
-                
-                <form action='/showmenu'>
-                  <button class="submitRed" value="Cancel" onclick="window.location.href = 'menu.html';">Cancel</button>
-                </form>
+
+                  <button class="submit" name="submit" value="Submit">Submit</button>
+                  <button class="submitRed" name="cancel" value="Cancel">Cancel</button>
               </div>
             </center>
-
+          </form>
         </div>
 
 

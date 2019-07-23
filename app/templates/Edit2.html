@@ -15,25 +15,29 @@
         <label for="tanggalselesai">Report Code</label>
       </div>
       <div class="" style="width: 200px">
-        <form action "/editRequest" method ="POST">
+        <form action= "/formEdit" method ="POST">
         <select id="country" name="kodeLaporan">
           {% for row in listKodeReport %}
             <option value="{{row[0]}}">{{row[0]}}</option>
           {% endfor %}
-        </select></form>
+        </select>
+
+     
       </div>
 </center>
 
  <br><br>   
 
  <center>
- <form action='/formEdit'><button class="submit" value="edit" type="submit">Submit</button>
+  <button class="submit" value="edit" type="submit">Submit</button>
  </form>
   
-  <form action='/showmenu'> <button class="submitRed" value="cancel" type="submit">Cancel</button> </form>
+ <form action="/user" ><button class="submitRed" value="cancel" type="submit">Cancel</button></form>
  </center>
  </center>
 </div>
+
+
  
 
  

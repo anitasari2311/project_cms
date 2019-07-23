@@ -3,8 +3,7 @@ import pymysql
 import random
 import mysql.connector
 from mysql.connector import Error
-#from db import get_db_cms_request
-
+from templatelaporan import TemplateLaporan
 
 
 class RequestLaporan:
@@ -36,11 +35,8 @@ class RequestLaporan:
         self.reqSch_lastUpdate = ''
         self.reqSch_aktifYN = ''
         
-
-
        
-#BUAT PROSES 
-    
+#BUAT MENDAPATKAN USERID
     def getUserID(self,username):
         try: 
             connection = mysql.connector.connect(
@@ -68,7 +64,8 @@ class RequestLaporan:
                         cursor.close()
                         connection.close()
                     print("MySQL connection is closed")
-
+                    
+#BUAT PROSES LOGIN SESUAI FLAG('ADMIN, USER, ATASAN')
     def prosesLogin(self, username, password):
         
             try: 
@@ -82,18 +79,6 @@ class RequestLaporan:
                 print("Connected to MySQL database...",db_Info)
 
                 cursor = connection.cursor()
-                # SESSION BELOM BISA
-                # cursor.execute ('SELECT * FROM m_user WHERE user_name =?', (username,)).fetchone()
-                # if cursor is None:
-                #     error = 'Incorrect'
-                # elif cursor is None:
-                #     error = 'Incorrect'
-
-                # if error is None:
-                #     session.clear()
-                #     session ['user_id'] = cursor['user_id']
-                #     return redirect(url_for('menu'))
-                # flash (error)
 
                 cursor.execute(''.join(['select user_password, user_flag from m_user where user_name = "'+username+'"']))
                 
@@ -116,7 +101,7 @@ class RequestLaporan:
                         print("MySQL connection is closed")
         
 
-#BUAT GENERATE ID SECARA OTOMATIS
+#BUAT GENERATE REQUESTID SECARA OTOMATIS
     def get_numberID(self):
         try: 
             connection = mysql.connector.connect(
@@ -150,35 +135,8 @@ class RequestLaporan:
         requestID = 'REQ_'+str(now.strftime('%Y%m'))+str(self.get_numberID()).zfill(5)
         return requestID
     
-#BUAT REQUEST UNTUK LAPORAN BARU
-    def getOrganisasi(self, organisasi):
-        try: 
-            connection = mysql.connector.connect(
-            host='localhost',
-            database='cms_request',
-            user='root',
-            password='qwerty')
-            if connection.is_connected():
-                db_Info= connection.get_server_info()
-            print("Connected to MySQL database...",db_Info)
-
-            cursor = connection.cursor()
-     
-            cursor.execute(''.join(['select org_id from m_organisasi where org_nama = "'+organisasi+'"']))
-            
-            record = cursor.fetchone()
-            clear = str(record).replace("('",'').replace("',)",'')
-            return clear
-
-        except Error as e :
-            print("Error while connecting file MySQL", e)
-        finally:
-                #Closing DB Connection.
-                    if(connection.is_connected()):
-                        cursor.close()
-                        connection.close()
-                    print("MySQL connection is closed")
-
+    
+#BUAT MENDAPATKAN ORGANISASI DARI MYSQL
     def namaOrganisasi(self):
         try: 
             connection = mysql.connector.connect(
@@ -194,13 +152,6 @@ class RequestLaporan:
         
             listOrg = cursor.execute('select org_id, org_nama from m_organisasi where org_aktifYN = "Y" order by org_id')
             listOrg = cursor.fetchall()
-
-            #cursor = connection.cursor()
-    
-        #listOrg = cursor.execute('select org_id, org_nama from m_organisasi where org_aktifYN = "Y" order by org_id')
-            
-        #listOrg = cursor.fetchall()
-
             
             return listOrg
 
@@ -212,6 +163,8 @@ class RequestLaporan:
                         cursor.close()
                         connection.close()
                     print("MySQL connection is closed")
+                    
+#BUAT MENDAPATKAN KATEGORI DARI MYSQL
     def namaDept(self):
         try: 
             connection = mysql.connector.connect(
@@ -241,6 +194,7 @@ class RequestLaporan:
                         connection.close()
                     print("MySQL connection is closed")
                     
+#BUAT MENAMPILKAN LIST REQUEST PADA /MENU
     def listRequestUser(self, username):
         try: 
             connection = mysql.connector.connect(
@@ -267,7 +221,7 @@ class RequestLaporan:
                     print("MySQL connection is closed")
 
 
-                    
+#BUAT INSERT REQUEST BARU                 
     def requestLaporanBaru(self, prog_id, user_id, org_id, ktgri_id, req_kodeLaporan, req_judul, req_deskripsi,
                            req_tujuan, req_tampilan, req_periode, req_deadline, req_file, req_PIC, req_penerima,
                            req_dateAccept = None, req_endDate=None, req_status='Waiting', req_prioritas='1'):
@@ -322,7 +276,8 @@ class RequestLaporan:
                         connection.close()
                     print("MySQL connection is closed")
 
-#BUAT INSERT INTO T_Req_SCH
+
+#BUAT INSERT SCHEDULE REQUEST
     def requestSchedule(self, sch_id, report_id, query_id, reqSch_hari, reqSch_bulan, reqSch_tanggal, reqSch_groupBy, reqSch_reportPIC, reqSch_orgNama,reqSch_ktgriNama,reqSch_lastUpdate, reqSch_aktifYN):
         self.sch_id = sch_id
         self.report_id = report_id
@@ -364,43 +319,35 @@ class RequestLaporan:
                         cursor.close()
                         connection.close()
                     print("MySQL connection is closed")
-#======================================================================================================================
-#BUAT GET DATA REPORT_ID
-    def getReportID(self):
-        try: 
-            connection = mysql.connector.connect(
-            host='localhost',
-            database='cms_template',
-            user='root',
-            password='qwerty')
-            if connection.is_connected():
-                db_Info= connection.get_server_info()
-            print("Connected to MySQL database...",db_Info)
 
-            cursor = connection.cursor()
-     
-            cursor.execute('select report_id from m_report')
-            
-            listKodeReport = cursor.fetchall()
-            
-            return listKodeReport
+             
 
-        except Error as e :
-            print("Error while connecting file MySQL", e)
-        finally:
-                #Closing DB Connection.
-                    if(connection.is_connected()):
-                        cursor.close()
-                        connection.close()
-                    print("MySQL connection is closed")                  
-        
-    def requestEditLap(self, req_tampilan, req_deskripsi, req_deadline):
+#BUAT INSERT REQUEST EDIT 
+    def requestEditLap(self, prog_id, user_id,req_report, req_kodeLaporan, req_deskripsi,
+                           req_tampilan, req_deadline, req_file, req_PIC, req_penerima,
+                           req_dateAccept = None, req_endDate=None, req_status='Waiting', req_prioritas='1'):
         self.req_id = self.generateRequestID()
-        self.new_display = req_deskripsi
-        self.perubahan_filter = perubahanFilter
-        self.deadline = req_deadline
+        self.prog_id = prog_id
+        self.user_id  = user_id
+        self.org_id = ''
+        self.ktgri_id = ''
+        self.req_kodeLaporan = req_kodeLaporan
+        self.req_deskripsi = req_deskripsi
+        self.req_tampilan = req_tampilan
+        self.req_periode = ''                                         
+        self.req_deadline = req_deadline
+        self.req_file = req_file
         self.req_date  = datetime.datetime.now()
-
+        self.req_dateAccept = req_dateAccept
+        self.req_endDate = req_endDate
+        self.req_status = req_status
+        self.req_PIC = req_PIC
+        self.req_penerima = req_penerima
+        self.req_prioritas = req_prioritas
+        self.last_report = TemplateLaporan().getDataReport(req_report)
+        self.req_judul = self.last_report[1]
+        self.req_tujuan = self.last_report[2]
+        
         try: 
             connection = mysql.connector.connect(
             host='localhost',
@@ -412,12 +359,14 @@ class RequestLaporan:
             print("Connected to MySQL database...",db_Info)
 
             cursor = connection.cursor()
-        
-            cursor.execute('INSERT INTO t_request VALUES (%s, %s, %s, %s), %s)',
-                           (self.req_id, prog_id, user_id, org_id, ktgri_id, req_kodeLaporan, req_judul, req_deskripsi,
-                           req_tujuan, req_tampilan, req_periode,req_deadline,req_file, self.req_date,
+            try:
+                cursor.execute('INSERT INTO t_request VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)',
+                           (self.req_id, prog_id, user_id, self.org_id, self.ktgri_id, req_kodeLaporan, self.req_judul, req_deskripsi,
+                           self.req_tujuan, req_tampilan, self.req_periode, req_deadline, req_file, self.req_date,
                             req_dateAccept, req_endDate, self.req_status, req_PIC, req_penerima, req_prioritas))
-           #connection.commit()
+            except Error as e:
+                print(e)
+            connection.commit()
 
             record = cursor.fetchone()
             print ("Your connected...",record)
@@ -431,9 +380,11 @@ class RequestLaporan:
                         connection.close()
                     print("MySQL connection is closed")
 
+
+
                     
                           
-#=========================================BUAT PANGGIL=======================================
+#=========================================BUAT PANGGIL=======================================================================
 #RequestLaporan().requestSchedule('SCH-004', 'DGM-0330', 'Q123', 'Senin', 'Januari', '4','Dr. Andre Lembong',
 #                       'Monic', 'Pharos', 'Sales Management', datetime.datetime.now(), 'Y')        
 #           
@@ -445,3 +396,4 @@ class RequestLaporan:
 #print(RequestLaporan().test())
 #print(RequestLaporan().prosesLogin('Monica','1234'))
 #print (RequestLaporan().getUserID('yoona'))
+
