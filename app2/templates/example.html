@@ -1,0 +1,16 @@
+<table>
+    <thead>
+    <tr>
+        <th>user_id</th>
+        <th>user_name</th>
+    </tr>
+    </thead>
+    <tbody>
+        {% for row in value %} 
+            <tr>
+                <td>{{row[0]}}</td>
+                <td>{{row[1]}}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

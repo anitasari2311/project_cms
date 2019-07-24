@@ -1,0 +1,587 @@
+
+form {
+  /*border: 3px solid #f1f1f1;*/
+  border : none;
+}
+
+/* Full-width inputs */
+input[type=text], input[type=password] {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+input[type=text2], input[type=password2] {
+  width: 25%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  float: right;
+}
+
+
+body{
+  
+}
+h1{
+  font-size: 30px;
+  font-family: 'Arial'
+}
+/* Set a style for all buttons */
+button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+}
+
+/* Add a hover effect for buttons */
+button:hover {
+  opacity: 0.8;
+}
+
+/* Extra style for the cancel button (red) */
+.cancelbtn {
+  width: auto;
+  padding: 10px 18px;
+  background-color: #f44336;
+}
+.loginbtn {
+  width: auto;
+  padding: 10px 18px;
+  background-color: green;
+}
+.choose2 {
+  width: auto;
+  padding: 10px 18px;
+  background-color: gray;
+}
+.finish {
+  width: auto;
+  padding: 10px 18px;
+  background-color: #c94b4b;
+}
+.finish2 {
+  width: auto;
+  padding: 10px 18px;
+  background-color: #green;
+}
+.revisi {
+  width: 70%;
+  padding: 10px 18px;
+  background-color: red;
+}
+.confirm {
+  width: 70%;
+  padding: 10px 18px;
+  background-color: green;
+}
+.confirm2 {
+  width: 70%;
+  padding: 10px 18px;
+  background-color: gray;
+}
+.pri1 {
+  width: 10%;
+  padding: 4px 12px;
+  border-radius: 30px;
+  background-color: red;
+}
+.pri2 {
+  width: 10%;
+  padding: 4px 12px;
+  border-radius: 30px;
+  background-color: orange;
+}
+.pri3 {
+  width: 10%;
+  padding: 4px 12px;
+  border-radius: 30px;
+  background-color: blue;
+}
+
+/* Center the avatar image inside this container */
+.imgcontainer {
+  text-align: center;
+  margin: 24px 0 12px 0;
+}
+
+/* Avatar image */
+
+
+/* Add padding to containers */
+.container {
+  padding: 16px;
+}
+
+img {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 5px;
+  width: 25px;
+}
+
+/* The "Forgot password" text */
+span.psw {
+  float: right;
+  padding-top: 16px;
+}
+span.rgt{
+  float: right;
+}
+
+/* Change styles for span and cancel button on extra small screens */
+@media screen and (max-width: 300px) {
+  span.psw {
+    display: block;
+    float: none;
+  }
+  .cancelbtn {
+    width: 100%;
+  }
+}
+
+input[type=text], select, textarea{
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  resize: vertical;
+}
+
+/* Style the label to display next to the inputs */
+label {
+  padding: 12px 12px 12px 0;
+  display: inline-block;
+}
+
+/* Style the submit button */
+input[type=submit] {
+  background-color: #4CAF50;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+
+}
+
+input[type=cancel] {
+  background-color: red;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+
+}
+.attach{
+   background-color: black;
+  color: white;
+  padding: 8px 30px;
+  border:none;
+  border-radius: 4px;
+  cursor:pointer;
+  width: 125px
+}
+.submit{
+   background-color: green;
+  color: white;
+  padding: 12px 20px;
+  border:none;
+  border-radius: 4px;
+  cursor:pointer;
+  width: 125px
+}
+.submit2{
+   background-color: grey;
+  color: white;
+  padding: 12px 20px;
+  border:none;
+  border-radius: 4px;
+  cursor:pointer;
+  width: 125px
+}
+.submitRed{
+   background-color: red;
+  color: white;
+  padding: 12px 20px;
+  border:none;
+  border-radius: 4px;
+  cursor:pointer;
+  width: 125px
+}
+.submitOr{
+   background-color: orange;
+  color: white;
+  padding: 12px 20px;
+  border:none;
+  border-radius: 4px;
+  cursor:pointer;
+  width: 125px
+}
+.choose {
+  background-color: gray;
+  color: white;
+  padding: 12px 20px;
+  border:none;
+  border-radius: 4px;
+  cursor:pointer;
+  width: 125px
+}
+
+/* Style the container */
+.container {
+  border-radius: 7px;
+  background-color: #f2f2f2;
+  border: 5px solid;
+  border-color: #f0f0f0;
+  width: 400px;
+  height: 350px;
+  padding: 20px;
+}
+
+/* Style the container */
+.container2 {
+  border-radius: 7px;
+  background-color: #f2f2f2;
+  border: 5px solid;
+  border-color: #f0f0f0;
+  width: 95%;
+  padding: 20px;
+}
+
+/* Style the container */
+.container3 {
+  border-radius: 7px;
+  background-color: #f2f2f2;
+  border: 5px solid;
+  border-color: #f0f0f0;
+  width: 60%;
+  padding: 20px;
+}
+
+
+
+
+
+
+/* Floating column for labels: 25% width */
+.col-25 {
+  float: left;
+  width: 25%;
+  margin-top: 6px;
+}
+.col-25-1 {
+  float: right;
+  width: 25%;
+  margin-top: 6px;
+}
+.col-5{
+  float: left;
+  width: 5%;
+  margin-top: 6px;
+}
+
+.col-15{
+  float: left;
+  width: 10%;
+  margin-top: 6px;
+}
+
+/* Floating column for inputs: 75% width */
+.col-75 {
+  float: left;
+  width: 75%;
+  margin-top: 6px;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Responsive layout - when the screen is less than 600px wide, make the two columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 600px) {
+  .col-25, .col-75, input[type=submit] {
+    width: 100%;
+    margin-top: 0;
+  }
+}
+
+
+
+/*                    TABLE                   */
+
+#list {
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#list td, #list th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#list tr:nth-child(even){background-color: #f2f2f2;}
+
+#list tr:hover {background-color: #ddd;}
+
+#list th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #b62e0c;
+  color: white;
+}
+
+
+
+
+ /* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 35px;
+  height: 5px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 0px;
+  bottom: 2px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(20px);
+  -ms-transform: translateX(20px);
+  transform: translateX(20px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+} 
+
+/*tambahin bg warna hitam*/
+.topnav{
+  background-color: #333;
+  overflow: hidden;
+}
+
+.topnav a {
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.topnav a.active {
+  background-color: #4CAF50;
+  color: white;
+}
+
+/*style kalender*/
+html {
+  position: relative;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+}
+
+body {
+  background-color: #e6dc83;
+}
+
+section.calendar {
+  background-color: #29323f;
+  font-family: 'Dosis', sans-serif;
+  color: #fff;
+  width: 290px;
+  padding: 45px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translateY(-50%) translateX(-50%);
+          transform: translateY(-50%) translateX(-50%);
+  box-shadow: 5px 10px 20px rgba(0, 0, 0, 0.6);
+  border-radius: 5px;
+}
+section.calendar h1 {
+  text-align: center;
+  color: #fcee6d;
+  margin: 0 0 30px 0;
+}
+section.calendar form {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  align-content: flex-start;
+}
+section.calendar form label.weekday {
+  display: inline-block;
+  width: 25px;
+  margin: 8px;
+  text-align: center;
+  color: #999;
+}
+section.calendar form form {
+  margin: 0;
+  padding: 0;
+}
+section.calendar form label.day {
+  display: inline-block;
+  width: 25px;
+  margin: 8px;
+}
+section.calendar form label.day span {
+  display: inline-block;
+  width: 25px;
+  height: 25px;
+  line-height: 25px;
+  margin: -2px 0 0 -2px;
+  border-radius: 50%;
+  border: 2px solid #29323f;
+  text-align: center;
+  transition: all .2s linear;
+  cursor: pointer;
+}
+section.calendar form label.day span:hover {
+  border-color: #e7d84f;
+}
+section.calendar form label.day em {
+  display: inline-block;
+  position: absolute;
+  border-radius: 50%;
+  border-color: #29323f;
+  width: 3px;
+  height: 3px;
+  background-color: #685e02;
+  margin-left: 11px;
+  margin-top: 2px;
+  opacity: 0;
+  transition: all .2s linear;
+}
+section.calendar form label.day input[type=text] {
+  border: 0;
+  opacity: 0;
+  position: absolute;
+  margin-top: 40px;
+  left: -45px;
+  width: 380px;
+  height: 1px;
+  padding: 0;
+  outline: none;
+  font-size: 16px;
+  transition: height .2s linear, opacity .2s linear, color .02s linear;
+  color: #fff;
+}
+section.calendar form label.day input[type=text]:focus {
+  opacity: 1;
+  height: 35px;
+  padding: 10px 40px;
+  left: -45px;
+  width: 300px;
+  color: #29323f;
+}
+section.calendar form label.day input[type=text]:focus + span {
+  color: #fcee6d;
+  border-color: #fcee6d;
+  background: #fcee6d;
+  color: #29323f;
+  font-weight: bold;
+  margin-bottom: 65px;
+}
+section.calendar form label.day input[type=text]:focus ~ em {
+  border-radius: 0;
+  border: 5px solid transparent;
+  background: transparent;
+  border-bottom-color: white;
+  margin-top: -62px;
+  margin-left: 7px;
+  width: 0;
+  height: 0;
+  display: inline-block;
+  opacity: 1;
+}
+section.calendar form label.day input[type=text]:valid ~ em {
+  display: inline-block;
+  opacity: 1;
+}
+section.calendar form label.day.invalid {
+  opacity: 0;
+  width: 25px;
+  height: 25px;
+}
+section.calendar form label.day.invalid span, section.calendar form label.day.invalid input {
+  display: none;
+}
+section.calendar div.clearfix {
+  clear: both;
+}
+section.calendar div.hidden {
+  display: none;
+}
