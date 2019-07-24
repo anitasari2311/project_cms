@@ -71,14 +71,15 @@ def newReq():
             Department = request.form['Department']
             Display = request.form['inputDisplay']
             Period = request.form['inputPeriode']
-            tanggalSelesai = request.form['tanggalSelesai']
-            bulanSelesai = request.form['bulanSelesai']
-            tahunSelesai = request.form['tahunSelesai']
+            # tanggalSelesai = request.form['tanggalSelesai']
+            # bulanSelesai = request.form['bulanSelesai']
+            # tahunSelesai = request.form['tahunSelesai']
+            deadline = request.form['deadline']
             inputFile = request.form['inputFile']
 
 
             newRequest.requestLaporanBaru( None, session['user_ID'], Organization, Department, 'K271', title, description,
-                             purpose, Display, Period, datetime.date(int(tanggalSelesai),int(bulanSelesai),int(tahunSelesai) ), "\bin",
+                             purpose, Display, Period, deadline, "\bin",
                                 None, None)
             return render_template("menu.html",listReqUser = newRequest.listRequestUser(session['username']))
 
@@ -105,14 +106,15 @@ def newEdit():
 
         filterBaru = request.form['inputFilterBaru']
         newDisplay = request.form['inputNewDisplay']
-        tanggalSelesai = request.form['tanggalSelesai']
-        bulanSelesai = request.form['bulanSelesai']
-        tahunSelesai = request.form['tahunSelesai']
+        deadline = request.form['deadline']
+        # tanggalSelesai = request.form['tanggalSelesai']
+        # bulanSelesai = request.form['bulanSelesai']
+        # tahunSelesai = request.form['tahunSelesai']
         #inputFile = request.form['inputFile']
 
 
         newRequest.requestEditLap( None, session['user_ID'],session['kodeLaporan'], 'K271', filterBaru,
-                             newDisplay, datetime.date(int(tanggalSelesai),int(bulanSelesai),int(tahunSelesai) ), "\bin",
+                             newDisplay, deadline, "\bin",
                                 None, None)
         
         return render_template("menu.html",listReqUser = newRequest.listRequestUser(session['username']))

@@ -221,7 +221,7 @@ class RequestLaporan:
                     print("MySQL connection is closed")
 
 
-#BUAT INSERT REQUEST BARU                 
+#BUAT INSERT REQUEST BARU                
     def requestLaporanBaru(self, prog_id, user_id, org_id, ktgri_id, req_kodeLaporan, req_judul, req_deskripsi,
                            req_tujuan, req_tampilan, req_periode, req_deadline, req_file, req_PIC, req_penerima,
                            req_dateAccept = None, req_endDate=None, req_status='Waiting', req_prioritas='1'):
