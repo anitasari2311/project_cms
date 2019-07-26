@@ -1,0 +1,93 @@
+<html>
+        <head>
+        	<title>Available Task</title>
+        	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+        </head>
+    <body>
+
+        <div class="container2">
+                <h2> Welcome, {{session['username']}}</h2> <br>
+                <h1>AVAILABLE TASK</h1>
+
+            <div>
+                <input type="text2" placeholder="Search Report ..">
+            </div>
+                            <br><br>
+
+        <center>
+<form action="/detailReq" method="post">
+
+                <table id="list">
+                  <tr>
+                    <th>Request Code</th>
+                    <th>Title</th>
+                    <th>Request Name</th>
+                    <th>Department</th>
+                    <th>Request Date</th>
+                    <th>Deadline</th>
+                    <th>Priority</th>
+                    <th></th>
+                  </tr>
+                  {% for row in listAvailTask %}
+                  <tr >
+                    <td>{{row[0]}}</td>
+                    <td>{{row[1]}}</td>
+                    <td>{{row[2]}}</td>
+                    <td>{{row[3]}}</td>
+                    <td>{{row[4]}}</td>
+                    <td>{{row[5]}}</td>    
+                    {% if row[6] == '1' %}
+                    <td> <a class ="pri3"> </a></td>
+                    {% else %}
+                    <td> <a class ="pri1"> </a></td>
+                    {% endif %}
+                    
+                    <td> <button class="submit" name = 'buttonDetail' value="{{row[0]}}" >Select
+                    </button></td>
+                  </tr>{% endfor %}
+                 
+                </table>
+</form>
+
+                                <br><br><br>
+                <h2>__________________________________________________________________________</h2>
+                                <br><br><br>
+        </center>
+
+
+
+
+            <h1>LIST TASK</h1>
+
+            <table id="list">
+                {% if listTask %}
+              <tr>
+                <th>Request Code</th>
+                <th>Title</th>
+                <th>Request Name</th>
+                <th>Department</th>
+                <th>Request Date</th>
+                <th>Deadline</th>
+                <th>Priority</th>
+                <th></th>
+              </tr>
+             
+              <tr >
+                <td>{{listTask[0]}}</td>
+                <td>{{listTask[1]}}</td>
+                <td>{{listTask[2]}}</td>
+                <td>{{listTask[3]}}</td>
+                <td>{{listTask[4]}}</td>
+                <td>{{listTask[5]}}</td>
+                <td>{{listTask[6]}}</a></td>
+                <td> <button class="submit" value="Edit Kolom" onclick="window.location.href = 'task2.html';">Finish</button></td>
+              </tr>
+           {% endif %}
+
+            </table>
+
+        </div>
+
+
+    </body>
+</html>
