@@ -1,0 +1,56 @@
+requestlaporan.py
+Class RequestLaporan
+	getUserID 
+	-> Deskripsi: Mendapatkan ID user untuk session login
+
+	prosesLogin
+	-> Deskripsi: Validasi password dan flag user sesuai NIP yang digunakan untuk login
+
+	getNumberID
+	-> Deskripsi: count total req_id untuk menentukan ID request
+
+	generateRequestID
+	-> Deskripsi: generate id request sesuai format REQ_YYYYMM00001 dst
+
+	namaOrganisasi
+	-> Deskripsi: menampung nama organisasi dari database untuk ditampilkan di form request
+
+	namaDept
+	-> Deskripsi: menampung nama kategori dari database untuk ditampilkan di form request
+
+	listRequestUser
+	-> Deskripsi: select data dari t_request untuk ditampilkan di List Request user
+
+	requestLaporanBaru
+	-> input: judul, tujuan, filter, organisasi, kategori, tampilan, periode, deadline, dan attachment file
+	   output: req_id, judul, req_date, deadline, status, pic
+	   deskripsi: jika user ingin meminta laporan baru, user harus mengisi form request new report
+
+	requestSchedule
+	-> input: hari, tanggal, bulan, PIC
+	   output: hari, tanggal, bulan
+	   deskripsi: jika user ingin request laporannya secara cashflow, user perlu mencentang checkbox routine dan mengisi jadwal
+
+	requestEditLap
+	-> input: tampilan, filter, deadline, dan attachment file
+	   output: req_id, judul, req_date, deadline, status, pic
+	   deskripsi: jika sebelumnya laporan sudah terbuat, maka user hanya perlu mengisi form edit request
+	
+	cancelRequest
+	-> deskripsi: database akan update status request menjadi 'cancel' jika user mengklik button cancel
+
+templatelaporan.py
+class TemplateLaporan
+	getReportID
+	-> deskripsi: untuk menampilkan list report id yang ada di database
+
+	getDataReport
+	-> deskripsi: untuk menampilkan list report
+
+	getCurrentDisplay
+	-> deskripsi: digunakan untuk menu edit laporan
+		      untuk menampilkan tampilan di report sebelumnya sesuai dengan report id yang dipilih
+
+	getRevisiDisplay
+	-> deskripsi: digunakan untuk menu revisi
+		      untuk menampilkan tampilan di report sebelumnya sesuai dengan report id yang dipilih
