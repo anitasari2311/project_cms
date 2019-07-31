@@ -1,0 +1,439 @@
+<html>
+  <head>
+         <title>Request Report</title>
+           <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  </head>
+
+      <body onload="">
+          <center>
+             <div style="padding-top: 30px;padding-bottom: 20px; font-family: 'Arial';font-size: 20px;"> 
+                     <h1>REQUEST REPORT</h1>
+                </div>
+          </center>
+
+          <div class="container2">
+            <form action='/newReq' method="POST">
+
+                <div class="row">
+                  <div class="col-25">
+                    <label for="fname">Title</label>
+                  </div>
+
+                  <div class="col-75">
+                     <input type="text" id="fname" name="inputTitle" placeholder="Input title">
+                  </div>
+
+
+                <div class="row">
+                  <div class="col-25">
+                    <label for="fname">Purpose</label>
+                  </div>
+
+                  <div class="col-75">
+                     <textarea id="subject" name="inputPurpose" placeholder="Input purpose" style="height:200px"></textarea>
+                  </div>          
+
+
+                  <div class="row">
+                    <div class="col-25">
+                      <label for="lname">Filter</label>
+                    </div>
+
+                    <div class="col-75">
+                      <textarea id="subject" name="keteranganlaporan" placeholder="Input filter" style="height:200px"></textarea>
+                    </div>
+                  </div>
+
+
+                  <div class="row">
+                    <div class="col-25">
+
+                      <label for="Organization">Organization</label>
+                      
+                    </div>
+                    <div class="col-75" id="list_org">
+                      <select name='Organization'>
+                        {% for row in listOrg %}
+                        <option value="{{row[0]}}">{{row[0]+" - "+row[1]}}</option>
+                       <!--  <strong>{{text}}</strong> -->
+                         {% endfor %}
+                      </select>
+                    </div>
+                  </div>
+
+
+                  <div class="row">
+                    <div class="col-25">
+                      <label for="Department">Category</label>
+                    </div>
+                    <div class="col-75">
+                      <select id="country" name="Department">
+                          {% for row in listDept %}
+                        <option value="{{row[0]}}">{{row[0]+" - "+ row[1]}}</option>
+                          {% endfor %}
+                      </select>
+                    </div>
+                  </div>
+
+
+                   <div class="row">
+                    <div class="col-25">
+                        <label for="fname">Display</label>
+                    </div>
+                    <div class="col-75">
+                         <input type="text" id="fname" name="inputDisplay" placeholder="Example: Procon, Comco, OutName">
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-25">
+                        <label for="fname">Period</label>
+                    </div>
+                    <div class="col-75">
+                         <input type="text" id="fname" name="inputPeriode" placeholder="Example: B1- B3 or YYYY-YYYY or DD/MM/YYYY">
+                    </div>
+                  </div>
+
+    
+
+                 <!--  <div class="row">
+                    <div class="col-25">
+                      <label for="tanggalselesai">Deadline</label>
+                    </div> -->
+
+                    <!-- <div class="col-15">
+                      <select id="country" name="tanggalSelesai">
+                        <option value="01">01</option>
+                        <option value="02">02</option>
+                        <option value="03">03</option>
+                      </select>
+                    </div>
+
+                    <div class="col-15">
+                      <select id="country" name="bulanSelesai">
+                        <option value="01">June</option>
+                        <option value="02">July</option>
+                        <option value="03">August</option>
+                      </select>
+                    </div>
+
+                    <div class="col-15">
+                      <select id="country" name="tahunSelesai">
+                        <option value="01">2018</option>
+                        <option value="02">2019</option>
+                        <option value="03">2020</option>
+                      </select>
+                    </div>
+                  </div> -->
+
+                  <div class="row">
+                    <div class="col-25">
+                      <label for="deadline">Deadline</label>
+                    </div>
+
+                    <div class="col-25">
+                        <input type="date" name="deadline">
+                    </div>
+                  </div>
+
+
+                  <br>
+                  <div class="row">
+                    <div class = "col-25">
+                      <tr>
+                        <td valign ="top">
+                          <label for="attach_file">Attachment</label>
+                        </td>
+                    </div>
+                      <div>
+                        <td valign="top">
+                          <input type="file" name="inputFile" value ="Attach File" accept="image/*">
+                        </td>
+                      </div>
+                        <td valign="top">
+                          <label for ="attach_file">No file selected </label>
+                        </td>
+                      </tr>
+                  </div>
+
+
+                  <div class="row">
+                    <div class="col-25">
+                      <label for="fname"></label>
+                    </div>
+
+                    <div class="col-25">               
+                     <input type="checkBox" name="routine" value="routine" id="myCheck"  onclick="myFunction()">Routine
+                      <br>
+                 
+                    </div>
+                  </div>
+
+
+
+
+              <div class="row"  id ="text2" style="display:none">
+                <div class="col-25">
+                  <label for="fname"></label>
+                </div>
+
+                <div class="col-25">               
+                  <input type="checkBox" name="Day" id="myCheck2" onclick="myFunction2()">Day</input>
+                  <input type="checkBox" name="Date" id="myCheck3" onclick="myFunction3()">Date</input>
+                  <input type="checkBox" name="Month" id="myCheck4" onclick="myFunction4()">Month</input>
+                </div>
+              </div>
+
+
+              <div class="row">
+                <div class="col-25">
+                  <label for="fname"></label>
+                </div>
+                    
+
+
+              <div class ="row" id="text" style="display:none">
+                <div id="Day" style="display: none">
+                  <div class ="col-15" >
+
+                    <input type="checkbox" name="Senin">Senin<br>
+                    <input type="checkbox" name="Selasa">Selasa<br>
+                    <input type="checkbox" name="Rabu">Rabu<br>
+                    <input type="checkbox" name="Kamis">Kamis<br>
+                    <input type="checkbox" name="Procod">Jumat<br>
+                    <input type="checkbox" name="Prodesc">Sabtu<br>
+                    <input type="checkbox" name="Prodesc">Minggu<br>  
+                                                              
+                  </div>
+                </div>
+                <div id="Date" style="display: none">
+                  <div class ="col-5" >
+                    <input type="checkbox" name="Senin">1<br>
+                    <input type="checkbox" name="Procod">2<br>
+                    <input type="checkbox" name="Prodesc">3<br>
+                    <input type="checkbox" name="Senin">4<br>
+                    <input type="checkbox" name="Procod">5<br>
+                    <input type="checkbox" name="Prodesc">6<br>
+                    <input type="checkbox" name="Prodesc">7<br>
+                    <input type="checkbox" name="Senin">8<br>
+                    <input type="checkbox" name="Procod">9<br>
+                   </div>
+                  
+                   <div class ="col-5" >
+                    <input type="checkbox" name="Prodesc">10<br>
+                    <input type="checkbox" name="Senin">11<br>
+                    <input type="checkbox" name="Procod">12<br>
+                    <input type="checkbox" name="Prodesc">13<br>
+                    <input type="checkbox" name="Prodesc">14<br> 
+                    <input type="checkbox" name="Senin">15<br>
+                    <input type="checkbox" name="Procod">16<br>
+                    <input type="checkbox" name="Prodesc">17<br>
+                    <input type="checkbox" name="Senin">18<br>
+                  </div>
+
+                  <div class ="col-5" >
+                    <input type="checkbox" name="Procod">19<br>
+                    <input type="checkbox" name="Prodesc">20<br>
+                    <input type="checkbox" name="Prodesc">21<br> 
+                    <input type="checkbox" name="Senin">22<br>
+                    <input type="checkbox" name="Procod">23<br>
+                    <input type="checkbox" name="Prodesc">24<br>
+                    <input type="checkbox" name="Senin">25<br>
+                    <input type="checkbox" name="Procod">26<br>
+                    <input type="checkbox" name="Prodesc">27<br>
+                  </div>
+                  <div class ="col-15" >
+                    <input type="checkbox" name="Prodesc">28<br>
+                    <input type="checkbox" name="Procod">29<br>
+                    <input type="checkbox" name="Prodesc">30<br>
+                    <input type="checkbox" name="Prodesc">31<br>
+                  </div> 
+                </div>                      
+                <div id="Month" style="display: none">
+                  <div class ="col-15" >
+                    <input type="checkbox" name="Prodesc">Januari<br>
+                    <input type="checkbox" name="Senin">Februari<br>
+                    <input type="checkbox" name="Procod">Maret<br>
+                    <input type="checkbox" name="Prodesc">April<br>
+                    <input type="checkbox" name="Prodesc">Mei<br> 
+                    <input type="checkbox" name="Senin">Juni<br>
+                  </div>
+                   <div class ="col-15" >
+                    <input type="checkbox" name="Procod">Juli<br>
+                    <input type="checkbox" name="Prodesc">Agustus<br>
+                    <input type="checkbox" name="Senin">September<br>
+                     <input type="checkbox" name="Procod">Oktober<br>
+                    <input type="checkbox" name="Prodesc">November<br>
+                    <input type="checkbox" name="Senin">Desember<br>
+                  </div>
+                </div>
+                
+              
+
+                  <div class="row">
+                    <div class="col-25">
+                        <label for="fname"></label>
+                    </div>
+                  
+                  </div>
+                    
+                    <div class="row">
+                    <div class="col-25">
+                        <label for="fname">Send to</label>
+                    </div>
+
+                        <div class ="row" id="text">
+                          <div class ="col-25" >
+
+                            
+                            <div class="row" id="text">
+                              <div class="" style="width: 500px">
+                                <label for="fname">PIC (Orang yang bertanggung jawab atas tindak lanjut laporan)</label>
+                              </div>
+                            </div>
+
+                            <select id="country" name="PIC">
+                              <option value="01">andi@pharos.co.id</option>
+                              <option value="02">budi@pharos.co.id</option>
+                              <option value="03">nana@pharos.co.id</option>
+                            </select>
+    
+                            <textarea id="subject" name="keteranganlaporan"  style="height:200px"></textarea>                      
+                          </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                    <div class="col-25">
+                        <label for="fname"></label>
+                    </div>
+
+                     <div class ="row" id="text">
+                         <div class ="col-25" >
+
+                            <div class="row" id="text">
+                              <div class="" style="width: 500px">
+                                <label for="fname">Penerima(CC)</label>
+                              </div>
+                            </div>
+
+                            <select id="country" name="penerima">
+                                <option value="01">andi@pharos.co.id</option>
+                                <option value="02">budi@pharos.co.id</option>
+                                <option value="03">nana@pharos.co.id</option>
+                              </select>
+
+                          
+                              
+                              <textarea id="subject" name="keteranganlaporan"  style="height:200px"></textarea>
+                                                 
+                                                  
+                          </div>
+                        </div>
+
+              </div></div>
+
+              <br><br>
+
+            <center>
+              <div class="row">
+                
+                <button class="Submit" name='Button_press' value="Submit">Submit</button>
+             
+                <button class="submitRed" name='Button_press' value="Cancel">Cancel</button>
+      
+              </div>
+            </center>
+          </form>
+        </div>
+
+
+        </body>
+</html>
+
+
+
+<script>
+function myFunction() {
+  var checkBox = document.getElementById("myCheck");
+  var text = document.getElementById("text");
+  var text2 = document.getElementById("text2");
+  var Days = document.getElementById("Day");
+  var Dates = document.getElementById("Date");
+  var Months = document.getElementById("Month");
+  var check1 = document.getElementById("myCheck2");
+  var check2 = document.getElementById("myCheck3");
+  var check3 = document.getElementById("myCheck4");
+  if (checkBox.checked == true){
+    text.style.display = "block";
+    text2.style.display = "block";
+  } else {
+    text.style.display = "none";
+    text2.style.display = "none";
+    Days.style.display = "none";
+    Dates.style.display = "none";
+    Months.style.display = "none";
+    check1.checked = false
+    check2.checked = false
+    check3.checked = false
+  }
+}
+function myFunction2(){
+  var check1 = document.getElementById("myCheck2");
+  var Days = document.getElementById("Day");
+      if(check1.checked == false){ Days.style.display = "none"}
+          else{ Days.style.display = "block";}
+}
+function myFunction3(){
+  var check2 = document.getElementById("myCheck3");
+  var Dates = document.getElementById("Date");
+  if(check2.checked == false){ Dates.style.display = "none"}
+          else{ Dates.style.display = "block";}
+}
+function myFunction4(){
+  var check3 = document.getElementById("myCheck4");
+  var Months = document.getElementById("Month");
+   if(check3.checked == false){ Months.style.display = "none"}
+          else{ Months.style.display = "block";}
+}
+//   if(check1.checked == true && check2.checked == false && check3.checked == false){
+//     Days.style.display = "block";
+//   }else if (check1.checked == false && check2.checked == true && check3.checked == false){
+//     Dates.style.display = "block";
+//   }else if (check1.checked == false && check2.checked == false && check3.checked == true){
+//     Months.style.display = "block";
+//   }else if (check1.checked == true && check2.checked == true && check3.checked == false){
+//     Days.style.display = "block";
+//     Dates.style.display = "block";
+//   }else if (check1.checked == true && check2.checked == false && check3.checked == true){
+//     Days.style.display = "block";
+//     Months.style.display = "block";
+//   }else if (check1.checked == false && check2.checked == true && check3.checked == true){
+//     Dates.style.display = "block";
+//     Months.style.display = "block";
+//   }else if (check1.checked == true && check2.checked == true && check3.checked == true){
+//     Days.style.display = "block";
+//     Dates.style.display = "block";
+//     Months.style.display = "block";
+//   }else if(check1.checked == false && check2.checked == true && check3.checked == true){
+//     Days.style.display = "none";
+//   }else if (check1.checked == true && check2.checked == false && check3.checked == true){
+//     Dates.style.display = "none";
+//   }else if (check1.checked == true && check2.checked == true && check3.checked == false){
+//     Months.style.display = "none";
+//   }else if (check1.checked == false && check2.checked == false && check3.checked == true){
+//     Days.style.display = "none";
+//     Dates.style.display = "none";
+//   }else if (check1.checked == false && check2.checked == true && check3.checked == false){
+//     Days.style.display = "none";
+//     Months.style.display = "none";
+//   }else if (check1.checked == true && check2.checked == false && check3.checked == false){
+//     Dates.style.display = "none";
+//     Months.style.display = "none";
+//   }else if (check1.checked == false && check2.checked == false && check3.checked == false){
+//     Days.style.display = "none";
+//     Dates.style.display = "none";
+//     Months.style.display = "none";
+//   }
+// }
+</script>
