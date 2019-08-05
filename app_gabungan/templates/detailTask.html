@@ -1,29 +1,14 @@
 <html>
       <head>
       	<title>Detail Task</title>
-      	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+      	<link rel="stylesheet" href="style.css">
       </head>
   <body>
       <center>
         <h2>Detail Task</h2>
       </center>
     <div class="container">
-
-
-    <div class="row">
-
-        <div class="col-25">
-          <label for="fname">Request Code</label>
-        </div>
-
-        <div class="col-75">{% if detail_task %}
-          <input type="text" id="fname" name="namalaporan" placeholder="{{detail_task[0]}}" disabled>
-        </div>
-
-      </div>  
-
-
-
+  
       <div class="row">
 
         <div class="col-25">
@@ -31,7 +16,7 @@
         </div>
 
         <div class="col-75">
-          <input type="text" id="fname" name="namalaporan" placeholder="{{detail_task[1]}}" disabled>
+          <input type="text" id="fname" name="namalaporan" placeholder="Laporan 1" disabled>
         </div>
 
       </div>
@@ -44,7 +29,7 @@
         </div>
 
         <div class="col-75">
-          <textarea id="subject" name="keteranganlaporan" placeholder="{{detail_task[2]}}" style="height:200px" disabled></textarea>
+          <textarea id="subject" name="keteranganlaporan" placeholder="Description" style="height:200px" disabled></textarea>
         </div>
         
       </div>
@@ -57,7 +42,7 @@
         </div>
 
         <div class="col-75">
-          <input type="text" placeholder="{{detail_task[3]}}" disabled>
+          <input type="text" placeholder="PHAROS" disabled>
         </div>
 
       </div>
@@ -70,7 +55,7 @@
         </div>
 
         <div class="col-75">
-          <input type="text" placeholder="{{detail_task[4]}}" disabled>
+          <input type="text" placeholder="Finance Management" disabled>
         </div>
 
       </div>
@@ -83,7 +68,7 @@
         </div>
 
         <div class="col-75">
-          <input type="text" placeholder="{{detail_task[5]}}" disabled>
+          <input type="text" placeholder="Procon, Outcode, Outname" disabled>
         </div>
 
       </div>
@@ -97,7 +82,7 @@
         </div>
 
         <div class="col-75">
-          <input type="text" placeholder="{{detail_task[6]}}" disabled>
+          <input type="text" placeholder="B1" disabled>
         </div>
 
       </div>
@@ -110,7 +95,7 @@
           </div>
 
           <div class="col-75">
-             <input type="text" placeholder="{{detail_task[7]}}" disabled>
+             <input type="text" placeholder="02 Juni 2019" disabled>
           </div>
 
       </div>
@@ -123,22 +108,20 @@
           </div>
 
           <div class="col-75">
-             <input type="text" placeholder="{{detail_task[8]}},{{detail_task[9]}},{{detail_task[10]}}" disabled>
+             <input type="text" placeholder="Routine B1-B3" disabled>
           </div>
 
       </div>
-      
+
 
 
                            <br><br><br><br><br>
       <center>
-
-        <div class="row"><form action ="/confirm1" method = "post">
-          <button class="submit" value="{{detail_task[0]}}" name="btnConfirmReq" >Accept</button></form>
+        <div class="row">
+          <button class="submit" value="Edit Kolom" onclick="window.location.href = 'task2.html';">Accept</button>
                 <br>
-          <button class="submitRed" value="Edit Kolom">Cancel</button>
+          <button class="submitRed" value="Edit Kolom" onclick="window.location.href = 'task2.html';">Cancel</button>
         </div>
-        {% endif %}
       </center>
 
    </div>

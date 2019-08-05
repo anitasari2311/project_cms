@@ -145,11 +145,11 @@ class TemplateLaporan:
 
             cursor = connection.cursor()
      
-            cursor.execute(''.join(['select req_tampilan from t_request where req_id = "'+request_id+'"']))
-            
-            record = cursor.fetchone()
-            clear = str(record).replace("('",'').replace("',)",'')
-            return clear
+            #cursor.execute(''.join(['select req_id, req_tampilan from t_request where req_id = "'+request_id+'"']))
+            cursor.execute('select req_id, req_tampilan from t_request where req_id = "'+request_id+'"')
+            record = cursor.fetchall()
+            #clear = str(record).replace("('",'').replace("',)",'')
+            return record
 
         except Error as e :
             print("Error while connecting file MySQL", e)

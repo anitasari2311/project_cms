@@ -1,10 +1,10 @@
 <html>
   <head>
 	   <title>Menu</title>
-	   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+	   <link  href="../static/style.css">
   </head>
     <body>
-     <h2> Welcome, {{session['username']}}
+     
      <center>   <div style="padding-top: 30px;padding-bottom: 20px; font-family: 'Arial';font-size: 20px;"> 
                      <h2>MENU</h2>
                 </div> </center>
@@ -12,39 +12,28 @@
             <center>
              
               <br>
+      
+              
     
                 <div class="row">
-                  <form action='/formRequest'>
-                  <button class="submit" value="Request Laporan">New Request Report</button> <br>
-
-                </form>
-                <form action ='/editRequest'>
-                  <button class="submit" value="Edit Laporan">Edit Report</button> <br>
-                </form>
-
-                </form>
-                <form action ='/login'>
-                  <button class="submit" value="Log Out">Log Out</button> <br>
-                </form>
-
-                
+                  <button class="submit" value="Request Laporan"onclick="window.location.href = 'requestLaporan.html';">Request Report</button> <br>
+                  <button class="submit" value="Edit Laporan"onclick="window.location.href = 'edit2.html';">Edit Report</button> <br>
                 </div>
             </center> <br><br><br>
 
-      
-       
-                          <h3>List Request </h3>
 
-                   <!-- <div class="col-25" style ="float: right">
+                    <h3>List Request </h3>
+
+                    <div class="col-25" style ="float: right">
                               <select id="country" name="tanggalselesai">
                                 <option value="Sort">Filter</option>
                                 <option value="Status">Status</option>
                                 <option value="PIC">PIC</option>
                               </select>
-                            </div> -->
+                            </div>
                            
                    
-                      
+
                     <table id="list">
                       <tr>
                         <th>Request Code</th>
@@ -56,62 +45,20 @@
                         <th></th>
                         <th></th>
                       </tr>
-                  
-                  {% for row in listReqUser %}
+
                       <tr>
-                        <td> {{row[0]}} </td>              
-                        <td> {{row[1]}} </td>
-                        <td>{{row[2]}}</td>
-                        <td>{{row[3]}}</td>
-                        <td>{{row[4]}}</td>
-                        <td>{{row[5]}}</td>
-
-                        {% if row[4] == 'Waiting' %}
-                        <td> 
-                          <form action="/revisi" method="post">  
-                            <button class="submitOr" name="btnRevisi" value="{{row[0]}}">Revision</button>
-                          </form>
-                          <form action = "/cancel" method = "post">
-                            <button class="submitRed" name="btnCancel" value = "{{row[0]}}">Cancel</button></form></td>
-
-
-
-
-                        {% elif row[4] == 'Finished' %}
-                        <td>
-                          <form action = "/revisi" method = "post">
-                          <button class="submitOr" name="btnRevisi" value="{{row[0]}}">Revision</button>
-                        </form>
-                        
-                            <button class="submit">Confirm</button> </td>
-
-
-
-
-
-                        {% elif row[4] == 'On Process' %}
-                        <td><button class="submit2" disabled>Revision</button>
-                            <button class="submit2" disabled>Confirm</button> </td>
-
-
-
-
-
-                        {% elif row[4] == 'Confirmed' %}
-                        <td>"Done"</td>{% endif %}
-
-
-                       <!--  <td><button class="submit2">Revision</button><br>
+                        <td>Req-001</td>
+                        <td>Lap 1</td>
+                        <td>5 May 2019</td>
+                        <td>10 May 2019</td>
+                        <td>On Process</td>
+                        <td>Monic</td>
+                        <td><button class="submit2">Revision</button>  <br> 
                             <button class="submit2">Confirm</button> </td>
-                        <td><img src="download2.png"></td> -->
-
-
-                        
+                        <td></td>
                       </tr>
-                      {% endfor %}
 
-
-                      <!-- <tr>
+                      <tr>
                         <td>Req-005</td>
                         <td>Lap 2</td>
                         <td>6 May 2019</td>
@@ -130,7 +77,7 @@
                         <td>Waiting</td>
                         <td> </td>
                         <td>
-                          <form action='/revision'><button class="submitOr">Revision</button></form>
+<a href ="EditKolom.html"><button class="submitOr">Revision</button><a><br>
                         <a href ="menu.html"><button class="submitRed">Cancel</button><a> </td>
                         <td></td>
                       </tr>
@@ -142,13 +89,12 @@
                         <td>16 May 2019</td>
                         <td>Finished</td>
                         <td>Yoshua</td>
-                        <td><form action='/revision'><button class="submitOr">Revision</button></form>
+                        <td><a href ="EditKolom.html"><button class="submitOr">Revision</button><a><br>
                             <button class="submit">Confirm</button> </td>
                         <td><img src="download2.png"></td>
-                      </tr> -->
+                      </tr>
 
                     </table> 
-                  <!-- </form> -->
       </div>
      
     </body>

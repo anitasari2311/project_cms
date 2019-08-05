@@ -38,72 +38,9 @@ class RequestLaporan:
         self.reqSch_aktifYN = ''
         
        
-#BUAT MENDAPATKAN USERID
-#     def getUserID(self,username):
-#         try: 
-#             connection = mysql.connector.connect(
-#             host='localhost',
-#             database='cms_request',
-#             user='root',
-#             password='qwerty')
-#             if connection.is_connected():
-#                 db_Info= connection.get_server_info()
-#             print("Connected to MySQL database...",db_Info)
-
-#             cursor = connection.cursor()
-     
-#             cursor.execute(''.join(['select user_id from m_user where user_name = "'+username+'"']))
-            
-#             record = cursor.fetchone()
-#             clear = str(record).replace("('",'').replace("',)",'')
-#             return clear
-
-#         except Error as e :
-#             print("Error while connecting file MySQL", e)
-#         finally:
-#                 #Closing DB Connection.
-#                     if(connection.is_connected()):
-#                         cursor.close()
-#                         connection.close()
-#                     print("MySQL connection is closed")
-                    
-# #BUAT PROSES LOGIN SESUAI FLAG('ADMIN, USER, ATASAN')
-#     def prosesLogin(self, username, password):
-        
-#             try: 
-#                 connection = mysql.connector.connect(
-#                 host='localhost',
-#                 database='cms_request',
-#                 user='root',
-#                 password='qwerty')
-#                 if connection.is_connected():
-#                     db_Info= connection.get_server_info()
-#                 print("Connected to MySQL database...",db_Info)
-
-#                 cursor = connection.cursor()
-
-#                 cursor.execute(''.join(['select user_password, user_flag from m_user where user_name = "'+username+'"']))
-                
-#                 record = cursor.fetchone()
-#                 clear = str(record).replace("('",'').replace("')",'').replace("', '",'#')
-
-#                 stat = clear.split('#')
-#                 if stat[0] == password:
-#                     return stat[1]
-#                 else:
-#                     return "incorrect"
-
-#             except Error as e :
-#                 print("Error while connecting file MySQL", e)
-#             finally:
-#                     #Closing DB Connection.
-#                         if(connection.is_connected()):
-#                             cursor.close()
-#                             connection.close()
-#                         print("MySQL connection is closed")
         
 
-#BUAT GENERATE REQUESTID SECARA OTOMATIS
+    #BUAT GENERATE REQUESTID SECARA OTOMATIS
     def get_numberID(self):
         try: 
             connection = mysql.connector.connect(
@@ -138,7 +75,7 @@ class RequestLaporan:
         return requestID
     
     
-#BUAT MENDAPATKAN ORGANISASI DARI MYSQL
+    #BUAT MENDAPATKAN ORGANISASI DARI MYSQL
     def namaOrganisasi(self):
         try: 
             connection = mysql.connector.connect(
@@ -166,7 +103,7 @@ class RequestLaporan:
                         connection.close()
                     print("MySQL connection is closed")
                     
-#BUAT MENDAPATKAN KATEGORI DARI MYSQL
+    #BUAT MENDAPATKAN KATEGORI DARI MYSQL
     def namaDept(self):
         try: 
             connection = mysql.connector.connect(
@@ -196,7 +133,7 @@ class RequestLaporan:
                         connection.close()
                     print("MySQL connection is closed")
                     
-#BUAT MENAMPILKAN LIST REQUEST PADA /MENU
+    #BUAT MENAMPILKAN LIST REQUEST PADA /MENU
     def listRequestUser(self, username):
         #session['user_id'] = auth_login()
         try: 
@@ -223,11 +160,19 @@ class RequestLaporan:
                         connection.close()
                     print("MySQL connection is closed")
 
+    # def convertToBinaryData(self, filename):      
+    #     #Convert digital data to binary format
+    #     with open(filename, 'rb') as file:
+    #         binaryData = file.read()
+    #     return binaryData           
 
-#BUAT INSERT REQUEST BARU                
+
+    #BUAT INSERT REQUEST BARU                
     def requestLaporanBaru(self, prog_id, user_id, org_id, ktgri_id, req_kodeLaporan, req_judul, req_deskripsi,
                            req_tujuan, req_tampilan, req_periode, req_deadline, req_file, req_PIC, req_penerima,
-                           req_dateAccept = None, req_endDate=None, req_status='Waiting', req_prioritas='1'):
+                           req_dateAccept = None, req_endDate=None, req_status='Waiting', req_prioritas='1') :
+                           # sch_id, report_id, query_id, reqSch_hari, reqSch_bulan, reqSch_tanggal, reqSch_groupBy, 
+                           # reqSch_reportPIC, reqSch_orgNama,reqSch_ktgriNama,reqSch_lastUpdate, reqSch_aktifYN:
         self.req_id = self.generateRequestID()
         self.prog_id = prog_id
         self.user_id  = user_id
@@ -249,6 +194,20 @@ class RequestLaporan:
         self.req_penerima = req_penerima
         self.req_prioritas = req_prioritas
 
+        # self.sch_id = sch_id
+        # self.report_id = report_id
+        # self.query_id = query_id
+        # self.reqSch_hari = reqSch_hari
+        # self.reqSch_bulan = reqSch_bulan
+        # self.reqSch_tanggal = reqSch_tanggal
+        # self.reqSch_groupBy = reqSch_groupBy
+        # self.reqSch_reportPIC = reqSch_reportPIC
+        # self.reqSch_orgNama = reqSch_orgNama
+        # self.reqSch_ktgriNama = reqSch_ktgriNama
+        # self.reqSch_lastUpdate = datetime.datetime.now()
+        # self.reqSch_aktifYN = reqSch_aktifYN
+
+
 
         try: 
             connection = mysql.connector.connect(
@@ -265,9 +224,19 @@ class RequestLaporan:
                            (self.req_id, prog_id, user_id, org_id, ktgri_id, req_kodeLaporan, req_judul, req_deskripsi,
                            req_tujuan, req_tampilan, req_periode,req_deadline,req_file, self.req_date,
                             req_dateAccept, req_endDate, self.req_status, req_PIC, req_penerima, req_prioritas))
+            # sql1 = 'INSERT INTO t_request VALUES %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s'
+            # val1 = self.req_id, prog_id, user_id, org_id, ktgri_id, req_kodeLaporan, req_judul, req_deskripsi, req_tujuan, req_tampilan, req_periode,req_deadline,req_file, self.req_date, req_dateAccept, req_endDate, self.req_status, req_PIC, req_penerima, req_prioritas
+            
+            # sql2 = 'INSERT INTO t_reqSchedule VALUES %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s'
+            # val2 = sch_id, report_id, query_id, reqSch_hari, reqSch_bulan, reqSch_tanggal, reqSch_groupBy, reqSch_reportPIC, reqSch_orgNama, reqSch_ktgriNama, reqSch_lastUpdate, reqSch_aktifYN
+
+            # cursor.execute(sql1,val1)
+            # connection.commit()
+
+            # cursor.execute(sql2, val2)
             connection.commit()
 
-            record = cursor.fetchone()
+            #record = cursor.fetchone()
             print ("Your connected...",record)
 
         except Error as e :
@@ -280,7 +249,7 @@ class RequestLaporan:
                     print("MySQL connection is closed")
 
 
-#BUAT INSERT SCHEDULE REQUEST
+    #BUAT INSERT SCHEDULE REQUEST
     def requestSchedule(self, sch_id, report_id, query_id, reqSch_hari, reqSch_bulan, reqSch_tanggal, reqSch_groupBy, reqSch_reportPIC, reqSch_orgNama,reqSch_ktgriNama,reqSch_lastUpdate, reqSch_aktifYN):
         self.sch_id = sch_id
         self.report_id = report_id
@@ -325,7 +294,7 @@ class RequestLaporan:
 
              
 
-#BUAT INSERT REQUEST EDIT 
+    #BUAT INSERT REQUEST EDIT 
     def requestEditLap(self, prog_id, user_id,req_report, req_kodeLaporan, req_deskripsi,
                            req_tampilan, req_deadline, req_file, req_PIC, req_penerima,
                            req_dateAccept = None, req_endDate=None, req_status='Waiting', req_prioritas='1'):
@@ -398,23 +367,11 @@ class RequestLaporan:
 
             cursor = connection.cursor()
             cursor.execute(''.join(['UPDATE t_request SET req_status = "Cancel"  WHERE req_id = "'+request_id+'"']))            
-            #cursor.execute(''.join(['SELECT * FROM m_organisasi
+            
             connection.commit()
-            #cursor.execute(''.join(['SELECT a.req_id, IFNULL(req_judul,''), IFNULL(req_deskripsi,''), IFNULL(org_nama,''), IFNULL(ktgri_nama,''), IFNULL(req_tampilan,''), IFNULL(req_periode,''), IFNULL(req_deadline,''), IFNULL(reqSch_hari,''), IFNULL(reqSch_bulan,''), IFNULL(reqSch_tanggal,'') FROM t_request a INNER JOIN m_organisasi b ON  a.org_id = b.org_id INNER JOIN m_kategori c ON  a.ktgri_id = c.ktgri_id INNER JOIN   t_reqSchedule d ON  a.req_id = d.req_id WHERE a.req_id = "'+request_id+'"']))            
+           
             cancel_request = cursor.fetchone()
-            #clear = str(record).replace("('",'').replace("',)",'')
-            # for row in detail_task:
-            #     detailId = row[0]
-            #     detailJudul = row[1]
-            #     detailDeskripsi = row[2]
-            #     detailOrganisasi = row[3]
-            #     detailKategori = row[4]
-            #     detailTampilan = row[5]
-            #     detailPeriode = row[6]
-            #     detailDeadline = row[7]
-            #     detailHari = row[8]
-            #     detailBulan = row[9]
-            #     detailTanggal = row[10]
+           
             return cancel_request
         except Error as e :
             print("Error while connecting file MySQL", e)
@@ -423,8 +380,270 @@ class RequestLaporan:
                     if(connection.is_connected()):
                         cursor.close()
                         connection.close()
-                    print("MySQL connection is closed")     
+                    print("MySQL connection is closed")
+
+    def finishRequest(self, request_id):
+        self.finish_request =''
+        try: 
+            connection = mysql.connector.connect(
+            host='localhost',
+            database='cms_request',
+            user='root',
+            password='qwerty')
+            if connection.is_connected():
+                db_Info= connection.get_server_info()
+            print("Connected to MySQL database...",db_Info)
+
+            cursor = connection.cursor()
+            cursor.execute(''.join(['UPDATE t_request SET req_status = "Finished"  WHERE req_id = "'+request_id+'"']))            
+            
+            connection.commit()
+            
+            finish_request = cursor.fetchone()
+         
+            return finish_request
+        except Error as e :
+            print("Error while connecting file MySQL", e)
+        finally:
+                #Closing DB Connection.
+                    if(connection.is_connected()):
+                        cursor.close()
+                        connection.close()
+                    print("MySQL connection is closed")
                           
+
+
+    ##################################################################################################
+    def availableTask(self):
+        try:
+            connection = mysql.connector.connect(
+            host='localhost',
+            database='cms_request',
+            user='root',
+            password='qwerty')
+            if connection.is_connected():
+                db_Info= connection.get_server_info()
+            print("Connected to MySQL database...",db_Info)
+
+            cursor = connection.cursor()
+
+            listAvailTask = cursor.execute('''SELECT req_id, req_judul, user_name, ktgri_nama,
+                                        req_date, req_deadline, req_prioritas
+                                        FROM t_request a
+                                        LEFT JOIN m_user b
+                                            ON  a.user_id = b.user_id
+                                        LEFT JOIN m_kategori c
+                                            ON  a.ktgri_id = c.ktgri_id
+                                        WHERE req_status LIKE 'Waiting%' ORDER BY req_id''')
+            listAvailTask = cursor.fetchall()
+
+
+            for row in listAvailTask:
+                requestId = row[0]
+                requestJudul = row[1]
+                requestNama = row[2]
+                requestKategori = row[3]
+                requestTanggal = row[4]
+                requestDeadline = row[5]
+                requstPrioritas = row[6]
+
+            return listAvailTask
+        except Error as e :
+            print("Error while connecting file MySQL", e)
+        finally:
+                #Closing DB Connection.
+            if(connection.is_connected()):
+                cursor.close()
+                connection.close()
+            print("MySQL connection is closed")
+
+    def listTask(self):
+        try:
+            connection = mysql.connector.connect(
+            host='localhost',
+            database='cms_request',
+            user='root',
+            password='qwerty')
+            if connection.is_connected():
+                db_Info= connection.get_server_info()
+            print("Connected to MySQL database...",db_Info)
+
+            cursor = connection.cursor()
+
+            #listTask = cursor.execute(''.join(['SELECT req_id, req_judul, user_name, ktgri_nama, req_date, req_deadline, req_prioritas FROM t_request a LEFT JOIN m_user b ON  a.user_id = b.user_id LEFT JOIN m_kategori c ON  a.ktgri_id = c.ktgri_id WHERE req_PIC = "'+session['username']+'" ORDER BY req_id']))
+            listTask = cursor.execute('SELECT req_id, req_judul, user_name, ktgri_nama, req_date, req_deadline, req_prioritas, req_status FROM t_request a LEFT JOIN m_user b ON  a.user_id = b.user_id LEFT JOIN m_kategori c ON  a.ktgri_id = c.ktgri_id WHERE req_PIC = "'+session['username']+'" ORDER BY req_id')
+            listTask = cursor.fetchall()
+
+
+            
+            return listTask
+
+
+
+        except Error as e :
+            print("Error while connecting file MySQL", e)
+        finally:
+                #Closing DB Connection.
+            if(connection.is_connected()):
+                cursor.close()
+                connection.close()
+            print("MySQL connection is closed")
+
+
+
+    #GATAU BUAT APA
+    # def getRequestId(self):
+    #         request_id = request.form['buttonDetail']
+    #         try: 
+    #             connection = mysql.connector.connect(
+    #             host='localhost',
+    #             database='cms_template',
+    #             user='root',
+    #             password='qwerty')
+    #             if connection.is_connected():
+    #                 db_Info= connection.get_server_info()
+    #             print("Connected to MySQL database...",db_Info)
+
+    #             cursor = connection.cursor()
+         
+    #             cursor.execute(''.join(['select req_id from t_request where req_id = "'+request_id+'"']))
+                
+    #             listKodeReport = cursor.fetchall()
+                
+    #             return listKodeReport
+
+    #         except Error as e :
+    #             print("Error while connecting file MySQL", e)
+    #         finally:
+    #                 #Closing DB Connection.
+    #                     if(connection.is_connected()):
+    #                         cursor.close()
+    #                         connection.close()
+    #                     print("MySQL connection is closed")
+        
+
+
+    def getDetailTask(self, request_id):
+        self.detail_task=''
+        try: 
+            connection = mysql.connector.connect(
+            host='localhost',
+            database='cms_request',
+            user='root',
+            password='qwerty')
+            if connection.is_connected():
+                db_Info= connection.get_server_info()
+            print("Connected to MySQL database...",db_Info)
+
+            cursor = connection.cursor()
+            cursor.execute(''.join(['SELECT a.req_id, req_judul, req_deskripsi, org_nama, ktgri_nama, req_tampilan, req_periode, req_deadline, req_file, reqSch_tanggal  FROM t_request a LEFT JOIN m_organisasi b ON a.org_id = b.org_id LEFT JOIN m_kategori c ON a.ktgri_id = c.ktgri_id LEFT JOIN t_reqSchedule d ON a.req_id = d.req_id  WHERE a.req_id = "'+request_id+'"']))            
+           
+
+           
+            detail_task = cursor.fetchone()
+         
+            return detail_task
+
+        except Error as e :
+            print("Error while connecting file MySQL", e)
+        finally:
+                #Closing DB Connection.
+                    if(connection.is_connected()):
+                        cursor.close()
+                        connection.close()
+                    print("MySQL connection is closed")
+
+
+    def accRequest(self, request_id):
+        self.confirm=''
+        try: 
+            connection = mysql.connector.connect(
+            host='localhost',
+            database='cms_request',
+            user='root',
+            password='qwerty')
+            if connection.is_connected():
+                db_Info= connection.get_server_info()
+            print("Connected to MySQL database...",db_Info)
+
+            cursor = connection.cursor()
+
+            cursor.execute('update t_request set req_status = "On Process", req_PIC = "'+session['username']+'" where req_id = "'+request_id+'"')
+
+            connection.commit()
+            confirmReq = cursor.fetchall()
+
+
+            return confirmReq
+
+            print ("Record Updated successfully ")
+        except Error as e :
+            print("Error while connecting file MySQL", e)
+        finally:
+                #Closing DB Connection.
+                    if(connection.is_connected()):
+                        cursor.close()
+                        connection.close()
+                    print("MySQL connection is closed")
+
+    # def finishRequest(self, request_id):
+    #     self.finish_request =''
+    #     try: 
+    #         connection = mysql.connector.connect(
+    #         host='localhost',
+    #         database='cms_request',
+    #         user='root',
+    #         password='qwerty')
+    #         if connection.is_connected():
+    #             db_Info= connection.get_server_info()
+    #         print("Connected to MySQL database...",db_Info)
+
+    #         cursor = connection.cursor()
+    #         cursor.execute(''.join(['UPDATE t_request SET req_status = "Finished"  WHERE req_id = "'+request_id+'"']))            
+            
+    #         connection.commit()
+            
+    #         finish_request = cursor.fetchone()
+         
+    #         return finish_request
+    #     except Error as e :
+    #         print("Error while connecting file MySQL", e)
+    #     finally:
+    #             #Closing DB Connection.
+    #                 if(connection.is_connected()):
+    #                     cursor.close()
+    #                     connection.close()
+    #                 print("MySQL connection is closed")
+
+    def confirmRequest(self, request_id):
+        self.confirm_request =''
+        try: 
+            connection = mysql.connector.connect(
+            host='localhost',
+            database='cms_request',
+            user='root',
+            password='qwerty')
+            if connection.is_connected():
+                db_Info= connection.get_server_info()
+            print("Connected to MySQL database...",db_Info)
+
+            cursor = connection.cursor()
+            cursor.execute(''.join(['UPDATE t_request SET req_status = "Confirmed"  WHERE req_id = "'+request_id+'"']))            
+            
+            connection.commit()
+            
+            confirm_request = cursor.fetchone()
+         
+            return confirm_request
+        except Error as e :
+            print("Error while connecting file MySQL", e)
+        finally:
+                #Closing DB Connection.
+                    if(connection.is_connected()):
+                        cursor.close()
+                        connection.close()
+                    print("MySQL connection is closed")
+
 #=========================================BUAT PANGGIL=======================================================================
 #RequestLaporan().requestSchedule('SCH-004', 'DGM-0330', 'Q123', 'Senin', 'Januari', '4','Dr. Andre Lembong',
 #                       'Monic', 'Pharos', 'Sales Management', datetime.datetime.now(), 'Y')        

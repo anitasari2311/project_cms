@@ -1,0 +1,188 @@
+<html>
+        <head>
+        	<title>Available Task</title>
+        	<link rel="stylesheet" href="style.css">
+        </head>
+    <body>
+
+        <div class="container2">
+                
+               
+                <h1>AVAILABLE TASK</h1>
+            
+            <div>
+                <input type="text2" placeholder="Search Report ..">
+            </div>
+                            <br><br>
+
+        <center>
+
+
+                <table id="list">
+                  <tr>
+                    <th>Request Name</th>
+                    <th>Position</th>
+                    <th>Request Code</th>
+                    <th>Title</th>
+                    <th>Department</th>
+	                <th>Organization</th>
+                    <th>Request Date</th>
+                    <th>Deadline</th>                
+                    <th>Priority</th>
+                    <th></th>
+                    
+                    
+                  </tr>
+                  <tr >
+                    <td>Andi</td>
+                    <td>GM</td>
+                    <td>DGM-0001</td>
+                    <td>Laporan Sales ABC</td>
+                    <td>MT 01</td>
+	                <td>Pharos</td>
+                    <td>6 Mei 2019 </td>
+                    <td>10 Mei 2019</td>
+	
+                    <td><label class="switch">
+                         <input id ="slide" type="checkbox" onchange="document.getElementById('slide').disabled = this.checked;">
+                         <span class="slider round"></span>
+                        </label>    </td>
+                    <td>
+                        <button class="submit">Select</button>
+                        <button class="submitRed" value="Cancel">Reject</button><br>
+                    </td>
+                   
+                  </tr>
+                  <tr>
+                    <td>Budi</td>
+                    <td>Direksi</td>
+                    <td>DGM-0002</td>
+                    <td>Laporan Sales DEF</td>
+                    <td>MT 01</td>
+	                <td>Pharos</td>
+                    <td>8 Mei 2019 </td>
+                    <td>12 Mei 2019 </td>
+	                         
+                    <td><label class="switch">
+                         <input id="slide2" type="checkbox" onchange="document.getElementById('slide').disabled = this.checked;">
+                         <span class="slider round"></span>
+                        </label> </td>
+
+                     <td>
+                        <button class="submit">Select</button>
+                        <button class="submitRed" value="Cancel">Reject</button><br>
+                     </td>
+                    
+                  </tr>
+                  <tr>
+                    <td>Nana</td>
+                    <td>GM</td>
+                    <td>DGM-0003</td>
+                    <td>Laporan Sales GHI</td>
+                    <td>MT 01</td>
+	                <td>Pharos</td>
+                    <td>10 Mei 2019 </td>
+                    <td>14 Mei 2019 </td>
+	             
+                    <td><label class="switch">
+                         <input id="slide3" type="checkbox" onchange="document.getElementById('slide').disabled = this.checked;">
+                         <span class="slider round"></span>
+                        </label> </td>
+
+                    <td>
+                        <button class="submit">Select</button>
+                        <button class="submitRed" value="Cancel">Reject</button><br>
+                    </td>
+                    
+                  </tr>
+                </table> 
+
+
+                                <br><br><br>
+                 <h2>__________________________________________________________________________</h2>
+                                <br><br><br>
+        </center>
+
+                <h1>ON PROGRESS TASK</h1>
+
+                <div>
+                <input type="text2" placeholder="Search Report ..">
+                </div>
+                <br><br>
+
+                <table id="list">
+                  <tr>
+                    <th>Employee Name</th>
+                    <th>Request Code</th>
+                    <th>Title</th>
+                    <th>Department</th>
+                    <th>Organization</th>
+                    <th>Request Date</th>
+                    <th>Date Accept Task</th>
+                    <th>Deadline</th>
+                  </tr>
+
+                  <tr>
+                    <td>Nita</td>
+                    <td>DGM-0001</td>
+                    <td>Laporan Sales ABC</td>
+                    <td>MT01-Purchasing</td>
+                    <td>Pharos</td>
+                    <td>7 Mei 2019</td>
+                    <td>8 Mei 2019</td>
+                    <td>10 Mei 2019</td>
+                  </tr>
+
+                  <tr>
+                    <td>Yoshua</td>
+                    <td>DGM-0001</td>
+                    <td>Laporan Sales ABC</td>
+                    <td>MT01-Purchasing</td>
+                    <td>Pharmanet</td>
+                    <td>6 Mei 2019</td>
+                    <td>9 Mei 2019</td>
+                    <td>11 Mei 2019</td>
+                  </tr>        
+                    
+                  </tr>
+                  <tr>
+                    <td>Monic</td>
+                    <td>DGM-0001</td>
+                    <td>Laporan Sales ABC</td>
+                    <td>MT02-Production</td>
+                    <td>Pharmanet</td>
+                    <td>9 Mei 2019</td>
+                    <td>10 Mei 2019</td>
+                    <td>12 Mei 2019</td>
+                  </tr>
+                </table> 
+
+
+         <br><br><br>
+
+  
+        </div>
+
+
+    </body>
+</html>
+
+
+<script>
+
+    var x = document.getElementById("slide"+"slide2"+"slide3");
+
+
+ checker.onchange = function(){
+if(x.checked){
+    x.disabled = true;
+} 
+else {
+    x.disabled = false;
+}
+
+}
+
+
+
+</script>

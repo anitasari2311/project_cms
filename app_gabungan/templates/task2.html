@@ -1,12 +1,11 @@
 <html>
         <head>
         	<title>Available Task</title>
-        	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+        	<link rel="stylesheet" href="style.css">
         </head>
     <body>
 
         <div class="container2">
-                <h2> Welcome, {{session['username']}}</h2> <br>
                 <h1>AVAILABLE TASK</h1>
 
             <div>
@@ -15,7 +14,7 @@
                             <br><br>
 
         <center>
-<form action="/detailReq" method="post">
+
 
                 <table id="list">
                   <tr>
@@ -25,29 +24,49 @@
                     <th>Department</th>
                     <th>Request Date</th>
                     <th>Deadline</th>
+                    <th>Status</th>
+                    <th>PIC</th>
                     <th>Priority</th>
                     <th></th>
                   </tr>
-                  {% for row in listAvailTask %}
                   <tr >
-                    <td>{{row[0]}}</td>
-                    <td>{{row[1]}}</td>
-                    <td>{{row[2]}}</td>
-                    <td>{{row[3]}}</td>
-                    <td>{{row[4]}}</td>
-                    <td>{{row[5]}}</td>    
-                    {% if row[6] == '1' %}
-                    <td> <a class ="pri3"> </a></td>
-                    {% else %}
-                    <td> <a class ="pri1"> </a></td>
-                    {% endif %}
-                    
-                    <td> <button class="submit" name = 'buttonDetail' value="{{row[0]}}" >Select
-                    </button></td>
-                  </tr>{% endfor %}
-                 
-                </table>
-</form>
+                    <td>Req-002</td>
+                    <td>Laporan Sales ABC</td>
+                    <td>Andi</td>
+                    <td>Finance Management</td>
+                    <td>6 Mei 2019 </td>
+                    <td>10 Mei 2019</td>
+                    <td></td>
+                    <td></td>
+                    <td><a class ="pri1"> </a></td>
+                    <td> <button class="submit" value="Edit Kolom" onclick="window.location.href = 'detailTask.html';">Select</button></td>
+                  </tr>
+                  <tr>
+                    <td>Req-005</td>
+                    <td>Laporan Sales DEF</td>
+                    <td>Budi</td>
+                    <td>HR Management</td>
+                    <td>8 Mei 2019 </td>
+                    <td>12 Mei 2019 </td>
+                    <td>Accepted </td>
+                    <td>Andi</td>
+                    <td><a class ="pri3"> </a></td>
+                    <td> <button class="submit2" value="Edit Kolom" onclick="window.location.href = 'detailTask.html';" disabled>Select</button></td>
+                  </tr>
+                  <tr>
+                    <td>Req-006</td>
+                    <td>Laporan Sales GHI</td>
+                    <td>Nana</td>
+                    <td>Marketing Management</td>
+                    <td>10 Mei 2019 </td>
+                    <td>14 Mei 2019 </td>
+                    <td></td>
+                    <td></td>
+                    <td><a class ="pri3"> </a></td>
+                    <td> <button class="submit" value="Edit Kolom" onclick="window.location.href = 'detailTask.html';">Select</button></td>
+                  </tr>
+                </table> 
+
 
                                 <br><br><br>
                 <h2>__________________________________________________________________________</h2>
@@ -60,7 +79,6 @@
             <h1>LIST TASK</h1>
 
             <table id="list">
-                {% if listTask %}
               <tr>
                 <th>Request Code</th>
                 <th>Title</th>
@@ -70,22 +88,38 @@
                 <th>Deadline</th>
                 <th>Priority</th>
                 <th></th>
+                
               </tr>
-             
               <tr >
-                <td>{{listTask[0]}}</td>
-                <td>{{listTask[1]}}</td>
-                <td>{{listTask[2]}}</td>
-                <td>{{listTask[3]}}</td>
-                <td>{{listTask[4]}}</td>
-                <td>{{listTask[5]}}</td>
-                <td>{{listTask[6]}}</a></td>
+                <td>Req-001</td>
+                <td>Laporan Sales ABC
+                <td>Budi</td>
+                <td>Finance Management</td>
+                <td>6 Mei 2019 </td>
+                <td>10 Mei 2019</td>
+                <td><a class ="pri1"> </a></td>
                 <td> <button class="submit" value="Edit Kolom" onclick="window.location.href = 'task2.html';">Finish</button></td>
               </tr>
-           {% endif %}
 
-            </table>
+              <tr>
+                <td>Req-003</td>
+                <td>Laporan Sales DEF</td>
+                <td>Nana</td>
+                <td>HR Management</td>
+                <td>10 Mei 2019 </td>
+                <td>14 Mei 2019 </td>
+                <td><a class ="pri3"> </a></td>
+                <td> <button class="submit" value="Edit Kolom" onclick="window.location.href = 'task2.html';">Finish</button></td>
+              </tr>
+            </table> 
 
+
+
+
+ 
+
+
+  
         </div>
 
 

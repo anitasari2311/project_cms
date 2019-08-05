@@ -1,119 +1,121 @@
 <html>
-        <head>
-        	<title>Edit Report</title>
-        	<link rel="stylesheet" href="style.css">
-        </head>
-  <body>
-        <center>
-          <h1>EDIT REPORT</h1>
-        </center>
-    <div class="container2">
+  <head>
+         <title>Request Report</title>
+           <link rel="stylesheet" href="style.css">
+  </head>
 
-
-
-       <div class="row">
-          <div class="col-25">
-            <label for="fname">Current Display</label>
-          </div>
-          <div class="col-25">
-            <label for="fname">PT</label>
-            <label for="fname">Procod</label>
-            <label for="fname">Prodesc</label>
-          </div>
-       </div>
- 
-
-
-        <div class="row">
-          <div class="col-25">
-            <label for="fname">Add Display</label>
-          </div>
-          <div class="col-25">
-            <input type="text" id="inputNum" name="namalaporan" placeholder="Example: Procon, Comco, OutCode">
-          </div>
-        </div>
-
-
-  
-
-
-          <div class="row">
-            <div class="col-25">
-              <label for="fname"></label>
-            </div>
-          </div>
-      
-          <div class= "row">
-            <div class= "col-25" id="demo">
-            </div>
-          </div>
-    						
-               <div class="row">
-
-              <div class="col-25">
-                <label for="fname">Delete Display</label>
-              </div>
-
-              <div class ="row">
-                <div class ="col-25">
-                  <input type="checkbox" name="PT">PT<br>
-                  <input type="checkbox" name="Procod">Procod<br>
-                  <input type="checkbox" name="Prodesc">Prodesc<br>
+      <body>
+          <center>
+             <div style="padding-top: 30px;padding-bottom: 20px; font-family: 'Arial';font-size: 20px;"> 
+                     <h1>REQUEST REPORT</h1>
                 </div>
-              </div>
+          </center>
 
-            </div>
-                                    
-              <center>
-                <h2>________________________________________________________________________________</h2>
-              </center>
-                                    <br>
+          <div class="container2">
 
-           
+                <div class="row">
+                  <div class="col-25">
+                    <label for="fname">Title</label>
+                  </div>
 
+                  <div class="col-75">
+                     <input type="text" id="fname" name="namalaporan" placeholder="Input title">
+                  </div>
+
+          
+
+
+                  <div class="row">
+                    <div class="col-25">
+                      <label for="lname">Description</label>
+                    </div>
+
+                    <div class="col-75">
+                      <textarea id="subject" name="keteranganlaporan" placeholder="Input Description" style="height:200px"></textarea>
+                    </div>
+                  </div>
+
+
+                  <div class="row">
+                    <div class="col-25">
+                      <label for="Organization">Organization</label>
+                    </div>
+                    <div class="col-75">
+                      <select id="country" name="Organization">
+                        <option value="a">PHAROS</option>
+                        <option value="b">CENTURY GROUP</option>
+                        <option value="c">APOTEK GENERIK</option>
+                      </select>
+                    </div>
+                  </div>
+
+
+                  <div class="row">
+                    <div class="col-25">
+                      <label for="Department">Department</label>
+                    </div>
+                    <div class="col-75">
+                      <select id="country" name="Department">
+                        <option value="a">Finance Management</option>
+                        <option value="b">HR Management</option>
+                        <option value="c">Marketing Management</option>
+                      </select>
+                    </div>
+                  </div>
+
+
+                  <div class="row">
+                    <div class="col-25">
+                        <label for="fname">Display</label>
+                    </div>
+                    <div class="col-75">
+                         <input type="text" id="fname" name="namalaporan" placeholder="Example: Procon, Comco, OutName">
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-25">
+                        <label for="fname">Period</label>
+                    </div>
+                    <div class="col-75">
+                         <input type="text" id="fname" name="namalaporan" placeholder="Example: B1- B3 or YYYY-YYYY or DD/MM/YYYY">
+                    </div>
+                  </div>
 
     
-              <div class="row">
-                <div class="col-25">
-                  <label for="lname">Desired Change</label>
-                </div>
-                <div class="col-75">
-                  <textarea id="subject" name="keteranganlaporan" placeholder="Input change " style="height:200px"></textarea>
-                </div>
-              </div>
 
+                  <div class="row">
+                    <div class="col-25">
+                      <label for="tanggalselesai">Deadline</label>
+                    </div>
 
-              <div class="row">
-                            <div class="col-25">
-                              <label for="tanggalselesai">Deadline</label>
-                            </div>
+                    <div class="col-15">
+                      <select id="country" name="tanggalselesai">
+                        <option value="01">01</option>
+                        <option value="02">02</option>
+                        <option value="03">03</option>
+                      </select>
+                    </div>
 
-                            <div class="col-15">
-                              <select id="country" name="tanggalselesai">
-                                <option value="01">01</option>
-                                <option value="02">02</option>
-                                <option value="03">03</option>
-                              </select>
-                            </div>
+                    <div class="col-15">
+                      <select id="country" name="tanggalselesai">
+                        <option value="01">June</option>
+                        <option value="02">July</option>
+                        <option value="03">August</option>
+                      </select>
+                    </div>
 
-                            <div class="col-15">
-                              <select id="country" name="tanggalselesai">
-                                <option value="01">June</option>
-                                <option value="02">July</option>
-                                <option value="03">August</option>
-                              </select>
-                            </div>
+                    <div class="col-15">
+                      <select id="country" name="tanggalselesai">
+                        <option value="01">2018</option>
+                        <option value="02">2019</option>
+                        <option value="03">2020</option>
+                      </select>
+                    </div>
+                  </div>
 
-                            <div class="col-15">
-                              <select id="country" name="tanggalselesai">
-                                <option value="01">2018</option>
-                                <option value="02">2019</option>
-                                <option value="03">2020</option>
-                              </select>
-                            </div>
-              </div>
-              <br>
-<div class="row">
+                  <br>
+                  <div class="row">
                     <div class = "col-25">
                       <tr>
                         <td valign ="top">
@@ -410,4 +412,3 @@ function myFunction4(){
 //   }
 // }
 </script>
-

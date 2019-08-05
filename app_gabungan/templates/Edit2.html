@@ -1,7 +1,7 @@
 <html>
 <head>
 	<title>Edit</title>
-	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+	<link rel="stylesheet" href="style.css">
 </head>
 <body>
 <center>
@@ -15,29 +15,23 @@
         <label for="tanggalselesai">Report Code</label>
       </div>
       <div class="" style="width: 200px">
-        <form action= "/formEdit" method ="POST">
         <select id="country" name="kodeLaporan">
-          {% for row in listKodeReport %}
-            <option value="{{row[0]}}">{{row[0]}}</option>
-          {% endfor %}
+          <option value="ADGM-A00">DGM-0001</option>
+          <option value="ADGM-A01">DGM-0002</option>
+          <option value="ADGM-A02">DGM-0003</option>
         </select>
-
-     
       </div>
 </center>
 
  <br><br>   
 
  <center>
-  <button class="submit" value="edit" type="submit">Submit</button>
- </form>
-  
- <form action="/user" ><button class="submitRed" value="cancel" type="submit">Cancel</button></form>
+ <a href="EditKolom.html"><button class="submit" value="edit" type="submit">Submit</button></a>
+  <br>
+  <a href="menu.html"> <button class="submitRed" value="cancel" type="submit">Cancel</button> <a>
  </center>
  </center>
 </div>
-
-
  
 
  

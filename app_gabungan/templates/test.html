@@ -1,0 +1,28 @@
+<html>
+<head><link rel="stylesheet" href="style.css"></head>
+<body>
+
+<input type="text" id ="inputNum">
+<button onclick="myFunction()">add</button>
+
+<div class= "col-25" id="demo"></div>
+
+
+</body>
+</html>
+<script>
+
+function myFunction() {
+  var text = "";
+  var i;
+  var x = document.getElementById("inputNum").value;
+  for (i = 0; i < x; i++) {
+    text += "<div><input  class="+"col-25"+" type="+"text"+""+" placeholder="+"NamaKolom"+(1+i)+" ></div><div><input  class="+"col-25"+" type="+"text"+""+" placeholder="+"LetakKolom"+(1+i)+" ></div> ";
+  }
+  
+  document.getElementById("demo").innerHTML = text;
+  
+  
+}
+
+</script>
