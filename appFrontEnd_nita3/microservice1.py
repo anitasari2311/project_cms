@@ -170,7 +170,7 @@ class RequestLaporan:
             req_dateAccept = None
             req_endDate=None
             req_status='Waiting'
-            req_prioritas='1'
+            req_prioritas='2'
             reqSch_lastUpdate = datetime.datetime.now()
             req_date = datetime.datetime.now()
 
@@ -277,7 +277,6 @@ class RequestLaporan:
             cursor = db.cursor()
             
             cursor.execute(' select distinct report_id from cms_template.m_report a left join cms_request.t_request b on a.report_id = b.req_kodelaporan where user_id = "'+uId+'" ')
-            # cursor.execute('select report_id from m_report')
             
             listKodeEditReport = cursor.fetchall()
 
@@ -924,7 +923,9 @@ class RequestLaporan:
     #=========================================================================================
 
 
-    # CODINGANBARU
+    #--[Supervisor]--
+    #Mengubah status request laporan menjadi important (kode: 1)
+    #app.py /prioritasRequest
     @app.route('/prioritas/<data>', methods = ['POST', 'GET'])
     def prioritas(data):
         loadData = json.loads(data)
@@ -947,6 +948,9 @@ class RequestLaporan:
                         db.close()
                     print("MySQL connection is closed")
 
+    #--[Supervisor]--
+    #Mengubah prioritas request menjadi normal (kode: 2)
+    #app.py /undoPrioritasRequest
     @app.route('/undoPrioritas/<data>', methods = ['POST', 'GET'])
     def undoPrioritas(data):
         loadData = json.loads(data)
@@ -961,73 +965,6 @@ class RequestLaporan:
             db.commit()
             
         except Error as e : 
-            print("Error while connecting file MySQL", e)
-        finally:
-                #Closing DB Connection.
-                    if(db.is_connected()):
-                        cursor.close()
-                        db.close()
-                    print("MySQL connection is closed")
-
-    #GET BERAPA BANYAK REQUEST NORMAL YANG UDAH DIAMBIL SAMA PROGRAMMER CODINGANBARU
-    @app.route('/countRequestNormal/<uName>')
-    def countRequestNormal(uName):
-        
-        try: 
-            db = databaseCMS.db_request()
-
-            cursor = db.cursor()
-            cursor.execute(''.join(['SELECT COUNT(req_id) as req_id FROM t_request WHERE req_prioritas = "2" AND req_status = "On Process" AND req_PIC = "'+uName+'"']))            
-           
-            resultNormal = cursor.fetchall()
-
-            detailNormal = []
-
-            for row in resultNormal:
-                normalDict = {
-                'requestId' : row[0],
-                }
-                detailNormal.append(normalDict)
-
-            detail_normal = json.dumps(detailNormal)
-
-            return detail_normal
-
-        except Error as e :
-            print("Error while connecting file MySQL", e)
-        finally:
-                #Closing DB Connection.
-                    if(db.is_connected()):
-                        cursor.close()
-                        db.close()
-                    print("MySQL connection is closed")
-
-
-    #GET BERAPA BANYAK REQUEST IMPORTANT YANG UDAH DIAMBIL SAMA PROGRAMMER CODINGANBARU
-    @app.route('/countRequestImportant/<uName>')
-    def countRequestImportant(uName):
-        
-        try: 
-            db = databaseCMS.db_request()
-
-            cursor = db.cursor()
-            cursor.execute(''.join(['SELECT COUNT(req_id) as req_id FROM t_request WHERE req_prioritas = "1" AND req_status = "On Process" AND req_PIC = "'+uName+'"']))            
-           
-            resultImportant = cursor.fetchall()
-
-            detailImportant = []
-
-            for row in resultImportant:
-                importantDict = {
-                'requestId' : row[0],
-                }
-                detailImportant.append(importantDict)
-
-            detail_important = json.dumps(detailImportant)
-
-            return detail_important
-
-        except Error as e :
             print("Error while connecting file MySQL", e)
         finally:
                 #Closing DB Connection.
@@ -1187,7 +1124,72 @@ class RequestLaporan:
     #=========================================================================================
     #=========================================================================================
 
+    #GET BERAPA BANYAK REQUEST NORMAL YANG UDAH DIAMBIL SAMA PROGRAMMER CODINGANBARU
+    @app.route('/countRequestNormal/<uName>')
+    def countRequestNormal(uName):
+        
+        try: 
+            db = databaseCMS.db_request()
 
+            cursor = db.cursor()
+            cursor.execute(''.join(['SELECT COUNT(req_id) as req_id FROM t_request WHERE req_prioritas = "2" AND req_status = "On Process" AND req_PIC = "'+uName+'"']))            
+           
+            resultNormal = cursor.fetchall()
+
+            detailNormal = []
+
+            for row in resultNormal:
+                normalDict = {
+                'requestId' : row[0],
+                }
+                detailNormal.append(normalDict)
+
+            detail_normal = json.dumps(detailNormal)
+
+            return detail_normal
+
+        except Error as e :
+            print("Error while connecting file MySQL", e)
+        finally:
+                #Closing DB Connection.
+                    if(db.is_connected()):
+                        cursor.close()
+                        db.close()
+                    print("MySQL connection is closed")
+
+
+    #GET BERAPA BANYAK REQUEST IMPORTANT YANG UDAH DIAMBIL SAMA PROGRAMMER CODINGANBARU
+    @app.route('/countRequestImportant/<uName>')
+    def countRequestImportant(uName):
+        
+        try: 
+            db = databaseCMS.db_request()
+
+            cursor = db.cursor()
+            cursor.execute(''.join(['SELECT COUNT(req_id) as req_id FROM t_request WHERE req_prioritas = "1" AND req_status = "On Process" AND req_PIC = "'+uName+'"']))            
+           
+            resultImportant = cursor.fetchall()
+
+            detailImportant = []
+
+            for row in resultImportant:
+                importantDict = {
+                'requestId' : row[0],
+                }
+                detailImportant.append(importantDict)
+
+            detail_important = json.dumps(detailImportant)
+
+            return detail_important
+
+        except Error as e :
+            print("Error while connecting file MySQL", e)
+        finally:
+                #Closing DB Connection.
+                    if(db.is_connected()):
+                        cursor.close()
+                        db.close()
+                    print("MySQL connection is closed")
 
 
 
@@ -1483,7 +1485,6 @@ class RequestLaporan:
 
     #==[Admin]
     #Menampilkan seluruh report Id, digunakan ketika programmer telah menyelesaikan request dan ingin menginput kode laporan dari request tsb.
-    #Ketika user memilih kode laporan yang ingin di edit
     #app.py /task /editReport
     @app.route('/getReportId', methods=['POST','GET'])
     def getReportID():

@@ -538,7 +538,6 @@ def rejectRequest():
 
         return redirect(url_for('listRequestSPV'))
 
-# CODINGANBARU
 @app.route('/prioritasRequest', methods = ['POST', 'GET'])
 def prioritasReq():
     if request.method == 'POST':
@@ -554,7 +553,6 @@ def prioritasReq():
 
         return redirect(url_for('listRequestSPV'))
 
-# CODINGANBARU
 @app.route('/undoPrioritasRequest', methods = ['POST', 'GET'])
 def undoPrioritasRequest():
     if request.method == 'POST':
