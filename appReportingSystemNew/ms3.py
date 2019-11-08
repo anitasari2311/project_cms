@@ -64,8 +64,11 @@ def getStatusRunSchedule():
         db = databaseCMS.db_scheduling()
         cursor = db.cursor()
         cursor.execute('SELECT report_id, org_id, ktgri_id, run_date, run_startTime,\
-                        run_endTime, server_id, run_status\
-                        FROM t_runningLog ORDER BY run_startTime')
+                        run_endTime, server_id, run_status, error_deskripsi\
+                        FROM t_runningLog\
+                        WHERE LEFT(run_date,2) = (SELECT MONTH(NOW()))\
+                        AND MID(run_date,4,2) = (SELECT RIGHT(curdate(),2))\
+                        ORDER BY run_startTime')
         res = cursor.fetchall()
 
 
@@ -96,7 +99,8 @@ def getStatusRunSchedule():
             'runStartTime' : row[4],
             'runEndTime' : row[5],
             'serverId' : row[6],
-            'runStatus' : row[7]
+            'runStatus' : row[7],
+            'errorDesc' : row[8]
             }
             res2.append(resD)
         resFix = json.dumps(res2)
@@ -176,7 +180,8 @@ def runScheduleToday():
                                 runStatus, error_deskripsi, run_hostname))
             db.commit()
 
-            print(kategori[i])
+            
+
             # JALANKAN REPORT
             runSchedule(listKodeToday[i])
 
@@ -198,7 +203,7 @@ def runScheduleToday():
 
 
 
-# @app.route('/runSchedule/<kode_laporan>', methods=['POST','GET'])
+@app.route('/runSchedule/<kode_laporan>', methods=['POST','GET'])
 def runSchedule(kode_laporan):
     tglRun = datetime.datetime.now().strftime('%x')
     waktuRun = datetime.datetime.now().strftime('%X')
@@ -215,6 +220,7 @@ def runSchedule(kode_laporan):
 
     # MENDAPATKAN JUMLAH HEADER (1 / 2)
     jmlHead = loadDetailReport[6]
+    servId = loadDetailReport[9]
     print('Jumlah Header: ',jmlHead)
     #=========================================================
 
@@ -680,7 +686,16 @@ def runSchedule(kode_laporan):
             PIC = str(PIC).replace("[[[['","").replace("']]]]","").replace("[['","").replace("']]","")
             Penerima = str(Penerima).replace("[[[['","").replace("']]]]","").replace("[['","").replace("']]","")
 
+            dbs = databaseCMS.db_scheduling()
+            dbsC = dbs.cursor()
 
+            dbsC.execute('UPDATE t_runningLog SET run_startTime ="'+waktuRun+'",\
+                                 run_status = "R" WHERE report_id = "'+kode_laporan+'"\
+                                    AND run_date ="'+str(tglRun)+'" ')
+            dbs.commit()
+
+            dbs.close()
+            dbsC.close()
             
 
             
@@ -1170,6 +1185,8 @@ def testPreviewLaporan(kode_laporan):
 
     # MENDAPATKAN JUMLAH HEADER (1 / 2)
     jmlHead = loadDetailReport[6]
+    servId = loadDetailReport[9]
+
     print('Jumlah Header: ',jmlHead)
     #=========================================================
 
@@ -1191,19 +1208,10 @@ def testPreviewLaporan(kode_laporan):
                 Penerima.append(namaPen)
             PIC = str(PIC).replace("[[[['","").replace("']]]]","").replace("[['","").replace("']]","")
             Penerima = str(Penerima).replace("[[[['","").replace("']]]]","").replace("[['","").replace("']]","")
-            # getPen = requests.get('http://127.0.0.1:5002/listPenerima/'+kode_laporan)
-            # PenResp = json.dumps(getPen.json())
-            # loadPen = json.loads(PenResp)
-            # for i in loadPen:
-            #     namaPenerima = i['Penerima']
-            #     Penerima.append(namaPenerima)
             #==============================================================================
 
             db = databaseCMS.db_request()
             cursor = db.cursor(buffered = True)
-
-
-
 
 
             # GET AND EXECUTE QUERY
@@ -1225,18 +1233,15 @@ def testPreviewLaporan(kode_laporan):
             try:
                 for i in range (lengthOfQuery):
                     sql2 = listQuery[i]
-                    cursor.execute(sql2)
-                    
-                    
+                    cursor.execute(sql2)          
                 result = cursor.fetchall()
-            
-
+                result2=str(result).replace("'","")
+                
+                print(result2)
                 #HASIL DARI EXECUTE QUERY
                 toExcel = []
                 for i in result:
                     toExcel.append(i)
-
-                
 
 
             except Exception as e:
@@ -1265,14 +1270,24 @@ def testPreviewLaporan(kode_laporan):
 
             ##############style###############
             font_size = workbook.add_format({'font_size':8})
+            font_size.set_font_name('Times New Roman')
+
             format_header = workbook.add_format({'font_size':8,'top':1,'bottom':1,'bold':True})
+            format_header.set_font_name('Times New Roman')
+
             category_style = workbook.add_format({'font_size':8,'align':'right'})
+            category_style.set_font_name('Times New Roman')
+
             merge_format = workbook.add_format({
                 'bold':2,
                 'align' : 'center',
                 'valign' : 'vcenter',
                 'font_size':10})
+            merge_format.set_font_name('TImes New Roman')
+
             bold = workbook.add_format({'bold':True,'font_size':8})
+            bold.set_font_name('Times New Roman')
+
             ##################################
 
 
@@ -1361,12 +1376,6 @@ def testPreviewLaporan(kode_laporan):
                 row2 = row2 + 1
                 print(data[i])
                 
-                    
-                
-
-
-
-
 
 
             ###########################################
@@ -1397,7 +1406,7 @@ def testPreviewLaporan(kode_laporan):
             print('MaxCol: ',maxCol)
 
 
-            worksheet.merge_range('A1:%s'%(maxCol),'%s'%(namaOrg), merge_format) 
+            worksheet.merge_range('F1:%s'%(maxCol),'%s'%(namaOrg), merge_format) 
             worksheet.write('A2','%s' % (loadDetailReport[1]),bold ) #nama report
             worksheet.write('A3','Report Code : %s' % (loadDetailReport[0]),font_size) #kode report
             worksheet.write('A4','PIC : %s' % (PIC),font_size)
@@ -1407,7 +1416,7 @@ def testPreviewLaporan(kode_laporan):
             
             #penulisan printed date
 
-            worksheet.write(2,2,'Printed Date : %s' % (datetime.datetime.now().replace(microsecond=0)),font_size)
+            worksheet.write('D7','Printed Date : %s' % (datetime.datetime.now().replace(microsecond=0)),font_size)
 
             #Untuk mengatur lebar Kolom
             for i in range(countHeader2):
@@ -1525,9 +1534,6 @@ def testPreviewLaporan(kode_laporan):
                     worksheet.write(row2+8,lokasiCurr[i],'=SUM(%s9:%s%s)'% (lokasiCurr2[i],lokasiCurr2[i],totalRow+8),format_header)
 
 
-
-
-
             # Penulisan Process Time
             worksheet.write(row2+10,1,'Process Time : s/d %s' % (datetime.datetime.now().replace(microsecond=0)),font_size)
 
@@ -1548,8 +1554,7 @@ def testPreviewLaporan(kode_laporan):
 
             workbook.close()
 
-
-            
+            return 'Finished', 200
 
         except Exception as e:
             
@@ -1997,6 +2002,7 @@ if __name__ == "__main__":
     # scheduler.start()
 
 
+    # scheduler.add_job(func=runScheduleToday, 'calendarinterval', days=1, hour=02, minute=00)
 
 
 
@@ -2004,7 +2010,6 @@ if __name__ == "__main__":
 
     # # Schedule job_function to be called every month at 15:36:00, starting from today
     # sched.add_job(job_function, 'calendarinterval', months=1, hour=15, minute=36)
-
     # sched.start()
     app.run(debug=True, port='5003')
 

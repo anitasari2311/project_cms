@@ -279,38 +279,7 @@ class RequestLaporan:
                         db.close()
                     print("MySQL connection is closed")
 
-    #BUAT GET REPORT ID SESUAI USER YANG REQUEST
-    @app.route('/getReportIdEdit/<uId>', methods=['POST','GET'])
-    def getReportIdEdit(uId):
-        try: 
 
-            db = databaseCMS.db_template()
-            cursor = db.cursor()
-            
-            cursor.execute(' select distinct report_id from cms_template.m_report a left join cms_request.t_request b on a.report_id = b.req_kodelaporan where user_id = "'+uId+'" ')
-            
-            listKodeEditReport = cursor.fetchall()
-
-            listKodeEdit = []
-
-            for row in listKodeEditReport:
-                listDict = {
-                'ReportId' : row[0]
-                }
-                listKodeEdit.append(listDict)
-
-            resultListKode = json.dumps(listKodeEdit)
-            
-            return resultListKode
-
-        except Error as e :
-            print("Error while connecting file MySQL", e)
-        finally:
-                #Closing DB Connection.
-                    if(db.is_connected()):
-                        cursor.close()
-                        db.close()
-                    print("MySQL connection is closed")   
 
     #==[User]==
     #Menginput edit request dari user
@@ -382,7 +351,7 @@ class RequestLaporan:
             db.commit()
 
             
-            print ("Edit Request Sent")
+            print ("======[ Edit request berhasil ]======")
 
         except Error as e :
             print("Error while connecting file MySQL", e)
@@ -459,7 +428,7 @@ class RequestLaporan:
             db.commit()
            
             
-            print('REQUEST CANCELEEEED')
+            print('======[ Cancel Request ',request_id,' ]======')
 
             
           
@@ -532,7 +501,7 @@ class RequestLaporan:
             reqUserResult = json.dumps(reqUserList)
 
             print('====[ /listRequestUser ]======')
-            print(reqUserResult)
+            
             return reqUserResult
         
         except Error as e :
@@ -574,7 +543,7 @@ class RequestLaporan:
                 finishedList.append(finishedDict)
             finishedResult = json.dumps(finishedList)
 
-            print(finishedResult)
+            print('======[ /listFinished ]======')
             return finishedResult
 
         except Error as e :
@@ -1531,6 +1500,35 @@ class RequestLaporan:
                         db.close()
                     print("MySQL connection is closed")     
 
-    
+    @app.route('/taskProgrammer/<uId>', methods=['GET'])
+    def taskProgrammer(uId):
+        try:
+            db = databaseCMS.db_request()
+            cursor = db.cursor()
+
+            cursor.execute('SELECT prog_id, prog_taskNormal, prog_taskImportant FROM m_programmer\
+                            WHERE prog_id = "'+uId+'"')
+            result = cursor.fetchall()
+            taskProg=[]
+            for x in result:
+                progDict={
+                'progId' : x[0],
+                'taskNormal' : x[1],
+                'taskImportant': x[2]
+                }
+                taskProg.append(progDict)
+
+            return json.dumps(taskProg)
+        except Error as e :
+            print("Error while connecting file MySQL", e)
+        finally:
+                #Closing DB Connection.
+                    if(db.is_connected()):
+                        cursor.close()
+                        db.close()
+                    print("MySQL connection is closed") 
+
+
+
 if __name__ == "__main__":
     app.run(debug=True, port='5001')

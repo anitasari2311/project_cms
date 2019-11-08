@@ -175,9 +175,8 @@
                         <span class="close" onclick="closeModal()">&times;</span>
                         <strong>{{row['requestId']}}</strong>
                         <p> Input Report Code : </p>
-                    <form action ="/finishRequest" method = 'POST'>
+                    <form action ="/finishRequest" method = 'POST' enctype="multipart/form-data">
                         <input name="kodLap" list="reqFin">
-
                         <datalist id="reqFin">
                           <!-- <select> -->
                           {% for row in listKodeLap %}
@@ -185,6 +184,12 @@
                           {% endfor %}
                           <!-- </select> -->
                         </datalist>
+
+                        <br>
+                    <label for="attach_file">Attachment</label>
+                  
+                  <input type="file" name="inputFile" placeholder="Attach File" autocomplete="off">
+                
                       
                       <!-- <div class="col-75" id="list_org">
                       <select name='kode'>

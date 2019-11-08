@@ -4,9 +4,10 @@
       <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body bgcolor="#F0FFF0"> 
+  <h2><p align="Right"> Welcome, {{session['username']}}, {{day}}</p></h2>
 
 <div class="topnav"><ul>
-  <li><img src="/static/images/logoPharosFix.png" style="width: 150px; border: 0"></li>
+  <li><img src="/static/images/logoPharos.png" style="width: 150px; border: 0"></li>
   <div class="topnav-right">
       <li class="active"><a href="user">HOME</a></li>
       <li><a href="changePass">ACCOUNT</a></li>
@@ -30,24 +31,24 @@
   </ul>
  </div>
 
-<br><br><br><br>
-
 <h3> <p>{{day}}, <span  id="time" align="Left"> </span> </p> </h3>
  <h2><p> Welcome, {{session['username']}}</p></h2>
 
     
 
 <div class="slideshow-container">
-  <div class="mySlides fade">
-    <img src="/static/images/rep1.png" style="width:100%">
-  </div>
+<div class="mySlides fade">
+  <img src="/static/images/rep1.png" style="width:100%">
+<!-- <img src=" {{user_image}} " alt="User Image"> -->
+<!-- <img src="{{ url_for('static', filename = 'rep.jpg') }}"> -->
+</div>
 
-  <div class="mySlides fade">
-    <img src="/static/images/logoPharosFix.png" style="width:100%">
-  </div>
-  <div class="mySlides fade">
-    <img src="/static/images/sky.jpg" style="width:100%">
-  </div>
+<!-- <div class="mySlides fade">
+  <img src="img_snow_wide.jpg" style="width:100%">
+</div>
+<div class="mySlides fade">
+  <img src="img_mountains_wide.jpg" style="width:100%">
+</div> -->
 
 </div>
 <br>

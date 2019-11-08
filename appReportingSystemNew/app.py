@@ -1,10 +1,9 @@
-from flask import Flask, render_template, redirect, url_for, request, session, flash, json, jsonify
+from flask import Flask, render_template, redirect, url_for, request, session, flash, json, jsonify, send_from_directory
 # from base64 import b64encode
 import base64
 import auth
 from werkzeug.utils import secure_filename 
-# from microservice1 import RequestLaporan
-# from templatelaporan import TemplateLaporan
+import pickle
 import pymysql
 import mysql.connector
 from mysql.connector import Error
@@ -22,7 +21,8 @@ app.secret_key = 'frontEnd'
 
 
 # ALLOWED_EXTENSION  =  set('png','jpeg','jpg','pdf')
-app.config['UPLOAD_FOLDER'] = 'uploads'
+app.config['UPLOAD_FOLDER'] = 'static/uploads'
+app.config['UPLOAD_FINISHED_REQUEST'] = 'finishedRequest'
 
 
 
@@ -92,6 +92,8 @@ def sendDataPassword():
 def user():
     if session.get('user_id') is None:
         return render_template('ms1login.html')
+    elif session.get('position') != 'User':
+        return 'PAGE NOT FOUND', 404
     else:
         now = datetime.datetime.now()
 
@@ -126,7 +128,28 @@ def listFinished():
         finishedResp = json.dumps(listFinished.json())
         loadFinished = json.loads(finishedResp)
 
+
         return render_template('ms1listFinished.html', listKelar = loadFinished)
+@app.route('/downloadRequest',methods=['POST','GET'])
+def downloadRequest():
+    if request.method == 'POST':
+        request_id=request.form['downloadButton']
+
+        print(request_id)
+
+
+        resp=requests.get('http://127.0.0.1:5004/downloadRequest/'+request_id)
+
+
+        directory = 'C:/Request/'
+
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+
+        output = open(directory+request_id+'.xls', 'wb')
+        output.write(resp.content)
+        output.close()
+        return  'OK'
 
 #============[Read Report]========================
 @app.route('/readReport', methods=['POST','GET'])
@@ -227,10 +250,17 @@ def sendDataRequest():
 
         
         
+        getFileName = requests.get('http://127.0.0.1:5001/generateRequestId')
+        fiName = json.dumps(getFileName.json())
+        resName = json.loads(fiName)
+        fileN = [x['requestId'] for x in resName]
+        fileName = str(fileN).replace("['","").replace("']","")
 
-        
-        fileName = secure_filename(file.filename)
-        file.save(os.path.join(app.config['UPLOAD_FOLDER'], fileName))
+
+        print(fileName)
+
+        # fileName = secure_filename(file.filename)
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], fileName+'.jpg'))
         
         if 'file' not in request.files:
             fileName = ''
@@ -361,7 +391,7 @@ def editReport():
         return render_template('ms1login.html')
     else:
         uId = session['user_id']
-        listReportId = requests.get('http://127.0.0.1:5001/getReportIdEdit/'+uId)
+        listReportId = requests.get('http://127.0.0.1:5001/getReportId')
         listReportIdResp = json.dumps(listReportId.json())
         loadListRep = json.loads(listReportIdResp)
         
@@ -643,18 +673,15 @@ def availableTask():
         listReportIdResp = json.dumps(listReportId.json())
         loadListRep = json.loads(listReportIdResp)
 
-        detailNormal = requests.get('http://127.0.0.1:5001/countRequestNormal/'+sessionName)
+        detailNormal = requests.get('http://127.0.0.1:5001/taskProgrammer/'+sessionId)
         detNormal = json.dumps(detailNormal.json())
-        loadDetailNormal = json.loads(detNormal)
+        loadTaskProg = json.loads(detNormal)
 
-        detailImportant = requests.get('http://127.0.0.1:5001/countRequestImportant/'+sessionName)
-        detImportant = json.dumps(detailImportant.json())
-        loadDetailImportant = json.loads(detImportant)
+
 
 
         return render_template('ms1availableTask.html', listAvailTask = loadAvailTask,
-                                listKodeLap = loadListRep, normal = loadDetailNormal,
-                                important = loadDetailImportant)
+                                listKodeLap = loadListRep, taskProg = loadTaskProg)
 
 #============[Menampilkan list task yang harus dikerjakan]============
 @app.route('/listTask')
@@ -701,20 +728,29 @@ def historyTask():
 def detailRequest():
 
     request_id = request.form['buttonDetail']
-    sessionName = session['username']
+    # sessionName = session['username']
 
     detailTask = requests.get('http://127.0.0.1:5001/getDetailTask/'+request_id)
     detTask = json.dumps(detailTask.json())
     loadDetailTask = json.loads(detTask)
-        
-        # UNTUK MENGAMBIL VALUE DALAM JSON
+
+    #CEK REQUEST TSB ADA IMAGE/TIDAK
+    try:
+        checkImage= open(os.path.join(app.config['UPLOAD_FOLDER'], request_id+'.jpg'))
+    except Exception as e:
+                checkImage = 'NOIMAGE'
+
+    namaImage = request_id+'.jpg'
+
+    # UNTUK MENGAMBIL VALUE DALAM JSON
     for x in loadDetailTask:
         aaa = x['requestId']
         bbb = x['requestTujuan']
 
     # cba = detTask["requestId"]
     # print(cba)
-    return render_template('ms1detailTask.html', detail_task = loadDetailTask)
+    return render_template('ms1detailTask.html', detail_task = loadDetailTask, imageR=namaImage,
+                            checkImage=checkImage)
 
 #============[Mengirim data accept request ke MS1/accRequest]============
 @app.route('/acceptRequest', methods=['POST','GET'])
@@ -750,6 +786,22 @@ def finishRequest():
     if request.method == 'POST':
         request_id = request.form['finishReq']
         kodeL = request.form['kodLap']
+        file = request.files['inputFile']
+
+
+        
+        
+
+        
+        fileName = request_id
+        file.save(os.path.join(app.config['UPLOAD_FINISHED_REQUEST'], fileName+'.xls'))
+        
+        if 'file' not in request.files:
+            fileName = ''
+
+        if file.filename == '':
+            fileName = ''
+
 
         a = {
         'request_id' : request_id,
@@ -1024,9 +1076,9 @@ def sendEditSchedule():
         #Validasi radio button
         for checkRadio in ['rutin']:
             if request.form.get(checkRadio) == 'hb':
-                reqSch_tanggal = ''
+                jadwalTgl = ''
             else:
-                reqSch_hari = ''
+                jadwalHari = ''
 
         for checkPIC in loadPICs:
             #print(checkPIC[0])
@@ -1225,6 +1277,64 @@ def sendNewTemplate():
 
         return render_template('addTemplate.html', detailFormatTemplate = loadDetail)
 
+# [Save detail kolom ke detailh dan detailf]
+@app.route('/sendFormatTemplate',  methods =  ['POST', 'GET'])
+def sendFormatTemplate():
+    
+    kolomTemp = []
+    posisiTemp = []
+    tipeTemp = []
+    lebarTemp = []
+
+    if request.method == 'POST':
+        kode_laporan = request.form['kodLap']
+        kolom_merge = request.form['kolomMerge']
+        kolom_kanan = request.form['rataKanan']
+        kolom_kiri = request.form['rataKiri']
+
+
+        for isiKolom in ['kolom1', 'kolom2']:
+            if (request.form[isiKolom] is not None) and (request.form[isiKolom] is not ''):
+                kolom = kolomTemp.append(request.form[isiKolom])
+                kolomTemp1 = json.dumps(kolom)
+        print(kolomTemp1)
+
+        for isiPosisi in ['posisi1', 'posisi2']:
+            if(request.form[isiPosisi] is not None) and (request.form[isiPosisi] is not ''):
+                posisi = posisiTemp.append(request.form[isiPosisi])
+                posisiTemp1 = json.dumps(posisi)
+        print(posisiTemp1)
+        
+        for isiTipe in ['tipe1', 'tipe2']:
+            if (request.form[isiTipe] is not None) and (request.form[isiTipe] is not ''):
+                tipe = tipeTemp.append(request.form[isiTipe])
+                tipeTemp1 = json.dumps(tipe)
+        print(tipeTemp1)
+
+        for isiLebar in ['lebar1, lebar2']:
+            if (request.form[isiLebar] is not None) and (request.form[isiLebar] is not ''):
+                lebar = lebarTemp.append(request.form[isiLebar])
+                lebarTemp1 = json.dumps(lebar)
+        print(lebarTemp1)
+
+        detailKolom = {
+            'reportId' : kode_laporan,
+            'mergeKolom': kolom_merge,
+            'rataKanan' : kolom_kanan,
+            'rataKiri' : kolom_kiri,
+            'namaKolom' : kolomTemp1,
+            'posisiKolom' : posisiTemp1,
+            'tipeKolom' : tipeTemp1,
+            'lebarKolom' : lebarTemp1
+        }
+
+        detailKolom1 = json.dumps(detailKolom)
+
+        requests.post('http://127.0.0.1:5002/saveFormatTemplate/'+detailKolom1)
+
+        return redirect (url_for('admin'))
+    return redirect (url_for('admin'))
+
 #============[Memilih kode laporan]============
 #============[Menampilkan form format template]============
 @app.route('/formatTemplate', methods=['POST','GET'])
@@ -1270,6 +1380,15 @@ def runSchedule():
 
     return render_template('ms3runSchedule.html', kodeToday = loadKodeToday,
         statusSchedule = loadStatus)
+
+@app.route('/reRun', methods=['POST'])
+def reRun():
+    if request.method == 'POST':
+        kode_laporan = request.form['kodLap']
+
+        requests.get('http://127.0.0.1:5003/runSchedule/'+kode_laporan)
+
+        return redirect(url_for('runSchedule'))
 
 
 #============[Menampilkan seluruh list report yang ada]============
@@ -1326,7 +1445,8 @@ def preview():
             
             # VALIDASI ERROR / TIDAK
             a = requests.get('http://127.0.0.1:5003/testPreviewLaporan/'+kode_laporan)
-            if a:
+            
+            if a.status_code != 200:
                 b = json.dumps(a.json())
                 c = json.loads(b)
                 
@@ -1365,47 +1485,20 @@ def downloadReport():
 
         return 'Downloaded'
 
+@app.route('/readNow', methods=['GET'])
+def readNow():
+    # kode_laporan = request.form['kodLap2']
+    req = requests.get('http://127.0.0.1:5004/readReport/DGM-0003')
+    print(loads(req))
 
-@app.route('/testURL/<kode_laporan>', methods=['POST','GET'])
-def testURL(kode_laporan):
-    tgl = datetime.datetime.now().strftime('%d')
-    bln = datetime.datetime.now().strftime('%b')
-
-    directory = 'C:/'+tgl+bln
-
-    resp = requests.get('http://127.0.0.1:5004/downloadReport/'+kode_laporan)
-    print(resp)
-
-    if not os.path.exists(directory):
-        os.makedirs(directory)
-
-    output = open(directory+'/test.xls','wb')
-    output.write(resp.content)
-    output.close()
+    
+    read = pickle.loads(base64.b64decode(excel.encode()))
+    
+    # print(resp)
+    return read
 
 
 
-
-@app.route('/testLayar')
-def testLayar():
-
-    kodeReport = requests.get('http://127.0.0.1:5002/getKodeReportAll')
-    kodeAll = json.dumps(kodeReport.json())
-    loadKodeAll = json.loads(kodeAll)
-
-    if request.method == 'POST':
-        kode_laporan = request.form['kodLap']
-
-        detTem = requests.get('http://127.0.0.1:5002/detailFormatTemplate/'+kode_laporan)
-        detDump = json.dumps(detTem.json())
-        loadDetail = json.loads(detDump)
-
-
-        return render_template('testFormatTemplate.html', kode_laporan=kode_laporan
-            ,detailTemplate = loadDetail, detailFormatTemplate = loadDetail)
-
-
-    return render_template('ms2formatTemplate1.html', listKodeReport = loadKodeAll)
 
 
 

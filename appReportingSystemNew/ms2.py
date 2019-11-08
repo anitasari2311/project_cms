@@ -58,6 +58,7 @@ class Template:
             kode_laporan = dataLoad['kode_laporan']
             server_id = dataLoad['server_id']
             report_judul = dataLoad['report_judul']
+            report_judul.upper()
             report_deskripsi = dataLoad['report_deskripsi']
             report_header = dataLoad['report_header']
             report_footer = dataLoad['report_footer']
@@ -236,47 +237,86 @@ class Template:
                     db.close()
             print("MySQL connection is closed")
 
+    # PROSES INSERT KE m_detailh dan m_detailF
+    @app.route('/saveFormatTemplate/<data>',  methods = ['GET', 'POST'])
+    def saveFormatTemplate(data):
+        loadData = json.loads(data)
 
+        for i in loadData:
+            reportId = loadData['reportId']
+            mergeKolom = loadData['mergeKolom']
+            rataKanan = loadData['rataKanan']
+            rataKiri = loadData['rataKiri']
+            namaKolom = loadData['namaKolom']
+            posisiKolom = loadData['posisiKolom']
+            tipeKolom = loadData['tipeKolom']
+            lebarKolom = loadData['lebarKolom']
 
-    #Proses menyimpan format template
-    @app.route('/saveFormatTemplate')
-    def saveFormatTemplate(self, kode_laporan, kol, lok, forK, lebK):#, judul, periode, printAll, jmlHeader, jmlFooter, jmlKolom):
-        try: 
+        try:
             db = databaseCMS.db_template()
             cursor = db.cursor()
 
-            # cursor.execute('UPDATE m_report SET report_judul = "'+judul+'", report_periode ="'+periode+'", report_printAllYN = "'+printAll+'", report_header = "'+jmlHeader+'", report_footer = "'+jmlFooter+'", report_jumlahTampilan = "'+jmlKolom+'" WHERE report_id = "'+kode_laporan+'" ')
-            cursor.execute('DELETE FROM m_detailH WHERE report_id ="'+kode_laporan+'"  ')
-            cursor.execute('DELETE FROM m_detailF WHERE report_id ="'+kode_laporan+'"  ')
-            
-            for i in range (len(kol)):
-                
+            for i in range (len(loadData)):
                 try:
-                    cursor.execute('INSERT INTO m_detailH VALUES (%s,%s,%s,%s,%s)',( kode_laporan, kol[i], lok[i], forK[i], lebK[i]))
-                    connection.commit()
+
+                    cursor.execute('INSERT INTO m_detailh values (%s, %s, %s, %s, %s, %s, %s, %s)', (reportId,  namaKolom, posisiKolom, tipeKolom, lebarKolom, mergeKolom, rataKanan, rataKiri))                    
+                    db.commit()
+
+                    # print(kode_laporan)
+                    return 'Edit Schedule Success'
+                    
                 except Exception as e:
                     print(e)
 
-
-            # for i in range (len(kolF)):
-
-            #     try:
-            #         cursor.execute('INSERT INTO m_detailF VALUES (%s, %s, %s, %s)',(kode_laporan, kolF[i], 'XX', str(i+1) ) )
-            #         connection.commit()
-            #     except Exception as e:
-            #         print(e)
-
-
         except Error as e :
             print("Error while connecting file MySQL", e)
-
-
+        
         finally:
         #Closing DB Connection.
             if(db.is_connected()):
-                    cursor.close()
-                    db.close()
+                cursor.close()
+                db.close()
             print("MySQL connection is closed")
+
+    #Proses menyimpan format template
+    # @app.route('/saveFormatTemplate')
+    # def saveFormatTemplate(self, kode_laporan, kol, lok, forK, lebK):#, judul, periode, printAll, jmlHeader, jmlFooter, jmlKolom):
+    #     try: 
+    #         db = databaseCMS.db_template()
+    #         cursor = db.cursor()
+
+    #         # cursor.execute('UPDATE m_report SET report_judul = "'+judul+'", report_periode ="'+periode+'", report_printAllYN = "'+printAll+'", report_header = "'+jmlHeader+'", report_footer = "'+jmlFooter+'", report_jumlahTampilan = "'+jmlKolom+'" WHERE report_id = "'+kode_laporan+'" ')
+    #         cursor.execute('DELETE FROM m_detailH WHERE report_id ="'+kode_laporan+'"  ')
+    #         cursor.execute('DELETE FROM m_detailF WHERE report_id ="'+kode_laporan+'"  ')
+            
+    #         for i in range (len(kol)):
+                
+    #             try:
+    #                 cursor.execute('INSERT INTO m_detailH VALUES (%s,%s,%s,%s,%s)',( kode_laporan, kol[i], lok[i], forK[i], lebK[i]))
+    #                 connection.commit()
+    #             except Exception as e:
+    #                 print(e)
+
+
+    #         # for i in range (len(kolF)):
+
+    #         #     try:
+    #         #         cursor.execute('INSERT INTO m_detailF VALUES (%s, %s, %s, %s)',(kode_laporan, kolF[i], 'XX', str(i+1) ) )
+    #         #         connection.commit()
+    #         #     except Exception as e:
+    #         #         print(e)
+
+
+    #     except Error as e :
+    #         print("Error while connecting file MySQL", e)
+
+
+    #     finally:
+    #     #Closing DB Connection.
+    #         if(db.is_connected()):
+    #                 cursor.close()
+    #                 db.close()
+    #         print("MySQL connection is closed")
 
 
     #=========================================================================================
@@ -984,7 +1024,7 @@ class Schedule:
             db = databaseCMS.db_template()
             cursor = db.cursor()
 
-            cursor.execute('SELECT report_id, report_judul, report_deskripsi, report_periode, report_footer, org_id, report_header, LEFT(report_createdDate,11), report_userUpdate FROM m_report WHERE report_id = "'+kode_laporan+'" ')
+            cursor.execute('SELECT report_id, report_judul, report_deskripsi, report_periode, report_footer, org_id, report_header, LEFT(report_createdDate,11), report_userUpdate, server_id FROM m_report WHERE report_id = "'+kode_laporan+'" ')
 
             result = cursor.fetchone()
             
@@ -1207,15 +1247,6 @@ class Schedule:
                         cursor.close()
                         db.close()
                     print("MySQL connection is closed")
-
-
-
-
-
-
-
-
-
 
 
 

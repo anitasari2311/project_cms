@@ -114,14 +114,14 @@
                     {% endif %}
 
 <!-- CODINGAN BARU -->
-                    {% for normal in normal %}
-                    {% for important in important %}
+                    {% for x in taskProg %}
+                    
 
-                    {% if normal['requestId'] == 2 and row['requestPrioritas'] == '2' %}
+                    {% if x['taskNormal'] == '2' and row['requestPrioritas'] == '2' %}
                       <td> <button class="submit2" name = 'buttonDetail' value="{{row['requestId']}}" disabled="">Select
                       </button></td>
 
-                    {% elif important['requestId'] == 3 and row['requestPrioritas'] == '1' %}
+                    {% elif x['taskImportant'] == '3' and row['requestPrioritas'] == '1' %}
                       <td> <button class="submit2" name = 'buttonDetail' value="{{row['requestId']}}" disabled="">Select
                       </button></td>
 
@@ -130,7 +130,7 @@
                       </button></td>
                       
                     {% endif %}
-                    {% endfor %}
+            
                     {% endfor %}
                     
                   </tr>{% endfor %}

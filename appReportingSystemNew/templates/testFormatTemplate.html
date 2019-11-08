@@ -149,9 +149,19 @@
   <div id="fieldLetak"></div>
 </div>
 
+<div class="row">
+  <div class="col-35">
+    <label for="kolomMerge">Merge Column : </label>
+  </div>
+
+  <div class="col-55">
+    <input type="text" class="col-10" id="kolomMerge" name="kolomMerge">
+  </div>
+</div>
+
 <div class ="row">
   <div class ="col-35">
-    <label for="rataTengah">Kolom rata tengah : </label>
+    <label for="rataTengah">Center Column : </label>
   </div>
 
   <div class="col-55">
@@ -161,11 +171,21 @@
 
 <div class="row">
   <div class ="col-35">
-    <label for="rataKanan">Kolom rata kanan : </label>
+    <label for="rataKanan">Right Column : </label>
   </div>
 
   <div class="col-55">
     <input type="text" class = "col-10" id="rataKanan" name="rataKanan">
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-35">
+    <label for="rataKiri">Left Column : </label>
+  </div>
+
+  <div class="col-55">
+    <input type="text" class="col-10" id="rataKiri" name="rataKiri">
   </div>
 </div>
       
@@ -184,39 +204,43 @@
 
 {% for i in range (0, detailFormatTemplate|length) %}
 <div class ="row">
-  <div class =" col-35">
-    <label for="kolom">Kolom {{i+1}} : </label>
-  </div>
-        
-  <div class="col-55">
-    <input type="text" class = "col-10" id="kol" name="{{i+1}}" value="{{detailFormatTemplate[i].kolom}}">
-  </div>
-</div>
+
+    <div class="col-35" style="display: inline-block; width: 200px">
+      <label for="kolom">Kolom {{i+1}} : </label>
+    </div>
+  
+  <div style="display: inline-block">
+    <div style="display: inline-block; width: 200px">
+      <input type="text" class = "col-10" id="kol" name="{{i+1}}" value="{{detailFormatTemplate[i].kolom}}">
+    </div>
+
     
-<div class="row">
-  <div class="col-35">
-    <select id="lok" class = "col-10" name="lokasi{{i+1}}">
-      <option value="{{detailFormatTemplate[i].lokasi}}">{{detailFormatTemplate[i].lokasi}}</option>
-      {% for row3 in detailFormatTemplate %}
-      <option value="{{detailFormatTemplate[i][1]}}">{{row3.lokasi}}</option>
-      {% endfor %}
-    </select>
+
+    <div style="display: inline-block; width: 200px">
+      <select id="lok" class = "col-10" name="lokasi{{i+1}}">
+        <option value="{{detailFormatTemplate[i].lokasi}}">{{detailFormatTemplate[i].lokasi}}</option>
+        {% for row3 in detailFormatTemplate %}
+        <option value="{{detailFormatTemplate[i][1]}}">{{row3.lokasi}}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div style="display: inline-block; width: 200px">
+      <select id="format" class = "col-10" name="formatKolom{{i+1}}" value="{{detailFormatTemplate[i].tipeData}}">
+        <option value="String">String</option>
+        <option value="Integer">Integer</option>
+        <option value="Decimal">Decimal</option>
+        <option value="Percentage">Percentage</option>
+        <option value="Date">Date</option>
+        <option value="Time">Time</option>
+        <option value="Datetime">Datetime</option>
+      </select>
+    </div>
+
+    <div style="display: inline-block; width: 200px">
+      <input type="text" class = "col-10" id="lebar" name="lebar{{i+1}}" value="{{detailFormatTemplate[i].lebar}}">
+    </div>
   </div>
-
-
-    <select id="format" class = "col-10" name="formatKolom{{i+1}}" value="{{detailFormatTemplate[i].tipeData}}">
-      <option value="String">String</option>
-      <option value="Integer">Integer</option>
-      <option value="Decimal">Decimal</option>
-      <option value="Percentage">Percentage</option>
-      <option value="Date">Date</option>
-      <option value="Time">Time</option>
-      <option value="Datetime">Datetime</option>
-    </select>
-
-
-
-    <input type="text" class = "col-10" id="lebar" name="lebar{{i+1}}" value="{{detailFormatTemplate[i].lebar}}">
 </div>
 
 

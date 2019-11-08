@@ -151,16 +151,17 @@
                       </div>
 
                       <div class="row">
-
+                          {% if checkImage != 'NOIMAGE' %}
                           <div class="col-25">
                             <label for="lname">File</label>
                           </div>
-
+                          
                           <div class="col-75">
-                             
-                             <img  src="data:image/base64, {{detail_task['requestFile']}}"  style = "width: 600px; height: 400px"!important >
+                             <img  src="static/uploads/{{imageR}}" alt="{{imageR}}" style="width:100%">
                           </div>
+                            {% else %}
 
+                          {% endif %}
 
                       </div>
                     
