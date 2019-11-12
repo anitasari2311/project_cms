@@ -327,9 +327,6 @@ def sendDataRequest():
         print (reqSch_penerima)
 
 
-        
-        
-
         request_data = {
         'ProgId' : None,
         'UserId' : session['user_id'],
@@ -1281,56 +1278,59 @@ def sendNewTemplate():
 @app.route('/sendFormatTemplate',  methods =  ['POST', 'GET'])
 def sendFormatTemplate():
     
+    kode_laporan = request.form['kodLap']
+    kolom_merge = request.form['kolomMerge']
+    kolom_kanan = request.form['rataKanan']
+    kolom_tengah = request.form['rataTengah']
     kolomTemp = []
     posisiTemp = []
     tipeTemp = []
     lebarTemp = []
 
     if request.method == 'POST':
-        kode_laporan = request.form['kodLap']
-        kolom_merge = request.form['kolomMerge']
-        kolom_kanan = request.form['rataKanan']
-        kolom_kiri = request.form['rataKiri']
+        # kode_laporan = request.form['kodLap']
 
 
-        for isiKolom in ['kolom1', 'kolom2']:
-            if (request.form[isiKolom] is not None) and (request.form[isiKolom] is not ''):
-                kolom = kolomTemp.append(request.form[isiKolom])
-                kolomTemp1 = json.dumps(kolom)
+        for isiKolom in ['kolom1', 'kolom2', 'kolom3', 'kolom4', 'kolom5', 'kolom6', 'kolom7',
+        'kolom8', 'kolom9', 'kolom10', 'kolom11', 'kolom12', 'kolom13', 'kolom14']:
+            if(request.form[isiKolom] is not None) and (request.form[isiKolom] is not ''):
+                kolomTemp.append(request.form[isiKolom])
+                kolomTemp1 = json.dumps(kolomTemp)
         print(kolomTemp1)
 
-        for isiPosisi in ['posisi1', 'posisi2']:
+        for isiPosisi in ['posisi1', 'posisi2', 'posisi3', 'posisi4', 'posisi5', 'posisi6', 'posisi7',
+        'posisi8', 'posisi9', 'posisi10', 'posisi11', 'posisi12', 'posisi13', 'posisi14']:
             if(request.form[isiPosisi] is not None) and (request.form[isiPosisi] is not ''):
-                posisi = posisiTemp.append(request.form[isiPosisi])
-                posisiTemp1 = json.dumps(posisi)
+                posisiTemp.append(request.form[isiPosisi])
+                posisiTemp1 = json.dumps(posisiTemp)
         print(posisiTemp1)
         
-        for isiTipe in ['tipe1', 'tipe2']:
+        for isiTipe in ['tipe1', 'tipe2', 'tipe3', 'tipe4', 'tipe5', 'tipe6', 'tipe7',
+        'tipe8', 'tipe9', 'tipe10', 'tipe11', 'tipe12', 'tipe13', 'tipe14']:
             if (request.form[isiTipe] is not None) and (request.form[isiTipe] is not ''):
-                tipe = tipeTemp.append(request.form[isiTipe])
-                tipeTemp1 = json.dumps(tipe)
+                tipeTemp.append(request.form[isiTipe])
+                tipeTemp1 = json.dumps(tipeTemp)
         print(tipeTemp1)
 
-        for isiLebar in ['lebar1, lebar2']:
+        for isiLebar in ['lebar1', 'lebar2', 'lebar3', 'lebar4', 'lebar5', 'lebar6', 'lebar7',
+        'lebar8', 'lebar9', 'lebar10', 'lebar11', 'lebar12', 'lebar13', 'lebar14']:
             if (request.form[isiLebar] is not None) and (request.form[isiLebar] is not ''):
-                lebar = lebarTemp.append(request.form[isiLebar])
-                lebarTemp1 = json.dumps(lebar)
+                lebarTemp.append(request.form[isiLebar])
+                lebarTemp1 = json.dumps(lebarTemp)
         print(lebarTemp1)
 
         detailKolom = {
             'reportId' : kode_laporan,
             'mergeKolom': kolom_merge,
             'rataKanan' : kolom_kanan,
-            'rataKiri' : kolom_kiri,
-            'namaKolom' : kolomTemp1,
-            'posisiKolom' : posisiTemp1,
-            'tipeKolom' : tipeTemp1,
-            'lebarKolom' : lebarTemp1
+            'rataTengah' : kolom_tengah
         }
 
         detailKolom1 = json.dumps(detailKolom)
 
-        requests.post('http://127.0.0.1:5002/saveFormatTemplate/'+detailKolom1)
+        # requests.post('http://127.0.0.1:5002/saveFormatTemplate/'+detailKolom1)
+        requests.post('http://127.0.0.1:5002/saveFormatTemplate/'+detailKolom1+'/'+kolomTemp1+
+            '/'+posisiTemp1+'/'+tipeTemp1+'/'+lebarTemp1)
 
         return redirect (url_for('admin'))
     return redirect (url_for('admin'))

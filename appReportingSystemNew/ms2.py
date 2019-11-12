@@ -238,36 +238,34 @@ class Template:
             print("MySQL connection is closed")
 
     # PROSES INSERT KE m_detailh dan m_detailF
-    @app.route('/saveFormatTemplate/<data>',  methods = ['GET', 'POST'])
-    def saveFormatTemplate(data):
-        loadData = json.loads(data)
+    @app.route('/saveFormatTemplate/<detailKolom>/<nama>/<posisi>/<tipe>/<lebar>',  methods = ['GET', 'POST'])
+    def saveFormatTemplate(detailKolom, nama, posisi, tipe, lebar):
+        
+        formatKolom = json.loads(detailKolom)
+        namaKolom = json.loads(nama)
+        posisiKolom = json.loads(posisi)
+        tipeKolom = json.loads(tipe)
+        lebarKolom = json.loads(lebar)
 
-        for i in loadData:
-            reportId = loadData['reportId']
-            mergeKolom = loadData['mergeKolom']
-            rataKanan = loadData['rataKanan']
-            rataKiri = loadData['rataKiri']
-            namaKolom = loadData['namaKolom']
-            posisiKolom = loadData['posisiKolom']
-            tipeKolom = loadData['tipeKolom']
-            lebarKolom = loadData['lebarKolom']
+        for i in formatKolom:
+            reportId = formatKolom['reportId']
+            mergeKolom = formatKolom['mergeKolom']
+            rataKanan = formatKolom['rataKanan']
+            rataTengah = formatKolom['rataTengah']
 
         try:
             db = databaseCMS.db_template()
             cursor = db.cursor()
 
-            for i in range (len(loadData)):
+            for i in range (len(namaKolom)):
                 try:
 
-                    cursor.execute('INSERT INTO m_detailh values (%s, %s, %s, %s, %s, %s, %s, %s)', (reportId,  namaKolom, posisiKolom, tipeKolom, lebarKolom, mergeKolom, rataKanan, rataKiri))                    
+                    cursor.execute('INSERT INTO m_detailh values (%s, %s, %s, %s, %s, %s, %s, %s)', (reportId, namaKolom[i], posisiKolom[i], tipeKolom[i], lebarKolom[i], mergeKolom, rataKanan, rataTengah))                    
                     db.commit()
 
-                    # print(kode_laporan)
-                    return 'Edit Schedule Success'
-                    
                 except Exception as e:
-                    print(e)
-
+                   print(e)
+                    
         except Error as e :
             print("Error while connecting file MySQL", e)
         
@@ -277,6 +275,7 @@ class Template:
                 cursor.close()
                 db.close()
             print("MySQL connection is closed")
+
 
     #Proses menyimpan format template
     # @app.route('/saveFormatTemplate')

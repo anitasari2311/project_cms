@@ -190,7 +190,7 @@
             </div>
 
             <div class="col-75">
-                <input type="password" placeholder="Confirm password" onblur="cekPassword()" id="confPass" name="confPass">
+                <input type="password" placeholder="Confirm password" id="confPass" name="confPass">
             </div>
         </div>
 
@@ -199,7 +199,7 @@
 
         <center>
           <div class="colBut">
-            <button class="submit" id="save" onclick="success()">Save</button><br></div></form>
+            <button class="submit" id="save" onclick="validasi()">Save</button><br></div></form>
               
           <div class="colBut">
             <button class="submitRed">Cancel</button>
@@ -210,23 +210,15 @@
 </body>
 
 <script type="text/javascript">
-    function cekPassword(){
-        var newPass = document.getElementById("newPass").value;
-        var confPass = document.getElementById("confPass").value;
-
-        if (newPass != confPass){
-            alert("konfirmasi password harus sesuai dengan password baru")
-            return false;
-        }
-        return true;
-    }
-
-    function success(){
+    function validasi(){
       var success = document.getElementById("save").value;
       var newPass = document.getElementById("newPass").value;
       var confPass = document.getElementById("confPass").value;
 
-      if(newPass = confPass){
+      if(confPass != newPass){
+        alert("konfirmasi password harus sesuai dengan password baru")
+        return false;
+      }else{
         alert("Password successfully changed!")
         return false;
       }
@@ -234,20 +226,6 @@
 
     } 
 
-
-   /* window.onload = function() {
-      document.getElementById("newPass").onchange = validatePassword;
-      document.getElementById("confPass").onchange = validatePassword;
-    }
-
-    function validatePassword() {
-      var newPass = document.getElementById("newPas").value;
-      var confPass = document.getElementById("newPass").value;
-
-      if (newPass != confPass){
-        document.getElementById("confPass").setCustomValidity("Password tidak sama")
-      }
-    }*/
 </script>
 
 </html>

@@ -31,7 +31,7 @@
       </ul>
     </div>
 
-    <br>
+    <br><br>
 
       <center> <div class="judul">REQUEST REPORT</div></center>
 
@@ -43,8 +43,8 @@
             </div>
 
             <div class="col-75">
-               <input type="text" placeholder="Input title"
-                id="fname" name="inputTitle">
+               <input type="text" placeholder="Ex: Laporan Sales Pada Mall Fokus"
+                id="inputTitle" name="inputTitle">
             </div>
 
             <div class="col-25">
@@ -52,7 +52,7 @@
             </div>
 
             <div class="col-75">
-               <textarea id="subject" name="inputPurpose" placeholder="Input purpose" style="height:200px"></textarea>
+               <textarea id="inputPurpose" name="inputPurpose" placeholder="Ex: Untuk mengetahui total sales mall fokus" style="height:200px"></textarea>
             </div>          
 
             <div class="col-25">
@@ -60,8 +60,8 @@
             </div>
 
             <div class="col-75">
-              <textarea id="subject" name="keteranganlaporan" 
-              placeholder="Input filter" style="height:200px"></textarea>
+              <textarea id="inputFilter" name="keteranganlaporan" 
+              placeholder="Ex: sales > 500000" style="height:200px"></textarea>
             </div>
 
             <div class="col-25">
@@ -98,7 +98,7 @@
               </div>
 
               <div class="col-75">
-                   <input type="text" id="fname" name="inputDisplay" placeholder="Example: Procon, Comco, OutName">
+                   <input type="text" id="inputDisplay" name="inputDisplay" placeholder="Ex: Procon, Comco, OutName">
               </div>
             </div>
 
@@ -108,7 +108,7 @@
               </div>
 
               <div class="col-75">
-                   <input type="text" id="fname" name="inputPeriode" placeholder="Example: B1- B3 or YYYY-YYYY or DD/MM/YYYY">
+                   <input type="text" id="inputPeriode" name="inputPeriode" placeholder="Ex: B1- B3 or YYYY-YYYY or DD/MM/YYYY">
               </div>
             </div>
 
@@ -483,7 +483,22 @@ function valDeadline(formfield){
   }
 }
 
+/*function validasiForm(){
+  var judul, tujuan, filter, display, periode
+  judul = document.getElementById("inputTitle");
+  tujuan = document.getElementById("inputPurpose");
+  display = document.getElementById("inputDisplay");
+  periode = document.getElementById("inputPeriode");
 
-
+  if (judul = '') {
+    alert("Judul harus diisi")
+  }else if (tujuan = ''){
+    alert("Tujuan harus diisi")
+  }else if (display = '') {
+    alert("Display harus diisi")
+  }else (periode = ''){
+    alert("periode harus diisi")
+  }
+}*/
 
 </script>

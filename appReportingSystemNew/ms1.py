@@ -1397,7 +1397,27 @@ class RequestLaporan:
                         cursor.close()
                         db.close()
                     print("MySQL connection is closed")
-    
+
+    # @app.route('/cekPasswordLama/<uId>')
+    # def cekPasswordLama(uId):
+
+    #     try:
+    #         db = databaseCMS.db_request()
+
+    #         cursor = db.cursor()
+    #         cursor.execute(' SELECT user_password from m_user where user_id = "'+uId+'" ')
+    #         db.commit()
+
+    #     except Error as e:
+    #         print("Error while connecting file MySQL", e)
+    #         flash('Error', e)
+
+    #     finally:
+    #         if(db.is_connected()):
+    #             cursor.close()
+    #             db.close()
+    #         print("MySQL connection is closed")
+
 
     @app.route('/updateDataPassword/<data>', methods = ['POST', 'GET'])
     def updateDataPassword(data):
