@@ -30,7 +30,14 @@ app.config['FOLDER_SCHEDULE'] = 'Schedule'
 
 
 
+@app.route('/test')
+def test():
 
+    return render_template('order.html')
+
+@app.route('/menubar')
+def menubar():
+    return render_template('tesMenuBar.html')
 
 ##########################                  LOGIN                          ############################
 @app.route('/')
