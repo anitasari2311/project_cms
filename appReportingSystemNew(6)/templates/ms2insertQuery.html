@@ -10,10 +10,12 @@
 
 
 {% if session.get('position') == 'Admin' %}
-        {% extends "NAVBARPROG.html" %}
+  {% extends "NAVBARPROG.html" %}
+  {% set active_page = 'query' %}
 {% else %}
 
  {% extends "NAVBARSPV.html" %}
+ {% set active_page = 'query' %}
 {% endif %}
   
 
@@ -41,12 +43,12 @@
 
 
     <div class="rowF">
-      <label for="kodeReport">Query 1 : </label>
+      <label for="kodeReport">Query 1</label>
       <div class ="column">
         <textarea  id = "qi1" class = "textQuery" name="query1" style="width: 400px; height: 175px"></textarea>
       </div>
 
-      <label for="kodeReport">Query 8 : </label>
+      <label for="kodeReport">Query 8</label>
       <div class ="column">
         <textarea  id = "qi8" class = "textQuery" name="query8" style="width: 400px; height: 175px"></textarea>
       </div>
@@ -54,12 +56,12 @@
 <br>
 
     <div class="rowF">
-      <label for="kodeReport">Query 2 : </label>
+      <label for="kodeReport">Query 2</label>
       <div class ="column">
         <textarea  id = "qi2" class = "textQuery" name="query2" style="width: 400px; height: 175px"></textarea>
       </div>
 
-      <label for="kodeReport">Query 9 : </label>
+      <label for="kodeReport">Query 9</label>
       <div class ="column">
         <textarea  id = "qi9" class = "textQuery" name="query9" style="width: 400px; height: 175px"></textarea>    
       </div>
@@ -68,12 +70,12 @@
 <br>
 
     <div class="rowF">
-      <label for="kodeReport">Query 3 : </label>
+      <label for="kodeReport">Query 3</label>
       <div class ="column">
         <textarea  id = "qi3" class = "textQuery" name="query3" style="width: 400px; height: 175px"></textarea>
       </div>
 
-      <label for="kodeReport">Query 10 : </label>
+      <label for="kodeReport">Query 10</label>
       <div class ="column">
         <textarea  id = "qi10" class = "textQuery" name="query10" style="width: 400px; height: 175px"></textarea>
       </div>
@@ -82,12 +84,12 @@
 <br>
 
     <div class="rowF">
-      <label for="kodeReport">Query 4 : </label>
+      <label for="kodeReport">Query 4</label>
       <div class ="column">
         <textarea  id = "qi4" class = "textQuery" name="query4" style="width: 400px; height: 175px"></textarea>
       </div>
 
-      <label for="kodeReport">Query 11 : </label>
+      <label for="kodeReport">Query 11</label>
       <div class ="column">
           <textarea  id = "qi11" class = "textQuery" name="query11" style="width: 400px; height: 175px"></textarea>
       </div>
@@ -96,12 +98,12 @@
 <br>
 
     <div class="rowF">
-      <label for="kodeReport">Query 5 : </label>
+      <label for="kodeReport">Query 5</label>
       <div class ="column">
         <textarea  id = "qi5" class = "textQuery" name="query5" style="width: 400px; height: 175px"></textarea>
       </div>
 
-      <label for="kodeReport">Query 12 : </label>
+      <label for="kodeReport">Query 12</label>
         <div class ="column">
           <textarea  id = "qi12" class = "textQuery" name="query12" style="width: 400px; height: 175px"></textarea>
         </div>
@@ -110,12 +112,12 @@
 <br>
 
     <div class="rowF">
-      <label for="kodeReport">Query 6 : </label>
+      <label for="kodeReport">Query 6</label>
       <div class ="column">
         <textarea  id = "qi6" class = "textQuery" name="query6" style="width: 400px; height: 175px"></textarea>
       </div>
 
-      <label for="kodeReport">Query 13 : </label>
+      <label for="kodeReport">Query 13</label>
       <div class ="column">
         <textarea  id = "qi13" class = "textQuery" name="query13" style="width: 400px; height: 175px"></textarea>
       </div>
@@ -124,12 +126,12 @@
 <br>
 
     <div class="rowF">
-      <label for="kodeReport">Query 7 : </label>
+      <label for="kodeReport">Query 7</label>
       <div class ="column">
         <textarea  id = "qi7" class = "textQuery" name="query7" style="width: 400px; height: 175px"></textarea>
       </div>
 
-      <label for="kodeReport">Query 14 : </label>
+      <label for="kodeReport">Query 14</label>
         <div class ="column">
           <textarea  id = "qi14" class = "textQuery" name="query14" style="width: 400px; height: 175px"></textarea>
         </div>
@@ -141,10 +143,16 @@
     <button class="submit" id="save" onclick="sukses()">Save</button>
   </div></form>
 
+{% if session.get('position') == 'Admin' %}
   <div class="colBut">
-    <form action="/admin">
+    <form action="/admin/home">
     <button class="submitRed">Cancel</button></form></div>
- 
+{% else %}
+  <div class="colBut">
+    <form action="/spv/home">
+    <button class="submitRed">Cancel</button></form></div>
+{% endif %}
+
 </center>
 
 

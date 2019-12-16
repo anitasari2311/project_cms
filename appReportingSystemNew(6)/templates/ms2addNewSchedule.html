@@ -24,7 +24,7 @@
         <form action = "/sendAddNewSchedule" autocomplete="off" method ='POST' enctype="multipart/form-data">
           <div class ="row">
             <div class ="col-35">
-              <label for="kodeReport">Choose Report : </label>
+              <label for="kodeReport">Choose Report</label>
             </div>
 
           <div class="col-55">
@@ -39,7 +39,7 @@
 
           <div class ="row">
             <div class ="col-35">
-              <label for="header">Header : </label>
+              <label for="header">Header</label>
             </div>
 
             <div class="col-55">
@@ -49,7 +49,7 @@
 
           <div class ="row">
             <div class ="col-35">
-              <label for="keterangan">Description : </label>
+              <label for="keterangan">Description</label>
             </div>
 
             <div class="col-55">
@@ -59,7 +59,7 @@
 
           <div class ="row">
             <div class ="col-35">
-              <label for="note">Note : </label>
+              <label for="note">Note</label>
             </div>
 
             <div class="col-55">
@@ -129,7 +129,7 @@
 
             <div class ="row">
               <div class ="col-35">
-                <label for="grouping">Grouping : </label>
+                <label for="grouping">Grouping</label>
               </div>
 
               <div class="col-55">
@@ -139,7 +139,7 @@
 
             <div class="row"  id ="text2">
               <div class="col-35">
-                <label for="Schedule">Schedule:</label>
+                <label for="Schedule">Schedule</label>
               </div>
 
               <div class="col-55">               
@@ -261,12 +261,20 @@
         <center>
           <div class="colBut">
             <button class="Submit" name='Button_press' value="Submit">Submit</button></div>
-
-          <div class="colBut">   
-             <form action="/user">
-                <button class="submitRed">Cancel</button>
-             </form>
-          </div>
+          
+          {% if session.get('position') == 'Admin' %}
+            <div class="colBut">   
+               <form action="/admin/home">
+                  <button class="submitRed">Cancel</button>
+               </form>
+            </div>
+          {% else %}
+            <div class="colBut">   
+               <form action="/spv/home">
+                  <button class="submitRed">Cancel</button>
+               </form>
+            </div>
+          {% endif %}
         </center>
         {% endblock %}
         </body>

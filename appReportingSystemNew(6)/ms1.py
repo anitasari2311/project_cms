@@ -63,7 +63,7 @@ class RequestLaporan:
     #=========================================================================================
     #=========================================================================================
     #=========================================================================================
-        
+
 
     @app.route('/getNumberId', methods = ['POST','GET'])
     def get_numberID():
@@ -730,7 +730,7 @@ class RequestLaporan:
             db = databaseCMS.db_request()
         
             cursor = db.cursor()
-            cursor.execute(''.join(['SELECT a.req_id, req_judul, req_deskripsi, org_nama, ktgri_nama, req_tampilan, req_periode, req_deadline, req_file, reqSch_tanggal, reqSch_bulan, reqSch_hari, req_kodeLaporan, req_tujuan  FROM t_request a LEFT JOIN m_organisasi b ON a.org_id = b.org_id LEFT JOIN m_kategori c ON a.ktgri_id = c.ktgri_id LEFT JOIN t_reqSchedule d ON a.req_id = d.req_id  WHERE a.req_id = "'+request_id+'"']))            
+            cursor.execute(''.join(['SELECT a.req_id, req_judul, req_deskripsi, org_nama, ktgri_nama, req_tampilan, req_periode, req_deadline, req_file, reqSch_tanggal, reqSch_bulan, reqSch_hari, req_kodeLaporan, req_tujuan, a.prog_id  FROM t_request a LEFT JOIN m_organisasi b ON a.org_id = b.org_id LEFT JOIN m_kategori c ON a.ktgri_id = c.ktgri_id LEFT JOIN t_reqSchedule d ON a.req_id = d.req_id  WHERE a.req_id = "'+request_id+'"']))            
            
             resultDetail = cursor.fetchall()
 
@@ -751,7 +751,8 @@ class RequestLaporan:
                 'reqSchBulan' : row[10],
                 'reqSchHari' : row[11],
                 'requestKodeLaporan' : row[12],
-                'requestTujuan' : row[13]
+                'requestTujuan' : row[13],
+                'progId'            :row[14]
                 }
                 detailTaskList.append(detailDict)
 
@@ -1166,16 +1167,52 @@ class RequestLaporan:
     #=========================================================================================
     #=========================================================================================
 
-    #==[User, Admin]==
-    #Mendapatkan nama organisasi secara spesifik berdasarkan Id Org
-    #app.py /sendAddNewSchedule, MS2 /getListReport, MS3 /preview & runschedule
+   
+
+
+    #==[User]==
+    #Mendapatkan nama kategori secara spesifik berdasarkan Id Kategori
+    #app.py /sendAddNewSchedule
+    @app.route('/getNamaKat/<idKat>', methods=['POST','GET'])
+    def getNamaKat(idKat):
+        try:
+            db = databaseCMS.db_request()
+            cursor = db.cursor()
+
+            cursor.execute('SELECT ktgri_nama, ktgri_id, ktgri_aktifYN from m_kategori WHERE ktgri_id ="'+idKat+'"')
+
+            kategori = cursor.fetchall()
+
+            katList = []
+            for i in kategori:
+                katDict = {
+                'kat_name' : i[0],
+                'kat_id' : i[1],
+                'kat_aktif' : i[2]
+                }
+                katList.append(katDict)
+
+            namaKat = json.dumps(katList)
+
+
+            return namaKat
+            
+        except Error as e :
+            print("Error while connecting file MySQL", e)
+        finally:
+        #Closing DB Connection.
+            if(db.is_connected()):
+                    cursor.close()
+                    db.close()
+            print("MySQL connection is closed")
+    
     @app.route('/getNamaOrg/<idOrg>', methods=['POST','GET'])
     def getNamaOrg(idOrg):
         try:
             db = databaseCMS.db_request()
             cursor = db.cursor()
 
-            cursor.execute('SELECT org_nama, org_id from m_organisasi WHERE org_id ="'+idOrg+'"')
+            cursor.execute('SELECT org_nama, org_id, org_aktifYN from m_organisasi WHERE org_id ="'+idOrg+'"')
 
             org = cursor.fetchall()
             # clear = str(org).replace("('",'').replace("',)","")
@@ -1183,7 +1220,8 @@ class RequestLaporan:
             for i in org:
                 orgDict = {
                 'org_name' : i[0],
-                'org_id' : i[1]
+                'org_id' : i[1],
+                'org_aktifYN' : i[2]
                 }
                 orgList.append(orgDict)
 
@@ -1202,42 +1240,6 @@ class RequestLaporan:
                     cursor.close()
                     db.close()
             print("MySQL connection is closed")
-
-
-    #==[User]==
-    #Mendapatkan nama kategori secara spesifik berdasarkan Id Kategori
-    #app.py /sendAddNewSchedule
-    @app.route('/getNamaKat/<idKat>', methods=['POST','GET'])
-    def getNamaKat(idKat):
-        try:
-            db = databaseCMS.db_request()
-            cursor = db.cursor()
-
-            cursor.execute('SELECT ktgri_nama from m_kategori WHERE ktgri_id ="'+idKat+'"')
-
-            kategori = cursor.fetchall()
-
-            katList = []
-            for i in kategori:
-                katDict = {
-                'kat_name' : i[0]
-                }
-                katList.append(katDict)
-
-            namaKat = json.dumps(katList)
-
-
-            return namaKat
-            
-        except Error as e :
-            print("Error while connecting file MySQL", e)
-        finally:
-        #Closing DB Connection.
-            if(db.is_connected()):
-                    cursor.close()
-                    db.close()
-            print("MySQL connection is closed")
-
 
     #==[User, Admin]==
     #Menampilkan detail organisasi di layar add new Template & add new Request
@@ -1314,6 +1316,77 @@ class RequestLaporan:
                         cursor.close()
                         db.close()
                     print("MySQL connection is closed")
+
+    @app.route('/allKategori', methods=['POST', 'GET'])
+    def allKategori():
+        try: 
+            db = databaseCMS.db_request()
+
+            cursor = db.cursor()
+     
+            cursor.execute('SELECT ktgri_id, ktgri_nama, ktgri_aktifYN from m_kategori ORDER BY ktgri_nama')
+            
+            resultKat = cursor.fetchall()
+
+            katList = []
+            for row in resultKat:
+                katDict = {
+                'Id' : row[0],
+                'Nama' : row[1],
+                'AktifYN' : row[2]
+                }
+                katList.append(katDict)
+            katResult = json.dumps(katList)
+
+            print("=== [ allKategori ] ===")
+            print("==========================")
+            
+            return katResult
+
+        except Error as e :
+                print("Error while connecting file MySQL", e)
+        finally:
+                #Closing DB Connection.
+                    if(db.is_connected()):
+                        cursor.close()
+                        db.close()
+                    print("MySQL connection is closed")
+
+    @app.route('/allOrganisasi', methods=['POST', 'GET'])
+    def allOrganisasi():
+        try: 
+            db = databaseCMS.db_request()
+
+            cursor = db.cursor()
+     
+            cursor.execute('SELECT org_id, org_nama, org_aktifYN from m_organisasi ORDER BY org_nama')
+            
+            resultOrg = cursor.fetchall()
+
+            orgList = []
+            for row in resultOrg:
+                orgDict = {
+                'Id' : row[0],
+                'Nama' : row[1],
+                'AktifYN' : row[2]
+                }
+                orgList.append(orgDict)
+            orgResult = json.dumps(orgList)
+
+            print("=== [ allOrganisasi ] ===")
+            print("==========================")
+            
+            return orgResult
+
+        except Error as e :
+                print("Error while connecting file MySQL", e)
+        finally:
+                #Closing DB Connection.
+                    if(db.is_connected()):
+                        cursor.close()
+                        db.close()
+                    print("MySQL connection is closed")
+
     #==[User, Admin]
     #Untuk menampilkan nama PIC
     #app.py /newRequest /sendDataRequest /editReport /sendEditRequest /addNewSchedule /sendAddNewSchedule /editSchedule /sendEditSchedule
@@ -1551,7 +1624,116 @@ class RequestLaporan:
                         db.close()
                     print("MySQL connection is closed") 
 
+    @app.route('/insertDataKategori/<data>', methods=['POST', 'GET'])
+    def insertDataKategori(data):
+        if request.method == 'POST' :
+            dataKategori = json.loads(data)
 
+            for x in dataKategori:
+                id_kategori = dataKategori['kategoriId']
+                nama_kategori = dataKategori['kategoriName']
+                aktif_YN = dataKategori['kategoriAktif']
+
+            try:
+                db = databaseCMS.db_request()
+                cursor = db.cursor()
+
+                cursor.execute(' DELETE FROM m_kategori WHERE ktgri_id = "'+id_kategori+'" ')
+                db.commit()
+
+                cursor.execute(' INSERT INTO m_kategori VALUES (%s, %s, %s)', (id_kategori, nama_kategori, aktif_YN))
+                db.commit()
+
+                print("berhasil")
+            except Error as e:
+                print("Error while connecting file MySQL", e)
+                flash('Error,', e)
+
+            finally:
+                    #Closing DB Connection.
+                if(db.is_connected()):
+                    cursor.close()
+                    db.close()
+                print("MySQL connection is closed")
+
+    @app.route('/insertDataOrganisasi/<data>', methods=['POST', 'GET'])
+    def insertDataOrganisasi(data):
+        if request.method == 'POST' :
+            dataOrganisasi = json.loads(data)
+
+            for x in dataOrganisasi:
+                id_organisasi = dataOrganisasi['organisasiId']
+                nama_organisasi = dataOrganisasi['organisasiName']
+                aktif_YN = dataOrganisasi['organisasiAktif']
+
+            try:
+                db = databaseCMS.db_request()
+                cursor = db.cursor()
+
+                cursor.execute(' DELETE FROM m_organisasi WHERE org_id = "'+id_organisasi+'" ')
+                db.commit()
+
+                cursor.execute(' INSERT INTO m_organisasi VALUES (%s, %s, %s)', (id_organisasi, nama_organisasi, aktif_YN))
+                db.commit()
+
+                print("berhasil")
+            except Error as e:
+                print("Error while connecting file MySQL", e)
+                flash('Error,', e)
+
+            finally:
+                    #Closing DB Connection.
+                if(db.is_connected()):
+                    cursor.close()
+                    db.close()
+                print("MySQL connection is closed")
+
+    @app.route('/countFinishedTask/<uId>', methods=['GET'])
+    def countFinishedTask(uId):
+       
+        try:
+            db = databaseCMS.db_request()
+            cursor = db.cursor()
+            cursor.execute('SELECT COUNT(req_id)\
+                            FROM t_request\
+                            WHERE req_status = "Finished" \
+                            and prog_id = "'+uId+'"')
+            res = cursor.fetchone()
+
+            return json.dumps(res)
+        except Error as e:
+                print("Error while connecting file MySQL", e)
+                flash('Error,', e)
+
+        finally:
+                #Closing DB Connection.
+            if(db.is_connected()):
+                cursor.close()
+                db.close()
+            print("MySQL connection is closed")
+
+    @app.route('/countOnProgressTask/', methods=['GET'])
+    def countOnProgressTask():
+       
+        try:
+            db = databaseCMS.db_request()
+            cursor = db.cursor()
+            cursor.execute('SELECT COUNT(req_id)\
+                            FROM t_request\
+                            WHERE req_status = "On Process" ')
+            res = cursor.fetchone()
+
+            return json.dumps(res)
+        except Error as e:
+                print("Error while connecting file MySQL", e)
+                flash('Error,', e)
+
+        finally:
+                #Closing DB Connection.
+            if(db.is_connected()):
+                cursor.close()
+                db.close()
+            print("MySQL connection is closed")
 
 if __name__ == "__main__":
     app.run(debug=True, port='5001')

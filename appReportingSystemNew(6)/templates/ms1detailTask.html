@@ -157,7 +157,7 @@
                           </div>
                           
                           <div class="col-75">
-                             <img  src="static/uploads/{{imageR}}" alt="{{imageR}}" style="width:100%">
+                             <img  src="/static/uploads/{{imageR}}" alt="{{imageR}}" style="width:100%">
                           </div>
                             {% else %}
 
@@ -228,12 +228,21 @@
 
                            <br><br>              <center>
 
-            <div class="colBut"><form action ="/acceptRequest" method = "post">
+            <!-- {% if detail_task['progId'] == '' or detail_task['progId'] is none %} -->
+
+            
+            <div class="colBut">
+              <form action ="/admin/task/available/{{detail_task['requestId']}}" method = "post">
               <button class="submit" value="{{detail_task['requestId']}}" name="btnConfirmReq" >Accept</button></form></div>
             
-            <div class="colBut"><form action ="/availableTask">
+            {% if session.get('position') == 'Admin' %}
+            <div class="colBut"><form action ="/admin/home">
               <button class="submitRed" value="Cancel">Cancel</button></form></div>
-            
+            {% else %}
+            <div class="colBut"><form action ="/spv/home">
+              <button class="submitRed" value="Cancel">Cancel</button></form></div>
+            {% endif %}
+            <!-- {% endif %} -->
             {% endfor %}
           </center>
 

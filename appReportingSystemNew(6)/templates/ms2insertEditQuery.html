@@ -27,7 +27,7 @@
 
 <center>
 <div class="containInsert">
-    <form action="/sendNewQuery" method = "POST">
+    <form action="/admin/query/edit/{{kode_laporan}}" method = "POST">
     <div class ="rowF">
         <label for="kodeReport">Report Code : </label>
         <div class="column">
@@ -40,14 +40,14 @@
       {% for i in range (0, 7) %}
       <div class="rowF">
         {%if editQ[i] != '' and editQ[i] != none %}
-          <label for="kodeReport">Query {{i+1}} : </label>
+          <label for="kodeReport">Query {{i+1}}</label>
           <div class ="column">
             <textarea  id = "q{{i+1}}" class = "textQuery" name="query{{i+1}}" style="width: 400px; height: 175px">{{editQ[i][0]}}</textarea>
           </div>
       
         {%else%}
   
-          <label for="kodeReport">Query {{i+1}} : </label>
+          <label for="kodeReport">Query {{i+1}}</label>
           <div class ="column">
             <textarea  id = "q{{i+1}}" class = "textQuery" name="query{{i+1}}" style="width: 400px; height: 175px"></textarea>
           </div>
@@ -55,13 +55,13 @@
         {%endif%}
         
         {%if editQ[i+7] != '' and editQ[i+7] != none %}
-          <label for="kodeReport">Query {{i+8}} : </label>
+          <label for="kodeReport">Query {{i+8}}</label>
           <div class ="column">
             <textarea  id = "q{{i+8}}" class = "textQuery" name="query{{i+8}}" style="width: 400px; height: 175px">{{editQ[i+7][0]}}</textarea>
           </div>
         {%else%}
 
-          <label for="kodeReport">Query {{i+8}} : </label>
+          <label for="kodeReport">Query {{i+8}}</label>
           <div class ="column">
             <textarea  id = "q{{i+8}}" class = "textQuery" name="query{{i+8}}" style="width: 400px; height: 175px"></textarea>
           </div>
@@ -84,10 +84,15 @@
       <button class="" onclick="copyToClipboard('#q1')"> Copy Query </button> 
     </div>
 
-
+{% if session.get('position') == 'Admin' %}
       <div class="colBut">
-        <form action="/admin">
+        <form action="/admin/home">
           <button class="submitRed">Cancel</button></div>
+{% else %}
+        <div class="colBut">
+        <form action="/spv">
+          <button class="submitRed">Cancel</button></div>
+{% endif %}
 </center>      
 
 

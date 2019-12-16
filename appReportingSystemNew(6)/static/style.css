@@ -1,3 +1,16 @@
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+  width: 20%;
+}
+
+.card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+.containerCard {
+  padding: 2px 16px;
+}
 .clock{
   position: absolute;
   
@@ -61,11 +74,11 @@ input[type=text2], input[type=password2] {
 
 }
 body{
-  
+  font-family: 'Roboto Mono', monospace;
 }
 h1{
   font-size: 30px;
-  font-family: 'Arial'
+  font-family: 'Roboto Mono', monospace;
 }
 
 
@@ -378,7 +391,7 @@ input[type=cancel] {
   -webkit-text-fill-color: transparent;
   padding-top: 40px;
   padding-bottom: 30px; 
-  font-family: 'Arial';
+  font-family: 'Roboto Mono', monospace;
   font-weight: 750;
 
 }
@@ -386,7 +399,7 @@ input[type=cancel] {
 .subjudul {
   font-size: 100%;
   padding-bottom: 5px; 
-  font-family: 'Arial';
+  font-family: 'Roboto Mono', monospace;
   font-weight: 50;
   background: -webkit-linear-gradient(#333, #4CAF50);
   -webkit-background-clip: text;
@@ -486,7 +499,7 @@ input[type=cancel] {
 /*                    TABLE                   */
 
 #list {
-  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  font-family: 'Roboto Mono', monospace;
   border-collapse: collapse;
   width: 100%;
   
@@ -510,7 +523,7 @@ input[type=cancel] {
 }
 
 #listkedua {
-  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  font-family: 'Roboto Mono', monospace;
   border-collapse: collapse;
   width: 100%;
 }
@@ -746,7 +759,7 @@ li.Soccer {
 
 /* Dropdown button */
 .dropdown .dropbtn {
-  font-size: 16px;
+  font-size: 15px;
   border: none;
   outline: none;
   color: black;
@@ -860,4 +873,13 @@ img {vertical-align: middle;}
 @keyframes fade {
   from {opacity: .4} 
   to {opacity: 1}
+}
+
+
+
+@media only screen and (max-width:620px) {
+  /* For mobile phones: */
+  .container2, .containerEdit, .containLogin {
+    width:100%;
+  }
 }

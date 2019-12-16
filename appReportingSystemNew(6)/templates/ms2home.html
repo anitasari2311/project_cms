@@ -11,33 +11,67 @@
     {% set active_page = 'home' %}
 
     {% block content %}
-    <br><br><br><br>
-    
-<h3><p align="Right">{{day}}, <span  id="time" align="Left"> </span></p></h3>
-<h2><p align="Right"> Welcome, {{session['username']}}</p></h2>
+    <br><br><br>
 
-<br><br><br>
+<!-- <h3><p align="Right">{{day}}, <span  id="time" align="Left"> </span></p></h3>
+<h2><p align="Right"> Welcome, {{session['username']}}</p></h2> -->
 
-<div class="slideshow-container">
-  <div class="mySlides fade">
-    <img src="/static/images/rep1.png" style="width:100%; border: 0">
+<br><br><br><br><br><br>
+
+
+<center>
+  <div class="card" style="display: inline-block; width: 300px; ">
+    <!-- <img src="img_avatar.png" alt="Avatar" style="width:100%"> -->
+    <div class="containerCard">
+      <h4><b>Profile</b></h4> 
+      <p>{{session['user_id']}}</p>
+      <p>{{session['username']}}</p> 
+    </div>
   </div>
 
+  <div class="card" style="display: inline-block;">
+    <!-- <img src="img_avatar.png" alt="Avatar" style="width:100%"> -->
+    <div class="containerCard">
+      <h4><b>Ongoing Task(s)</b></h4> 
+      {% for i in listTask %}
+      <p>{{i['requestId']}}</p> 
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="card" style="display: inline-block;">
+    <!-- <img src="img_avatar.png" alt="Avatar" style="width:100%"> -->
+    <div class="containerCard">
+      <h4><b>Total Finished</b></h4> 
+      <p>You have finished <b>{{count}}</b> task(s).</p>
+      <p style="color: white;">dhsfvbdshfbdsfbhsdfsdfh</p>
+    </div>
+  </div>
+</center>
+
+
+<!-- <div class="slideshow-container">
   <div class="mySlides fade">
+    <img src="/static/images/rep1.png" style="width:100%; border: 0;opacity: 0.5;">
+  </div> -->
+
+<!--   <div class="mySlides fade">
     <img src="/static/images/logoPharos.png" style="width:100%; border: 0">
   </div>
   <div class="mySlides fade">
     <img src="/static/images/sky.jpg" style="width:100%; border: 0">
-  </div>
+  </div> -->
 
-</div>
+<!-- </div> -->
 <br>
 
-<div style="text-align:center">
+<!-- <div style="text-align:center">
   <span class="dot"></span> 
   <span class="dot"></span> 
   <span class="dot"></span> 
-</div>
+</div> -->
+
+
 {% endblock %}
 
 {% block script %}

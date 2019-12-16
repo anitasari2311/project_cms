@@ -13,22 +13,34 @@ import requests
 app = Flask(__name__, static_folder='app/static')
 app.static_folder = 'static'
 app.secret_key = 'ms2'
-    
+
+
+micro1 = 'http://127.0.0.1:5001/'
+micro2 = 'http://127.0.0.1:5002/'
+micro3 = 'http://127.0.0.1:5003/'
+micro4 = 'http://127.0.0.1:5004/'
 
 class Template:
 
     def __init__(self):
-        self.KodeLaporan = ''
-        self.namaLaporan = ''
-        self.namaOrganisasi = ''
-        self.namaKategori = ''
-        self.namaServer = ''
+        self.kode_laporan = ''
+        self.nama_laporan = ''
+        self.organisasi = ''
+        self.kategori = ''
+        self.server = ''
         self.deskripsi = ''
-        self.jumlahKolom = ''
-        self.jumlahHeader = ''
-        self.jumlahFooter = ''
+        self.jumlah_kolom = ''
+        self.jumlah_header = ''
+        self.jumlah_footer = ''
         self.periode = ''
         self.printAll = ''
+
+    # def NewTemplate(self, kode_laporan, nama_laporan, organisasi, kategori, server, 
+    #                 deskripsi, jumlah_kolom, jumlah_header, jumlah_footer, periode, print_allYN):
+
+    # def EditTemplate
+
+
     #=========================================================================================
     #=========================================================================================
     #=========================================================================================
@@ -107,7 +119,7 @@ class Template:
             db = databaseCMS.db_template()
             cursor = db.cursor()
 
-            cursor.execute(' SELECT report_id, report_periode, report_printAllYN, report_judul, report_header, report_footer, report_jumlahTampilan FROM m_report WHERE report_id = "'+kode_laporan+'" ')
+            cursor.execute(' SELECT report_id, report_periode, report_printAllYN, report_judul, report_header, report_footer, report_jumlahTampilan, report_tujuan, report_deskripsi FROM m_report WHERE report_id = "'+kode_laporan+'" ')
 
             detailFormatTemplate = cursor.fetchall()
 
@@ -121,6 +133,8 @@ class Template:
                 'reportHeader'      : row[4],
                 'reportFooter'      : row[5],
                 'reportJmlTampilan' : row[6],
+                'reportTujuan'      : row[7],
+                'reportDeskripsi'   : row[8]
                 }
                 detList.append(detDict)
 
@@ -146,7 +160,7 @@ class Template:
             cursor = db.cursor()
 
             # cursor.execute(' SELECT c.report_id, c.report_periode, c.report_printAllYN, c.report_judul, c.report_header, c.report_footer, c.report_jumlahTampilan, c.report_deskripsi, a.nama_kolom, a.lokasi, a.format_kolom, a.lebar_kolom, b.nama_kolom as namaFooter, b.lokasi as lokasiFooter, a.format_merge, a.format_rataTengah, a.format_rataKanan,b.jenisFooter FROM m_report c LEFT JOIN m_detailF b ON c.report_id = b.report_id LEFT JOIN m_detailH a ON  c.report_id = a.report_id WHERE a.report_id = "'+kode_laporan+'"  ')
-            cursor.execute(' SELECT c.report_id, c.report_periode, c.report_printAllYN, c.report_judul, c.report_header, c.report_footer, c.report_jumlahTampilan, c.report_deskripsi, a.nama_kolom, a.lokasi, a.format_kolom, a.lebar_kolom, a.format_merge, a.format_rataTengah, a.format_rataKanan FROM m_report c LEFT JOIN m_detailH a ON  c.report_id = a.report_id WHERE a.report_id = "'+kode_laporan+'"  ')
+            cursor.execute(' SELECT c.report_id, c.report_periode, c.report_printAllYN, c.report_judul, c.report_header, c.report_footer, c.report_jumlahTampilan, c.report_deskripsi, a.nama_kolom, a.lokasi, a.format_kolom, a.lebar_kolom, a.format_merge, a.format_rataTengah, a.format_rataKanan, a.formula, c.report_tujuan FROM m_report c LEFT JOIN m_detailH a ON  c.report_id = a.report_id WHERE c.report_id = "'+kode_laporan+'"  ')
 
             detailFormatTemplate = cursor.fetchall()
 
@@ -169,7 +183,9 @@ class Template:
                 # 'lokasiF'           : row[13],
                 'formatMerge'       : row[12],
                 'formatTengah'      : row[13],
-                'formatKanan'       : row[14]
+                'formatKanan'       : row[14],
+                'formula'           : row[15],
+                'reportTujuan'      : row[16]
                 # 'urutanFooter'      : row[15]
                 }
                 detList.append(detDict)
@@ -206,8 +222,8 @@ class Template:
                 }
                 detList.append(detDict)
 
-            detFooter = json.dumps(detList)
-
+            detFooter = json.dumps(detList,indent=4)
+            print(detFooter)
             return detFooter
 
         except Error as e :
@@ -222,69 +238,94 @@ class Template:
 
 
     #Menampilkan detail kolom pada menu format template
-    # @app.route('/detailKolom/<kode_laporan>', methods=['POST','GET'])
-    # def detailKolom(kode_laporan):
+    @app.route('/detailKolom/<kode_laporan>', methods=['POST','GET'])
+    def detailKolom(kode_laporan):
 
-    #     try:
-    #         db = databaseCMS.db_template()
-    #         cursor = db.cursor()
+        try:
+            db = databaseCMS.db_template()
+            cursor = db.cursor()
 
-    #         cursor.execute('SELECT nama_kolom, lokasi, format_kolom, lebar_kolom FROM m_detailH WHERE report_id = "'+kode_laporan+'" ')
+            cursor.execute('SELECT nama_kolom, lokasi, format_kolom, lebar_kolom FROM m_detailH WHERE report_id = "'+kode_laporan+'" ')
 
-    #         detailK = cursor.fetchall()
+            detailK = cursor.fetchall()
 
-    #         detailKol=[]
-    #         for x in detailK:
-    #             i = 0
-    #             detDict = {
-    #             'kolom' : x[0],
-    #             'lokasi'            : x[1],
-    #             'tipeData'          : x[2],
-    #             'lebar'             : x[3]
-    #             }
-    #             detailKol.append(detDict)
-    #             i += 1
+            detailKol=[]
+            for x in detailK:
+                i = 0
+                detDict = {
+                'kolom' : x[0],
+                'lokasi'            : x[1],
+                'tipeData'          : x[2],
+                'lebar'             : x[3]
+                }
+                detailKol.append(detDict)
+                i += 1
             
             
-    #         detK = json.dumps(detailKol)
+            detK = json.dumps(detailKol,indent=4)
 
-    #         json.loads(detK)
-    #         a = detK[0]
+            json.loads(detK)
+            a = detK[0]
 
-    #         print(detDict)
-    #         print(a)
-    #         return detK
+            print(detDict)
+            print(a)
+            return detK
 
-    #         # print(detailK[0][0])
-    #         # print(detailK[1][0])
+            # print(detailK[0][0])
+            # print(detailK[1][0])
             
-    #     except Error as e :
-    #         print("Error while connecting file MySQL", e)
-    #     finally:
-    #     #Closing DB Connection.
-    #         if(db.is_connected()):
-    #                 cursor.close()
-    #                 db.close()
-    #         print("MySQL connection is closed")
+            
 
-    # PROSES INSERT KE m_detailh
-    @app.route('/saveFormatTemplate/<detailKolom>/<nama>/<posisi>/<tipe>/<lebar>',  methods = ['GET', 'POST'])
-    def saveFormatTemplate(detailKolom, nama, posisi, tipe, lebar):
+
+
+        except Error as e :
+            print("Error while connecting file MySQL", e)
+        finally:
+        #Closing DB Connection.
+            if(db.is_connected()):
+                    cursor.close()
+                    db.close()
+            print("MySQL connection is closed")
+
+    # PROSES INSERT KE m_detailh dan m_detailF
+    # @app.route('/saveFormatTemplate/<detailKolom>/<nama>/<posisi>/<tipe>/<lebar>/<formula>',  methods = ['GET', 'POST'])
+    # def saveFormatTemplate(detailKolom, nama, posisi, tipe, lebar, formula):
+    @app.route('/saveFormatTemplate', methods=['POST'])
+    def saveFormatTemplate():
         
-        formatKolom     = json.loads(detailKolom)
-        namaKolom       = json.loads(nama)
-        posisiKolom     = json.loads(posisi)
-        tipeKolom       = json.loads(tipe)
-        lebarKolom      = json.loads(lebar)
+        
+        
+        print('OKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK')
+        
+        formatHead      = request.get_json()
+        formatKolom     = json.loads(formatHead)
 
 
+
+        namaKolom       = json.loads(formatKolom['kolom'])
+        posisiKolom     = json.loads(formatKolom['posisi'])
+        tipeKolom       = json.loads(formatKolom['tipe'])
+        lebarKolom      = json.loads(formatKolom['lebar'])
+        formulaKolom    = json.loads(formatKolom['formula'])
+
+        jmlHeader       = json.loads(formatKolom['jmlHeader'])
+        jmlFooter       = json.loads(formatKolom['jmlFooter'])
+        #HEADER
         for i in formatKolom:
             reportId        = formatKolom['reportId']
             mergeKolom      = formatKolom['mergeKolom']
             rataKanan       = formatKolom['rataKanan']
             rataTengah      = formatKolom['rataTengah']
             jmlTampilan     = formatKolom['jmlTampilan']
-
+        
+        #FOOTER
+        for i in formatKolom:
+            # reportId        = formatKolom['reportId']
+            namaFooter1     = formatKolom['namaFooter1']
+            namaFooter2     = formatKolom['namaFooter2']
+            posisiFooter1   = formatKolom['posisiFooter1']
+            posisiFooter2   = formatKolom['posisiFooter2']
+        print(reportId)
         try:
             db = databaseCMS.db_template()
             cursor = db.cursor()
@@ -293,18 +334,44 @@ class Template:
             db.commit()
             print('delete m_detailH')
 
-            cursor.execute('UPDATE m_report SET report_jumlahTampilan = "'+jmlTampilan+'" WHERE\
+            cursor.execute('UPDATE m_report SET report_jumlahTampilan = "'+jmlTampilan+'", \
+                            report_header="'+str(jmlHeader)+'", report_footer="'+str(jmlFooter)+'" WHERE\
                             report_id = "'+reportId+'"')
             db.commit()
-
+            print('m_report updated')
             for i in range (len(namaKolom)):
                 try:
-
-                    cursor.execute('INSERT INTO m_detailh values (%s, %s, %s, %s, %s, %s, %s, %s)', (reportId, namaKolom[i], posisiKolom[i], tipeKolom[i], lebarKolom[i], mergeKolom, rataKanan, rataTengah))                    
+                    cursor.execute('INSERT INTO m_detailH values (%s, %s, %s, %s, %s, %s, %s, %s, %s)', (reportId, namaKolom[i], posisiKolom[i], tipeKolom[i], lebarKolom[i], mergeKolom, rataKanan, rataTengah, formulaKolom[i]))                    
                     db.commit()
 
                 except Exception as e:
                    print(e)
+
+            cursor.execute('DELETE FROM m_detailF WHERE report_id="'+reportId+'"')
+            db.commit()
+            print('delete m_detailF')
+
+            if (namaFooter2 != ''):
+                cursor.execute(' INSERT INTO m_detailf VALUES (%s, %s, %s, %s)', (reportId, namaFooter1, posisiFooter1, "1"))
+                db.commit()
+
+                cursor.execute(' INSERT INTO m_detailf VALUES (%s, %s, %s, %s)', (reportId, namaFooter2, posisiFooter2, "2"))
+                db.commit()
+
+                cursor.execute('UPDATE m_report set report_footer = "2" WHERE report_id="'+reportId+'" ')
+                db.commit()
+            elif (namaFooter1 != '') and (namaFooter2 == ''):
+                cursor.execute(' INSERT INTO m_detailf VALUES (%s, %s, %s, %s)', (reportId, namaFooter1, posisiFooter1, "1"))
+                db.commit()
+
+                cursor.execute('UPDATE m_report set report_footer = "1" WHERE report_id="'+reportId+'" ')
+                db.commit()
+            else:
+                cursor.execute('DELETE FROM m_detailF WHERE report_id="'+reportId+'"')
+                db.commit()
+
+                cursor.execute('UPDATE m_report set report_footer = "0" WHERE report_id="'+reportId+'" ')
+                db.commit()
 
         except Error as e :
             print("Error while connecting file MySQL", e)
@@ -316,7 +383,6 @@ class Template:
                 db.close()
             print("MySQL connection is closed")
 
-    # PROSES INSERT ke m_detailf
     @app.route('/saveFooterTemplate/<detailKolom>', methods=['GET', 'POST'])
     def saveFooterTemplate(detailKolom):
         
@@ -344,19 +410,19 @@ class Template:
                 cursor.execute(' INSERT INTO m_detailf VALUES (%s, %s, %s, %s)', (reportId, namaFooter2, posisiFooter2, "2"))
                 db.commit()
 
-                cursor.execute('UPDATE m_report set report_footer = "2" ')
+                cursor.execute('UPDATE m_report set report_footer = "2" WHERE report_id="'+reportId+'" ')
                 db.commit()
-            elif (namaFooter2 == ''):
+            elif (namaFooter1 != '') and (namaFooter2 == ''):
                 cursor.execute(' INSERT INTO m_detailf VALUES (%s, %s, %s, %s)', (reportId, namaFooter1, posisiFooter1, "1"))
                 db.commit()
 
-                cursor.execute('UPDATE m_report set report_footer = "1" ')
+                cursor.execute('UPDATE m_report set report_footer = "1" WHERE report_id="'+reportId+'" ')
                 db.commit()
             else:
                 cursor.execute('DELETE FROM m_detailF WHERE report_id="'+reportId+'"')
                 db.commit()
 
-                cursor.execute('UPDATE m_report set report_footer = "" ')
+                cursor.execute('UPDATE m_report set report_footer = "0" WHERE report_id="'+reportId+'" ')
                 db.commit()
 
         except Error as e :
@@ -368,6 +434,68 @@ class Template:
                 cursor.close()
                 db.close()
             print("MySQL connection is closed")
+
+    # MENGINPUT COPY TEMPLATE
+    @app.route('/saveCopyTemplate/<detailKolom>/<nama>/<posisi>/<tipe>/<lebar>', methods = ['POST', 'GET'])
+    def saveCopyTemplate(detailKolom, nama, posisi, tipe, lebar):
+        formatKolom     = json.loads(detailKolom)
+        namaKolom       = json.loads(nama)
+        posisiKolom     = json.loads(posisi)
+        tipeKolom       = json.loads(tipe)
+        lebarKolom      = json.loads(lebar)
+
+        report_createDate   = datetime.datetime.now()
+        report_lastUpdate   = datetime.datetime.now()
+
+        for x in formatKolom:
+            kode_laporan        = formatKolom['reportId']
+            org_id              = formatKolom['orgId']
+            ktgri_id            = formatKolom['ktgriId']
+            server_id           = formatKolom['serverId']
+            report_judul        = formatKolom['reportJudul'].upper()
+            report_deskripsi    = formatKolom['reportDeskripsi']
+            report_tujuan       = formatKolom['reportTujuan']
+            report_periode      = formatKolom['reportPeriode']
+            report_printAllYN   = formatKolom['reportPrintAll']
+            report_header       = formatKolom['reportHeader']
+            report_footer       = formatKolom['reportFooter']
+            report_jmlTampilan  = formatKolom['jmlTampilan']
+            report_userUpdate   = formatKolom['reportUserUpdate']
+            report_createdUser  = formatKolom['reportCreatedUser']
+            kolom_merge         = formatKolom['mergeKolom']
+            kolom_kanan         = formatKolom['rataKanan']
+            kolom_tengah        = formatKolom['rataTengah']        
+
+        try: 
+            db = databaseCMS.db_template()
+            cursor = db.cursor()
+
+            cursor.execute('INSERT INTO m_report VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', 
+                        (kode_laporan, server_id, report_judul, report_deskripsi, report_header, 
+                        report_footer, report_periode, report_createDate, report_userUpdate,
+                        report_lastUpdate, "Y", org_id, ktgri_id, report_printAllYN,
+                        report_createdUser, "N", report_jmlTampilan, report_tujuan))
+            db.commit()
+
+            for i in range (len(namaKolom)):
+                try:
+                    cursor.execute('INSERT INTO m_detailh values (%s, %s, %s, %s, %s, %s, %s, %s, %s)', (kode_laporan, namaKolom[i], posisiKolom[i], tipeKolom[i], lebarKolom[i], kolom_merge, kolom_kanan, kolom_tengah, "")) 
+                    db.commit()
+
+                except Exception as e:
+                   print(e)
+
+            print("Template berhasil dibuat")
+            return 'OK'
+        except Error as e :
+            print("Error while connecting file MySQL", e)
+        finally:
+        #Closing DB Connection.
+            if(db.is_connected()):
+                    cursor.close()
+                    db.close()
+            print("MySQL connection is closed")
+
     #=========================================================================================
     #=========================================================================================
     #=========================================================================================
@@ -408,7 +536,7 @@ class Template:
                 }
                 qList.append(qDict)
 
-            qDump = json.dumps(qList)
+            qDump = json.dumps(qList,indent=4)
 
             return qDump
 
@@ -479,7 +607,7 @@ class Template:
                 }
                 kodeL.append(kodeDict)
 
-            kodeD = json.dumps(kodeL)
+            kodeD = json.dumps(kodeL,indent=4)
             
             return kodeD
         
@@ -511,12 +639,14 @@ class Template:
                     editQ.append("")
 
             
-            dumpE = json.dumps(editQ)
+            dumpE = json.dumps(editQ,indent=4)
 
             print(len(editQ))
             print(editQ)
             return dumpE
 
+
+    
         except Error as e :
             print("Error while connecting file MySQL", e)
         finally:
@@ -570,7 +700,7 @@ class Template:
                 }
                 getList.append(x)
 
-            namaOrgKat = json.dumps(getList)
+            namaOrgKat = json.dumps(getList,indent=4)
              
             
             return namaOrgKat
@@ -627,7 +757,7 @@ class Template:
                 'serverId'          : row[8]
                 }
                 listList.append(listDict)
-            resultListReport = json.dumps(listList)
+            resultListReport = json.dumps(listList,indent=4)
 
             return resultListReport
 
@@ -641,49 +771,6 @@ class Template:
             print("MySQL connection is closed")
 
 
-    @app.route('/getListReportSchedule', methods=['GET', 'POST'])
-    def getListReportSchedule():
-        try:
-            db = databaseCMS.db_readReport()
-            cursor = db.cursor()
-
-            cursor.execute('SELECT report_id, org_id, report_judul,namaFile, report_lastProcess\
-                            FROM readreport')
-
-            listReport = cursor.fetchall()
-
-            LR = []
-
-
-            for row in listReport:
-                a = requests.get('http://127.0.0.1:5001/getNamaOrg/'+str(row[1]))
-                b = json.dumps(a.json())
-                c = json.loads(b)
-                for x in c:
-                    orgName = x['org_name']
-
-                listDict={
-                'reportId'      : row[0],
-                'orgName'       : orgName,
-                'orgId'         : row[1],
-                'reportJudul'   : row[2],
-                'namaFile'      : row[3],
-                'reportLastProc': row[4]
-                }
-                LR.append(listDict)
-
-            result = json.dumps(LR)
-
-            return result
-
-        except Error as e :
-            print("Error while connecting file MySQL", e)
-        finally:
-        #Closing DB Connection.
-            if(db.is_connected()):
-                    cursor.close()
-                    db.close()
-            print("MySQL connection is closed")
 
 
     #Mengambil semua list Kode Report
@@ -707,7 +794,7 @@ class Template:
                 }
                 kodeReportList.append(kodeDict)
 
-            kodeReportAll = json.dumps(kodeReportList)
+            kodeReportAll = json.dumps(kodeReportList,indent=4)
                 
 
             
@@ -749,7 +836,7 @@ class Template:
                 }
                 LR.append(listDict)
 
-            result = json.dumps(LR)
+            result = json.dumps(LR,indent=4)
 
             return result
 
@@ -784,7 +871,7 @@ class Template:
                 }
                 serL.append(serDict)
 
-            serD = json.dumps(serL)
+            serD = json.dumps(serL,indent=4)
 
             return serD
 
@@ -797,6 +884,117 @@ class Template:
                     db.close()
             print("MySQL connection is closed")
    
+    @app.route('/allServer', methods=['POST', 'GET'])
+    def allServer():
+        try: 
+            db = databaseCMS.db_template()
+
+            cursor = db.cursor()
+     
+            cursor.execute('SELECT server_id, server_nama from m_server ORDER BY server_nama')
+            
+            resultServer = cursor.fetchall()
+
+            serverList = []
+            for row in resultServer:
+                serverDict = {
+                'Id' : row[0],
+                'Nama' : row[1]
+                }
+                serverList.append(serverDict)
+            serverResult = json.dumps(serverList)
+
+            print("=== [ allServer ] ===")
+            print("==========================")
+            
+            return serverResult
+
+        except Error as e :
+                print("Error while connecting file MySQL", e)
+        finally:
+                #Closing DB Connection.
+                if(db.is_connected()):
+                    cursor.close()
+                    db.close()
+                print("MySQL connection is closed")
+
+    @app.route('/getNamaServer/<idServer>', methods=['POST', 'GET'])
+    def getNamaServer(idServer):
+        try: 
+            db = databaseCMS.db_template()
+
+            cursor = db.cursor()
+     
+            cursor.execute('SELECT server_id, server_nama, server_loginName, server_password, server_host, server_port, server_jenis, server_aktifYN from m_server WHERE server_id = "'+idServer+'" ')
+            
+            resultServer = cursor.fetchall()
+
+            serverList = []
+            for row in resultServer:
+                serverDict = {
+                'Id' : row[0],
+                'Name' : row[1],
+                'LoginName' : row[2],
+                'Pass' : row[3],
+                'Host' : row[4],
+                'Port' : row[5],
+                'Jenis' : row[6],
+                'AktifYN' : row[7]
+                }
+                serverList.append(serverDict)
+            serverResult = json.dumps(serverList)
+
+            print("=== [ allServer ] ===")
+            print("==========================")
+            
+            return serverResult
+
+        except Error as e :
+                print("Error while connecting file MySQL", e)
+        finally:
+                #Closing DB Connection.
+                if(db.is_connected()):
+                    cursor.close()
+                    db.close()
+                print("MySQL connection is closed")
+
+    @app.route('/insertDataServer/<data>', methods=['POST', 'GET'])
+    def insertDataServer(data):
+        if request.method == 'POST' :
+            dataServer = json.loads(data)
+
+            for x in dataServer:
+                id_server = dataServer['serverId']
+                nama_server = dataServer['serverName']
+                login_server = dataServer['serverLoginName']
+                pass_server = dataServer['serverPass']
+                host_server = dataServer['serverHost']
+                port_server = dataServer['serverPort']
+                jenis_server = dataServer['serverJenis']
+                aktif_YN = dataServer['serverAktif']
+
+
+            try:
+                db = databaseCMS.db_template()
+                cursor = db.cursor()
+
+                cursor.execute(' DELETE FROM m_server WHERE server_id = "'+id_server+'" ')
+                db.commit()
+
+                cursor.execute(' INSERT INTO m_server VALUES (%s, %s, %s, %s, %s, %s, %s, %s)', (id_server, nama_server, login_server, pass_server, aktif_YN, host_server, port_server, jenis_server))
+                db.commit()
+
+                print("berhasil")
+            except Error as e:
+                print("Error while connecting file MySQL", e)
+                flash('Error,', e)
+
+            finally:
+                    #Closing DB Connection.
+                if(db.is_connected()):
+                    cursor.close()
+                    db.close()
+                print("MySQL connection is closed")
 
           
 
@@ -875,7 +1073,7 @@ class Schedule:
                 }
                 listKodeEdit.append(listDict)
 
-            kodeReportEdit = json.dumps(listKodeEdit)
+            kodeReportEdit = json.dumps(listKodeEdit,indent=4)
 
             
             return kodeReportEdit
@@ -909,7 +1107,7 @@ class Schedule:
                 }
                 listKode.append(listDict)
 
-            kodeReport = json.dumps(listKode)
+            kodeReport = json.dumps(listKode,indent=4)
 
             
             return kodeReport
@@ -945,10 +1143,10 @@ class Schedule:
                 reportPIC       = loadDataSchedule['sch_reportPIC']
                 org             = loadDataSchedule['sch_org']
                 kategori        = loadDataSchedule['sch_kategori']
-                header          = loadDataSchedule['sch_header']
+                # header          = loadDataSchedule['sch_header']
         
                 
-                keterangan      = loadDataSchedule['sch_keterangan']
+                # keterangan      = loadDataSchedule['sch_keterangan']
                 note            = loadDataSchedule['sch_note']
                 reportPenerima  = loadDataSchedule['sch_reportPen']
         
@@ -961,13 +1159,13 @@ class Schedule:
                 cursor.execute('DELETE FROM t_schedule WHERE report_id = "'+kode_laporan+'" ')
                 
 
-                cursor.execute('INSERT INTO t_schedule VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)',
+                cursor.execute('INSERT INTO t_schedule VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)',
                     (kode_laporan, jadwalHari, jadwalBln, jadwalTgl, grouping,
-                        reportPIC, org, kategori, lastUpdate, aktifYN, keterangan, note, reportPenerima))
+                        reportPIC, org, kategori, lastUpdate, aktifYN, note, reportPenerima))
                 db.commit()
 
-                cursor.execute('UPDATE m_report SET report_scheduleYN = "Y", report_judul ="'+header+'", report_deskripsi="'+keterangan+'"  WHERE report_id = "'+kode_laporan+'" ')
-                db.commit()
+                # cursor.execute('UPDATE m_report SET report_scheduleYN = "Y", report_judul ="'+header+'", report_deskripsi="'+keterangan+'"  WHERE report_id = "'+kode_laporan+'" ')
+                # db.commit()
 
 
                 return 'Success'
@@ -1037,8 +1235,8 @@ class Schedule:
 
         loadData = json.loads(data)
         for i in loadData:
-            header          = loadData['header']
-            keterangan      = loadData['keterangan']
+            # header          = loadData['header']
+            # keterangan      = loadData['keterangan']
             kode_laporan    = loadData['reportId']
             jadwalHari      = loadData['jadwalHari']
             jadwalTgl       = loadData['jadwalTgl']
@@ -1061,13 +1259,18 @@ class Schedule:
             db = databaseCMS.db_template()
             cursor = db.cursor()
 
-            cursor.execute('UPDATE m_report SET report_judul = "'+header+'", report_deskripsi="'+keterangan+'" WHERE report_id ="'+kode_laporan+'" ')
+            # cursor.execute('UPDATE m_report SET report_judul = "'+header+'", report_deskripsi="'+keterangan+'" WHERE report_id ="'+kode_laporan+'" ')
+            # db.commit()
+
+            cursor.execute( 'UPDATE t_schedule SET sch_hari = "'+jadwalHari+'", sch_tanggal= \
+                            "'+jadwalTgl+'", sch_bulan= "'+jadwalBln+'", sch_reportPIC= \
+                            "'+reportPIC+'", sch_penerima= "'+reportPenerima+'", sch_note=\
+                            "'+note+'", sch_lastUpdate = "'+lastUpdate+'", sch_groupBy = \
+                            "'+grouping+'", sch_aktifYN = "'+aktifYN+'" WHERE report_id = \
+                            "'+kode_laporan+'"')
             db.commit()
 
-            cursor.execute( 'UPDATE t_schedule SET sch_hari = "'+jadwalHari+'", sch_tanggal= "'+jadwalTgl+'", sch_bulan= "'+jadwalBln+'", sch_reportPIC= "'+reportPIC+'", sch_penerima= "'+reportPenerima+'", sch_note="'+note+'", sch_lastUpdate = "'+lastUpdate+'", sch_groupBy = "'+grouping+'", sch_aktifYN = "'+aktifYN+'" WHERE report_id = "'+kode_laporan+'"')
-            db.commit()
-
-            print(kode_laporan)
+            
             return 'Edit Schedule Success'
 
         except Error as e :
@@ -1119,7 +1322,7 @@ class Schedule:
             result = cursor.fetchone()
             
 
-            return json.dumps(result)
+            return json.dumps(result,indent=4)
         except Error as e :
             print("Error while connecting file MySQL", e)
         finally:
@@ -1151,7 +1354,7 @@ class Schedule:
                 }
                 qList.append(qDict)
 
-            resultQuery = json.dumps(qList)
+            resultQuery = json.dumps(qList,indent=4)
 
             return resultQuery
         except Error as e :
@@ -1187,7 +1390,7 @@ class Schedule:
                 }
                 detF.append(detDict)
 
-            detailFooter = json.dumps(detF)
+            detailFooter = json.dumps(detF,indent=4)
 
 
             return detailFooter
@@ -1223,11 +1426,12 @@ class Schedule:
                 'formatKolom'   : row[3],
                 'lebarKolom'    : row[4],
                 'formatMerge'   : row[5],
-                'rataTengah'      : row[6],
-                'rataKanan'     : row[7]
+                'rataTengah'    : row[6],
+                'rataKanan'     : row[7],
+                'formula'       : row[8]
                 }
                 detL.append(detDict)
-            detailH = json.dumps(detL)
+            detailH = json.dumps(detL,indent=4)
 
             return detailH
         except Error as e :
@@ -1262,10 +1466,11 @@ class Schedule:
                 'lebarKolom'    : row[4],
                 'formatMerge'   : row[5],
                 'rataTengah'    : row[6],
-                'rataKanan'     : row[7]
+                'rataKanan'     : row[7],
+                'formula'       : row[8]
                 }
                 detL.append(detDict)
-            detailH2 = json.dumps(detL)
+            detailH2 = json.dumps(detL,indent=4)
 
             return detailH2
         except Error as e :
@@ -1298,7 +1503,7 @@ class Schedule:
                 }
                 picL.append(picDict)
 
-            resultPIC = json.dumps(picL)
+            resultPIC = json.dumps(picL,indent=4)
 
             
 
@@ -1327,7 +1532,7 @@ class Schedule:
 
             result = cursor.fetchone()
 
-            return json.dumps(result)
+            return json.dumps(result,indent=4)
 
         except Error as e :
             print("Error while connecting file MySQL", e)
@@ -1337,6 +1542,28 @@ class Schedule:
                         cursor.close()
                         db.close()
                     print("MySQL connection is closed")
+
+    @app.route('/getNote/<kode_laporan>')
+    def getNote(kode_laporan):
+        try:
+            db = databaseCMS.db_template()
+            cursor = db.cursor()
+
+            cursor.execute('SELECT sch_note FROM t_schedule WHERE report_id = "'+kode_laporan+'" ')
+
+            result = cursor.fetchone()
+
+            return json.dumps(result,indent=4)
+
+        except Error as e :
+            print("Error while connecting file MySQL", e)
+        finally:
+                #Closing DB Connection.
+                    if(db.is_connected()):
+                        cursor.close()
+                        db.close()
+                    print("MySQL connection is closed")
+
 
 
 
@@ -1406,7 +1633,7 @@ class Schedule:
                 'namaPIC'       : namaPIC
                 }
                 resKode.append(resD)
-            resultKode = json.dumps(resKode)
+            resultKode = json.dumps(resKode,indent=4)
             
             return resultKode
         except Error as e :
@@ -1419,21 +1646,7 @@ class Schedule:
                     print("MySQL connection is closed")
 
 
-    @app.route('/test')
-    def test():
-        
-        res=[('P123','Yosh'),('P123','Agung'),('P222','Set'),('P323','Iaw')]
 
-        data=[]
-
-        for i in res:
-            data.append(i)
-
-
-        for i in range(10):
-            print(data[i][0])
-            if data[i][0] != data[i-1][0]:
-                print('beda')
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0',debug=True, port='5002')

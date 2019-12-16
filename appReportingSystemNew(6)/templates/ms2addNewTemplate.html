@@ -13,7 +13,7 @@
 {% else %}
 
     {% extends "NAVBARSPV.html" %}
-    {% set active_page = 'task' %}
+    {% set active_page = 'template' %}
 
 {% endif %}
 
@@ -23,12 +23,22 @@
     <div class="judul"><center>INSERT TEMPLATE</center></div>
 
 <div class ="containInsert">
-    <br><br><br>
+    
+    {% if session.get('position') == 'Admin' %}
+      <div class="colBut">
+        <form action="/admin/template/copyTemplate"><button class="submit" style="width: 150px;">Copy Template</button></form>
+      </div>
+    {% else %}
+      <div class="colBut">
+        <form action="/spv/template/copyTemplate"><button class="submit" style="width: 150px;">Copy Template</button></form>
+      </div>
+    {% endif %}
+
     <form id="myForm" action="/sendNewTemplate" autocomplete="off" method="POST">
       
       <div class ="row">
         <div class ="col-35">
-          <label for="kodeReport">Kode Report : </label>
+          <label for="kodeReport">Kode Report</label>
         </div>
 
         <div class="col-55">
@@ -49,7 +59,7 @@
 
       <div class ="row">
         <div class ="col-35">
-          <label for="organisasi">Organisasi : </label>
+          <label for="organisasi">Organisasi</label>
         </div>
       
         <div class="col-45">
@@ -64,7 +74,7 @@
 
       <div class ="row">
         <div class ="col-35">
-          <label for="server">Server : </label>
+          <label for="server">Server</label>
         </div>
         
         <div class="col-45">
@@ -79,7 +89,7 @@
 
       <div class ="row">
         <div class ="col-35">
-          <label for="namaReport">Nama Report : </label>
+          <label for="namaReport">Nama Report</label>
         </div>
 
         <div class="col-85">
@@ -90,7 +100,7 @@
 
       <div class="row">
         <div class="col-35">
-          <label for="tujuan">Tujuan : </label>
+          <label for="tujuan">Tujuan</label>
         </div>
 
         <div class="col-85">
@@ -102,7 +112,7 @@
 
       <div class ="row">
         <div class ="col-35">
-          <label for="filter">Filter : </label>
+          <label for="filter">Filter</label>
         </div>
 
         <div class="col-85">
@@ -113,49 +123,40 @@
 
       <div class ="row">
         <div class ="col-35">
-          <label for="jmlKolom">Jumlah Kolom : </label>
+          <label for="jmlKolom">Jumlah Kolom</label>
         </div>
 
         <div class="col-55">
-          <input type="text" id="jmlKolom" name="jmlTampilan" 
-          style="width: 120px">
+            <input type="number" class = "col-10" id="jmlKolom" name="jmlTampilan" style="width:120px; height: 35px;" min= "1"; max="25">
         </div>
       </div>
       <br>
 
       <div class ="row">
         <div class ="col-35">
-          <label for="jmlHeader">Jumlah Header : </label>
+          <label for="jmlHeader">Jumlah Header</label>
         </div>
 
         <div class="col-55">
-          <select id="jmlHeader" name="jmlHeader" style="width: 120px">
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-          </select>
+            <input type="number" class = "col-10" id="jmlHeader" name="jmlHeader" style="width:120px; height: 35px;" max="2">
         </div>
       </div>
       <br>
 
       <div class ="row">
         <div class ="col-35">
-          <label for="jmlFooter">Jumlah Footer : </label>
+          <label for="jmlFooter">Jumlah Footer</label>
         </div>
 
         <div class="col-55">
-          <select id="jmlFooter" name="jmlFooter" style="width: 120px">
-            <option value="0">0</option>
-            <option value="1">1</option> 
-            <option value="2">2</option>
-          </select>
+          <input type="number" class = "col-10" id="jmlFooter" name="jmlFooter" style="width:120px; height: 35px;" min= "0"; max="2">
         </div>
       </div>
       <br>
 
       <div class ="row">
         <div class ="col-35">
-          <label for="periode">Periode : </label>
+          <label for="periode">Periode</label>
         </div>
 
         <div class="col-55">
@@ -166,7 +167,7 @@
 
       <div class ="row">
         <div class ="col-35">
-          <label for="printAll">Print All : </label>
+          <label for="printAll">Print All</label>
         </div>
 
         <div class="col-55">
@@ -188,11 +189,19 @@
         <input type="button" class="submitRed" onclick="myFunction()" value="Reset">
       </div>
 
-      <div class="colBut">
-        <form action="/admin">
-          <button class="submitRed">Exit</button>
-        </form>
-      </div>
+      {% if session.get('position') == 'Admin' %}
+        <div class="colBut">
+          <form action="/admin/home">
+            <button class="submitRed">Exit</button>
+          </form>
+        </div>
+      {% else %}
+        <div class="colBut">
+          <form action="/spv/home">
+            <button class="submitRed">Exit</button>
+          </form>
+        </div>
+      {% endif %}
       
     </center>
 

@@ -65,7 +65,7 @@ body{
 }
 h1{
   font-size: 30px;
-  font-family: 'Arial'
+  font-family: 'Roboto Mono', monospace;
 }
 
 
@@ -378,7 +378,7 @@ input[type=cancel] {
   -webkit-text-fill-color: transparent;
   padding-top: 40px;
   padding-bottom: 30px; 
-  font-family: 'Arial';
+  font-family: 'Roboto Mono', monospace;
   font-weight: 750;
 
 }
@@ -386,7 +386,7 @@ input[type=cancel] {
 .subjudul {
   font-size: 100%;
   padding-bottom: 5px; 
-  font-family: 'Arial';
+  font-family: 'Roboto Mono', monospace;
   font-weight: 50;
   background: -webkit-linear-gradient(#333, #4CAF50);
   -webkit-background-clip: text;
@@ -486,7 +486,7 @@ input[type=cancel] {
 /*                    TABLE                   */
 
 #list {
-  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  font-family: 'Roboto Mono', monospace;
   border-collapse: collapse;
   width: 100%;
   
@@ -510,7 +510,7 @@ input[type=cancel] {
 }
 
 #listkedua {
-  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  font-family: 'Roboto Mono', monospace;
   border-collapse: collapse;
   width: 100%;
 }

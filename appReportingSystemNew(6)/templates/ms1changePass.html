@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styleUser.css') }}">
     <title>Edit Profile</title>
 </head>
 
@@ -25,7 +26,7 @@
 {% endif %}
 
 {% block content %}
-<br><br><<br><br>
+<br>
 
 <div class ="judul">
         <center> EDIT PROFILE </center>
@@ -34,7 +35,7 @@
 <center>
     <form action="/sendDataPassword", method="POST">
     <div class="containModify">
-        <br><br><br>
+        <br>
         <div class ="row">
             <div class ="col-25">
                 <label for="oldPass">Old Password</label>
@@ -66,7 +67,7 @@
             </div>
         </div>
 
-            <br><br><br><br><br><br>
+            <br><br><br>
 
 
         <center>

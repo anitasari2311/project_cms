@@ -9,11 +9,11 @@
 
 {% if session.get('position') == 'Admin' %}
   {% extends "NAVBARPROG.html" %}
-  {% set active_page = 'list' %}
+  {% set active_page = 'report' %}
 {% else %}
 
   {% extends "NAVBARSPV.html" %}
-  {% set active_page = 'list' %}
+  {% set active_page = 'report' %}
 {% endif %}
 
 
@@ -37,26 +37,26 @@
                           <th>Day</th>
                           <th>Month</th>
                           <th>Date</th>
-                          <th>Generate Excel</th>
+                          <!-- <th>Generate Excel</th> -->
                         </tr>
                       {% for row in listReport %}
                         <tr >
-                          <td>{{row.reportId}}</td>
-                          <td>{{row.orgId}}</td>
-                          <td>{{row.reportJudul}}</td>
-                          <td>{{row.reportDeskripsi}}</td>
-                          <td>{{row.reportAktifYN}}</td>
-                          <td>{{row.schHari}}</td>
-                          <td>{{row.schBulan}}</td>
-                          <td>{{row.schTanggal}}</td>
-                          <td>
-                            <button id="{{row.reportId}}" class="submit" onclick= "click_process(this.id)" name="previewButton" value="{{row.reportId}}">Preview</button>
+                          <td id="{{row.reportId}}" onclick= "click_process(this.id)" name="previewButton" value="{{row.reportId}}">{{row.reportId}}</td>
+                          <td id="{{row.reportId}}" onclick= "click_process(this.id)" name="previewButton" value="{{row.reportId}}">{{row.orgId}}</td>
+                          <td id="{{row.reportId}}" onclick= "click_process(this.id)" name="previewButton" value="{{row.reportId}}">{{row.reportJudul}}</td>
+                          <td id="{{row.reportId}}" onclick= "click_process(this.id)" name="previewButton" value="{{row.reportId}}">{{row.reportDeskripsi}}</td>
+                          <td id="{{row.reportId}}" onclick= "click_process(this.id)" name="previewButton" value="{{row.reportId}}">{{row.reportAktifYN}}</td>
+                          <td id="{{row.reportId}}" onclick= "click_process(this.id)" name="previewButton" value="{{row.reportId}}">{{row.schHari}}</td>
+                          <td id="{{row.reportId}}" onclick= "click_process(this.id)" name="previewButton" value="{{row.reportId}}">{{row.schBulan}}</td>
+                          <td id="{{row.reportId}}" onclick= "click_process(this.id)" name="previewButton" value="{{row.reportId}}">{{row.schTanggal}}</td>
+                          <!-- <td>
+                            <button id="{{row.reportId}}" class="submit" onclick= "click_process(this.id)" name="previewButton" value="{{row.reportId}}">Preview</button></td> -->
 
                             <div id="modal2{{row.reportId}}" class="modal">
 
                       <!-- Modal content -->
 
-              <form action='/preview' method='POST'>
+              <form action='/admin/preview' method='POST'>
                       <div class="modal-content">
                         <span class="close" onclick="closeModal2()">&times;</span>
                         <center>
@@ -69,7 +69,7 @@
               </form>
                     </div>
 
-                          </td>
+                          
                       {% endfor %}
 
                             
